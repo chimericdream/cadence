@@ -1,0 +1,25 @@
+{
+  "name": "node-connected-life",
+  "description": "A Node.js application to help automate your connected life",
+  "main": "src/cl-server.js",
+  "authors": [
+    "Bill Parrott <bill@chimericdream.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "api",
+    "rest",
+    "automation"
+  ],
+  "homepage": "https://github.com/chimericdream/node-connected-life",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "4.0.0-alpha.3"
+  }
+}
