@@ -5,7 +5,10 @@
   "author": "Bill Parrott <bill@chimericdream.com>",
   "homepage": "https://github.com/chimericdream/node-connected-life",
   "scripts": {
-    "test": ""
+    "test": "istanbul cover node_modules/mocha/bin/_mocha \"test/**/*.js\"",
+    "lint": "eslint src",
+    "devlint": "eslint src -- --dev",
+    "app": "node src/cl-server.js"
   },
   "main": "src/cl-server.js",
   "repository": "chimericdream/node-connected-life",
@@ -19,6 +22,7 @@
   ],
   "dependencies": {
     "bower": "^1.7.9",
+    "evernote": "^1.25.82",
     "express": "^4.14.0",
     "express-compile-sass": "^3.0.4",
     "googleapis": "^12.2.0",
@@ -26,6 +30,7 @@
     "lodash": "^4.13.1",
     "moment": "^2.14.1",
     "node-sass": "^3.8.0",
+    "node-trello": "^1.1.2",
     "node-uuid": "^1.4.7",
     "request": "^2.74.0",
     "request-promise-native": "^1.0.3",
@@ -34,8 +39,8 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "eslint": "^3.3.0",
     "eslint-config-chimericdream": "^1.0.1",
-    "eslint": "^3.2.2",
     "istanbul": "^0.4.4",
     "mocha": "^3.0.1"
   },
