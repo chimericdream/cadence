@@ -2,7 +2,7 @@
 
 const args = require('yargs')
     .usage('$0 [args]')
-    .option('config', {
+    .option('localConfig', {
         'alias': 'c',
         'describe': 'the path to your configuration file'
     })
@@ -17,18 +17,22 @@ const args = require('yargs')
 // eslint-disable-next-line id-length
 const fs = require('fs');
 
-let config;
-
-if (typeof args.config !== 'undefined') {
-    // eslint-disable-next-line no-sync
-    config = JSON.parse(fs.readFileSync(args.config, 'utf-8'));
-}
-
+const AppConfig = require('./config');
 const WebApplication = require('./web/app');
 const ApiApplication = require('./api/app');
 
-const web = new WebApplication(config.web);
-const api = new ApiApplication(config.api);
+let localConfig;
+
+if (typeof args.config !== 'undefined') {
+    // eslint-disable-next-line no-sync
+    localConfig = JSON.parse(fs.readFileSync(args.config, 'utf-8'));
+} else {
+    localConfig = {};
+}
+
+const config = new AppConfig(localConfig);
+const web = new WebApplication(config);
+const api = new ApiApplication(config);
 
 web.init().start();
 api.init().start();

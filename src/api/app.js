@@ -10,13 +10,11 @@ const EventEmitter = events.EventEmitter;
 const google = require('./google/index');
 const toodledo = require('./toodledo/index');
 
-const DEFAULT_HTTP_PORT = 8282;
-
 module.exports = class ApiApplication extends EventEmitter {
     constructor(config) {
         super();
 
-        this.config = _.merge({'port': DEFAULT_HTTP_PORT}, config);
+        this.config = config;
 
         this.server = express();
     }
@@ -29,7 +27,7 @@ module.exports = class ApiApplication extends EventEmitter {
     }
 
     start() {
-        this.server.listen(this.config.port, () => {
+        this.server.listen(this.config.api.port, () => {
             logger.info('API started!');
         });
 

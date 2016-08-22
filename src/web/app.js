@@ -15,20 +15,19 @@ const config = require('./app/configuration/index');
 const google = require('./app/google/index');
 const toodledo = require('./app/toodledo/index');
 
-const DEFAULT_HTTP_PORT = 8181;
-
 module.exports = class WebApplication extends EventEmitter {
-    constructor(options) {
+    constructor(config) {
         super();
 
-        this.config = _.merge({'port': DEFAULT_HTTP_PORT}, options);
+        this.config = config;
 
         this.server = express();
-        this.server.use(sass({
-            'root': __dirname,
-            'sourceMap': false,
-            'sourceComments': false
-        }));
+        this.server.use(sass(
+            _.merge(
+                {'root': __dirname},
+                this.config.web.sass
+            )
+        ));
         this.server.use(
             '/bower',
             express.static(path.join(__dirname, 'bower'))
@@ -52,7 +51,7 @@ module.exports = class WebApplication extends EventEmitter {
     }
 
     start() {
-        this.server.listen(this.config.port, () => {
+        this.server.listen(this.config.web.port, () => {
             logger.info('web server started!');
         });
 
