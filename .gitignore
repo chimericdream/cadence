@@ -1,6 +1,6 @@
 nbproject
 node_modules
 npm-debug.log
-config.json
+data/config.json
 src/web/bower/
 .idea

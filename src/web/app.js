@@ -11,7 +11,7 @@ const sass = require('express-compile-sass');
 const EventEmitter = events.EventEmitter;
 
 const home = require('./app/index');
-const config = require('./app/configuration/index');
+const admin = require('./app/admin/index');
 const google = require('./app/google/index');
 const toodledo = require('./app/toodledo/index');
 
@@ -43,7 +43,7 @@ module.exports = class WebApplication extends EventEmitter {
 
     init() {
         this.server.use('/', home);
-        this.server.use('/configuration', config);
+        this.server.use('/admin', admin);
         this.server.use('/google', google);
         this.server.use('/toodledo', toodledo);
 

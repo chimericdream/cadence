@@ -6,7 +6,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (request, response) => {
-    response.send('configuration home page');
+    response.render('admin/configuration.hbs');
 });
 
 module.exports = router;

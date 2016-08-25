@@ -1,11 +1,37 @@
 @import "variables";
 @import "../../bower/bootstrap/scss/bootstrap";
+@import "sidebar";
 
 body {
-    padding-top: 5rem;
+    padding-top: 54px;
 }
 
-.starter-template {
-    padding: 3rem 1.5rem;
+#main-content {
+    padding: 20px;
+}
+
+@media (min-width: map-get($grid-breakpoints, "md")) {
+    #main-content {
+        padding-right: 40px;
+        padding-left: 40px;
+    }
+}
+
+#main-content .page-header {
+    margin-top: 0;
+}
+
+.placeholders {
+    margin-bottom: 30px;
     text-align: center;
+}
+.placeholders h4 {
+    margin-bottom: 0;
+}
+.placeholder {
+    margin-bottom: 20px;
+}
+.placeholder img {
+    display: inline-block;
+    border-radius: 50%;
 }
