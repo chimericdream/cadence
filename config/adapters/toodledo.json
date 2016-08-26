@@ -3,6 +3,33 @@
         "name": "Scopes",
         "type": "select",
         "selection": "multiple",
-        "options": ["basic", "tasks", "notes", "outlines", "lists", "share", "write"]
+        "options": [
+            "basic",
+            "tasks",
+            "notes",
+            "outlines",
+            "lists",
+            "share",
+            "write"
+        ],
+        "value": [
+            "basic",
+            "tasks",
+            "notes",
+            "outlines",
+            "lists",
+            "share",
+            "write"
+        ]
+    },
+    "client-id": {
+        "name": "Client ID",
+        "type": "text",
+        "value": "fdsafdsafdsa"
+    },
+    "client-secret": {
+        "name": "Client Secret",
+        "type": "text",
+        "value": "asdfasdfasdf"
     }
 }
