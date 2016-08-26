@@ -10,10 +10,10 @@ const sass = require('express-compile-sass');
 
 const EventEmitter = events.EventEmitter;
 
-const home = require('./app/index');
-const admin = require('./app/admin/index');
-const google = require('./app/google/index');
-const toodledo = require('./app/toodledo/index');
+const home = require('./views/index');
+const admin = require('./views/admin/index');
+const google = require('./views/google/index');
+const toodledo = require('./views/toodledo/index');
 
 require('../helpers/hbs-helpers');
 
@@ -39,8 +39,8 @@ module.exports = class WebApplication extends EventEmitter {
             express.static(path.join(__dirname, 'assets'))
         );
         this.server.set('view engine', 'hbs');
-        this.server.set('views', path.join(__dirname, 'views'));
-        hbs.registerPartials(path.join(__dirname, 'views/partials'));
+        this.server.set('views', path.join(__dirname, 'templates'));
+        hbs.registerPartials(path.join(__dirname, 'templates/partials'));
     }
 
     init() {
