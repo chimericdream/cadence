@@ -2,5 +2,6 @@ nbproject
 node_modules
 npm-debug.log
 data/config.json
+data/secure
 src/web/bower/
 .idea

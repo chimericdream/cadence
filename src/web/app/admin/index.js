@@ -1,11 +1,12 @@
 'use strict';
 
 const express = require('express');
+const render = require('../../../helpers/render');
 
 // eslint-disable-next-line new-cap
 const router = express.Router();
 
-const configuration = require('./configuration');
+const configuration = require('./configuration/index');
 
 router.use('/configuration', configuration);
 

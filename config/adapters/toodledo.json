@@ -1,0 +1,8 @@
+{
+    "scopes": {
+        "name": "Scopes",
+        "type": "select",
+        "selection": "multiple",
+        "options": ["basic", "tasks", "notes", "outlines", "lists", "share", "write"]
+    }
+}

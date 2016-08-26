@@ -1,0 +1,18 @@
+{{> layout/header }}
+
+<h1 class="page-header">Adapter Configuration</h1>
+
+<h2>{{ adapter.name }}</h2>
+
+<form>
+{{#each config}}
+    <div class="form-group row">
+        <label for="config--{{ @key }}" class="col-sm-2 col-form-label">{{ name }}</label>
+        <div class="col-sm-10">
+            <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+        </div>
+    </div>
+{{/each}}
+</form>
+
+{{> layout/footer }}

@@ -1,0 +1,31 @@
+{{> layout/header }}
+
+<h1 class="page-header">Configuration</h1>
+
+<h2>Adapters</h2>
+
+<div class="row">
+{{#each adapters}}
+    <div class="col-xs-12 col-sm-4 col-md-3">
+        <div class="card">
+            <img class="card-img-top" src="https://placekitten.com/400/150" alt="Card image cap">
+            <div class="card-block">
+                <h5 class="card-title">
+                    {{~ name ~}}
+                    {{~#if enabled~}}
+                        <span class="tag tag-success pull-xs-right">Enabled</span>
+                        {{~else~}}
+                        <span class="tag tag-default pull-xs-right">Disabled</span>
+                    {{~/if~}}
+                </h5>
+                <p class="card-text">{{ description }}</p>
+            </div>
+            <div class="card-footer text-xs-center">
+                <a href="/admin/configuration/{{ config-path }}/" class="btn btn-primary"><i class="fa fa-cogs" aria-hidden="true"></i> Configure</a>
+            </div>
+        </div>
+    </div>
+{{/each}}
+</div>
+
+{{> layout/footer }}

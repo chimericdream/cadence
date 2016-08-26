@@ -15,6 +15,8 @@ const admin = require('./app/admin/index');
 const google = require('./app/google/index');
 const toodledo = require('./app/toodledo/index');
 
+require('../helpers/hbs-helpers');
+
 module.exports = class WebApplication extends EventEmitter {
     constructor(config) {
         super();

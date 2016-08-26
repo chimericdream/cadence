@@ -1,0 +1,18 @@
+[
+    {
+        "name": "Toodledo",
+        "description": "",
+        "config-path": "toodledo",
+        "config-file-path": "toodledo.json",
+        "parent-config": null,
+        "enabled": true
+    },
+    {
+        "name": "Google Calendar",
+        "description": "",
+        "config-path": "google/calendar",
+        "config-file-path": "google/calendar.json",
+        "parent-config": "google.json",
+        "enabled": true
+    }
+]
