@@ -28,8 +28,27 @@ hbs.registerHelper('json', function(object) {
 });
 
 hbs.registerHelper('contains', function(array, value, opts) {
+    if (typeof array === 'undefined') {
+        return opts.inverse(this);
+    }
+
     if (array.includes(value)) {
         return opts.fn(this);
     }
     return opts.inverse(this);
+});
+
+hbs.registerHelper('getFrom', function(object, key) {
+    if (typeof object === 'undefined') {
+        return;
+    }
+
+    if (object.hasOwnProperty(key)) {
+        return object[key];
+    }
+    return;
+});
+
+hbs.registerHelper('dump', function(object) {
+    console.dir(object);
 });

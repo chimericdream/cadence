@@ -11,17 +11,25 @@
             <img class="card-img-top" src="https://placekitten.com/400/150" alt="Card image cap">
             <div class="card-block">
                 <h5 class="card-title">
-                    {{~ name ~}}
-                    {{~#if enabled~}}
-                        <span class="tag tag-success pull-xs-right">Enabled</span>
-                        {{~else~}}
-                        <span class="tag tag-default pull-xs-right">Disabled</span>
-                    {{~/if~}}
+                    {{~ name }}
+                    <span {{#unless enabled}}style="display: none;" {{/unless}}class="tag tag-success pull-xs-right">Enabled</span>
+                    <span {{#if enabled}}style="display: none;" {{/if}}class="tag tag-default pull-xs-right">Disabled</span>
                 </h5>
                 <p class="card-text">{{ description }}</p>
+                <hr>
+                <div class="list-group list-group-condensed">
+                    <span class="list-group-item disabled">Accounts</span>
+                    {{#each accounts~}}
+                        <a href="/admin/configuration/edit/{{ slug }}/{{ ../config-path }}/" class="list-group-item list-group-item-action">{{ name }}</a>
+                    {{~else~}}
+                        <span class="list-group-item">No accounts added.</span>
+                    {{~/each}}
+                </div>
             </div>
-            <div class="card-footer text-xs-center">
-                <a href="/admin/configuration/{{ config-path }}/" class="btn btn-primary"><i class="fa fa-cogs" aria-hidden="true"></i> Configure</a>
+            <div class="card-footer">
+                <a href="/admin/configuration/add/{{ config-path }}/" class="pull-left btn btn-sm btn-primary"><i class="fa fa-cogs" aria-hidden="true"></i> Add Account</a>
+                <a {{#if enabled}}style="display: none;" {{/if}}href="/admin/configuration/enable/{{ config-path }}/" class="adapter-enable-button pull-right btn btn-sm btn-success"><i class="fa fa-check" aria-hidden="true"></i> Enable</a>
+                <a {{#unless enabled}}style="display: none;" {{/unless}}href="/admin/configuration/disable/{{ config-path }}/" class="adapter-disable-button pull-right btn btn-sm btn-danger"><i class="fa fa-ban" aria-hidden="true"></i> Disable</a>
             </div>
         </div>
     </div>

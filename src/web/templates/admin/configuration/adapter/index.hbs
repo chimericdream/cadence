@@ -4,20 +4,35 @@
 
 <h2>{{ adapter.name }}</h2>
 
-<form action="/admin/configuration/{{ adapter.config-path }}/" method="post">
-{{#each config}}
+<form action="/admin/configuration/edit/{{ adapter.config-path }}/" method="post">
+    <input type="hidden" name="account-slug-previous" value="{{ accountData.slug }}">
+    <div class="form-group row">
+        <label for="account-name" class="col-sm-2 col-form-label">Account Name</label>
+        <div class="col-sm-10">
+            <input name="account-name" type="text" id="account-name" class="form-control" value="{{ accountData.name }}">
+            <small class="form-text text-muted">Something easy to remember, like your username.</small>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="account-slug" class="col-sm-2 col-form-label">JSON Key</label>
+        <div class="col-sm-10">
+            <input name="account-slug" type="text" id="account-slug" class="form-control" value="{{ accountData.slug }}">
+            <small class="form-text text-muted">Will be used as the JSON key for the stored account data.</small>
+        </div>
+    </div>
+{{#each accountConfig.fields}}
     <div class="form-group row">
         <label for="config--{{ @key }}" class="col-sm-2 col-form-label">{{ name }}</label>
         <div class="col-sm-10">
             {{#equal type "select"}}
                 <select name="{{ @key }}" id="config--{{ @key }}" class="form-control"{{#equal selection "multiple"}} multiple{{/equal}}>
                     {{#each options}}
-                        <option{{#contains ../value this}} selected{{/contains}}>{{ this }}</option>
+                        <option{{#contains (getFrom ../../accountData.fields @../key) this}} selected{{/contains}}>{{ this }}</option>
                     {{/each}}
                 </select>
             {{/equal}}
             {{#equal type "text"}}
-                <input name="{{ @key }}" type="text" id="config--{{ @key }}" class="form-control" value="{{ value }}">
+                <input name="{{ @key }}" type="text" id="config--{{ @key }}" class="form-control" value="{{getFrom ../accountData.fields @key }}">
             {{/equal}}
         </div>
     </div>
