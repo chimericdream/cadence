@@ -6,13 +6,13 @@
                 "type": "select",
                 "selection": "multiple",
                 "options": [
-                    "basic",
-                    "tasks",
-                    "notes",
-                    "outlines",
-                    "lists",
-                    "share",
-                    "write"
+                    {"name": "Basic access", "value": "basic"},
+                    {"name": "Tasks", "value": "tasks"},
+                    {"name": "Notes", "value": "notes"},
+                    {"name": "Outlines", "value": "outlines"},
+                    {"name": "Lists", "value": "lists"},
+                    {"name": "Sharing", "value": "share"},
+                    {"name": "Write access", "value": "write"}
                 ]
             },
             "client-id": {

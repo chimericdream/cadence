@@ -27,7 +27,7 @@
             {{#equal type "select"}}
                 <select name="{{ @key }}" id="config--{{ @key }}" class="form-control"{{#equal selection "multiple"}} multiple{{/equal}}>
                     {{#each options}}
-                        <option{{#contains (getFrom ../../accountData.fields @../key) this}} selected{{/contains}}>{{ this }}</option>
+                        <option value="{{ value }}"{{#contains (getFrom ../../accountData.fields @../key) value}} selected{{/contains}}>{{ name }}</option>
                     {{/each}}
                 </select>
             {{/equal}}
