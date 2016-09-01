@@ -15,18 +15,18 @@
                     {"name": "Write access", "value": "write"}
                 ]
             },
-            "client-id": {
+            "clientId": {
                 "name": "Client ID",
                 "type": "text"
             },
-            "client-secret": {
+            "clientSecret": {
                 "name": "Client Secret",
                 "type": "text"
             }
         },
         "data": {
-            "access-token": "",
-            "refresh-token": ""
+            "accessToken": "",
+            "refreshToken": ""
         }
     },
     "accounts": {}
