@@ -13,7 +13,11 @@ const apiInstances = {};
 const accountInfo = {};
 
 router.get('/data/:account/', (request, response) => {
-    response.send('return all data stored in NCL for specific account.');
+    const accountSlug = request.params.account;
+    const accounts = JSON.parse(fs.readFileSync('data/adapters/toodledo/account-info.json'));
+    response.send(JSON.stringify({
+        'account-info': accounts[accountSlug] || {}
+    }));
 });
 
 router.get('/authorize/:account/', (request, response) => {
@@ -32,7 +36,11 @@ router.get('/account-info/:account/', (request, response) => {
     const accountConfig = adapterConfig.accounts[accountSlug];
     if (typeof apiInstances[accountSlug] === 'undefined') {
         apiInstances[accountSlug] = new toodledo.API(accountConfig.fields).loadTokens(accountConfig.data);
-
+        apiInstances[accountSlug].on('tokens:loaded', (tokens) => {
+            const adapterConfig = JSON.parse(fs.readFileSync('config/adapters/toodledo.json'));
+            adapterConfig.accounts[accountSlug].data = tokens;
+            fs.writeFileSync('config/adapters/toodledo.json', JSON.stringify(adapterConfig, null, 4));
+        });
     }
 
     if (typeof accountInfo[accountSlug] === 'undefined') {
@@ -40,7 +48,7 @@ router.get('/account-info/:account/', (request, response) => {
 
         accountInfo[accountSlug]
             .on('error', (exception) => {
-                if (exception.name === 'INVALID_ACCESS_TOKEN') {
+                if (exception.name === 'INVALID_ACCESS_TOKEN' || exception.name === 'NO_ACCESS_TOKEN') {
                     apiInstances[accountSlug].refreshAccessToken();
                 }
             })
@@ -48,13 +56,15 @@ router.get('/account-info/:account/', (request, response) => {
                 accounts[accountSlug] = accountInfo[accountSlug].data;
                 accounts[accountSlug]['_retrieved'] = Date.now();
                 fs.writeFileSync('data/adapters/toodledo/account-info.json', JSON.stringify(accounts, null, 4));
-                response.send(JSON.stringify(accountInfo[accountSlug].data, null, 4));
             });
     }
 
     if (accounts[accountSlug] && (accounts[accountSlug]['_retrieved'] + FIVE_MINUTES) >= Date.now()) {
         response.send(JSON.stringify(accounts[accountSlug]));
     } else {
+        accountInfo[accountSlug].once('account-info:loaded', () => {
+            response.send(JSON.stringify(accountInfo[accountSlug].data, null, 4));
+        });
         accountInfo[accountSlug].fetch();
     }
 });
