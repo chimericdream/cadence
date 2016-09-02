@@ -1,6 +1,15 @@
 {
     "account-template": {
-        "fields": {},
+        "fields": {
+            "client-id": {
+                "name": "Client ID",
+                "type": "text"
+            },
+            "client-secret": {
+                "name": "Client Secret",
+                "type": "text"
+            }
+        },
         "data": {}
     },
     "accounts": {}
