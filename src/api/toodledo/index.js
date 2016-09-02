@@ -49,7 +49,10 @@ router.get('/account-info/:account/', (request, response) => {
         accountInfo[accountSlug]
             .on('error', (exception) => {
                 if (exception.name === 'INVALID_ACCESS_TOKEN' || exception.name === 'NO_ACCESS_TOKEN') {
-                    apiInstances[accountSlug].refreshAccessToken();
+                    apiInstances[accountSlug].refreshAccessToken()
+                        .then(() => {
+                            accountInfo[accountSlug].fetch();
+                        });
                 }
             })
             .on('account-info:loaded', () => {
