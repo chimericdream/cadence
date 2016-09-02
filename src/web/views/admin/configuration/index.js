@@ -11,9 +11,9 @@ const router = express.Router();
 router.get('/', (request, response) => {
     const adapters = JSON.parse(fs.readFileSync('config/adapters.json'));
 
-    adapters.forEach((adapter) => {
-        const adapterConfig = JSON.parse(fs.readFileSync(`config/adapters/${adapter['config-file-path']}`));
-        adapter.accounts = adapterConfig.accounts;
+    Object.keys(adapters).forEach((key) => {
+        const adapterConfig = JSON.parse(fs.readFileSync(`config/adapters/${adapters[key]['config-file']}`));
+        adapters[key].accounts = adapterConfig.accounts;
     });
 
     render('admin/configuration/index.hbs', response, {
@@ -21,17 +21,18 @@ router.get('/', (request, response) => {
     });
 });
 
-router.get('/add/*', (request, response) => {
-    const configPath = request.path.replace(/^\/add\/(.+)\/$/, '$1') + '.json';
+router.get('/add-account/*', (request, response) => {
+    const configPath = request.path.replace(/^\/add-account\/(.+)\/$/, '$1') + '.json';
     const adapterConfig = JSON.parse(fs.readFileSync(`config/adapters/${configPath}`));
     const adapters = JSON.parse(fs.readFileSync('config/adapters.json'));
 
     let adapter;
 
     adapter = {};
-    adapters.forEach((item) => {
-        if (item['config-file-path'] === configPath) {
-            adapter = item;
+    Object.keys(adapters).forEach((key) => {
+        if (adapters[key]['config-file'] === configPath) {
+            adapter = adapters[key];
+            adapter.key = key;
         }
     });
 
@@ -43,38 +44,40 @@ router.get('/add/*', (request, response) => {
 });
 
 // display the edit page for an account
-router.get('/edit/*', (request, response) => {
-    const accountSlug = request.path.replace(/^\/edit\/([^\/]+)\/.+\/$/, '$1');
-    const configPath = request.path.replace(/^\/edit\/[^\/]+\/(.+)\/$/, '$1');
+router.get('/edit-account/*', (request, response) => {
+    const configPath = request.path.replace(/^\/edit-account\/([^\/]+)\/.+\/$/, '$1');
+    const accountSlug = request.path.replace(/^\/edit-account\/[^\/]+\/(.+)\/$/, '$1');
     const adapterConfig = JSON.parse(fs.readFileSync(`config/adapters/${configPath}.json`));
     const adapters = JSON.parse(fs.readFileSync('config/adapters.json'));
 
     let adapter;
 
     adapter = {};
-    adapters.forEach((item) => {
-        if (item['config-file-path'] === `${ configPath }.json`) {
-            adapter = item;
+    Object.keys(adapters).forEach((key) => {
+        if (adapters[key]['config-file'] === `${ configPath }.json`) {
+            adapter = adapters[key];
+            adapter.key = key;
         }
     });
 
     render('admin/configuration/adapter/index.hbs', response, {
         'adapter': adapter,
         'accountConfig': adapterConfig['account-template'],
-        'accountData': adapterConfig.accounts[accountSlug]
+        'accountData': adapterConfig.accounts[accountSlug],
+        'showSavedMsg': request.query.hasOwnProperty('saved')
     });
 });
 
 // add a new account
 router.post(
-    '/edit/*',
+    '/edit-account/*',
     bodyParser.urlencoded({ 'extended': false }),
     (request, response) => {
         if (!request.body) {
             return response.sendStatus(400);
         }
 
-        const configPath = request.path.replace(/^\/edit\/(.+)\/$/, '$1');
+        const configPath = request.path.replace(/^\/edit-account\/(.+)\/$/, '$1');
         const adapterConfig = JSON.parse(fs.readFileSync(`config/adapters/${configPath}.json`));
         const body = request.body;
 
@@ -97,7 +100,7 @@ router.post(
 
         fs.writeFileSync(`config/adapters/${configPath}.json`, JSON.stringify(adapterConfig, null, 4));
 
-        response.redirect(`/admin/configuration/edit/${account.slug}/${configPath}/`);
+        response.redirect(`/admin/configuration/edit-account/${configPath}/${account.slug}/?saved`);
     }
 );
 

@@ -4,7 +4,16 @@
 
 <h2>{{ adapter.name }}</h2>
 
-<form action="/admin/configuration/edit/{{ adapter.config-path }}/" method="post">
+{{#if showSavedMsg}}
+<div class="alert alert-success alert-dismissible fade in" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+    </button>
+    Account information saved.
+</div>
+{{/if}}
+
+<form action="/admin/configuration/edit-account/{{ adapter.key }}/" method="post">
     <input type="hidden" name="account-slug-previous" value="{{ accountData.slug }}">
     <div class="form-group row">
         <label for="account-name" class="col-sm-2 col-form-label">Account Name</label>
