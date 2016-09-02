@@ -1,6 +1,6 @@
-The `adapter.json` file is the core configuration for each adapter. The basic structure looks like this:
+The `adapter-name.json` file is the core configuration for each adapter. The basic structure looks like this:
 
-```
+```json
 {
     "account-template": {
         "fields": {...},
@@ -18,8 +18,7 @@ The `account-template` block defines the configurable portions of an account (e.
 
 The `options` hash is optional. The values for `true` and `false` will be used as the form labels. If omitted, they will default to the strings "true" and "false".
 
-```
-    ...
+```json
     "field-slug": {
         "name": "My yes/no field",
         "type": "boolean",
@@ -27,16 +26,14 @@ The `options` hash is optional. The values for `true` and `false` will be used a
             "true": "Yes",
             "false": "No"
         }
-    },
-    ...
+    }
 ```
 
 `checkbox`
 
 Options are listed as a hash containing a `name` and `value`. The `name` will be the field label, and `value` will be the actual stored value.
 
-```
-    ...
+```json
     "field-slug": {
         "name": "Select categories",
         "type": "checkbox",
@@ -46,16 +43,14 @@ Options are listed as a hash containing a `name` and `value`. The `name` will be
             {"name": "Option 3", "value": "opt3"},
             ...
         ]
-    },
-    ...
+    }
 ```
 
 `radio`
 
 The `options` array functions identically to the `checkbox` field type.
 
-```
-    ...
+```json
     "field-slug": {
         "name": "Select type for the thing",
         "type": "radio",
@@ -65,16 +60,14 @@ The `options` array functions identically to the `checkbox` field type.
             {"name": "Option 3", "value": "opt3"},
             ...
         ]
-    },
-    ...
+    }
 ```
 
 `select`
 
 The `selection` key can be either _single_ or _multiple_. The `options` array functions identically to the `checkbox` field type.
 
-```
-    ...
+```json
     "field-slug": {
         "name": "My select box",
         "type": "select",
@@ -85,32 +78,27 @@ The `selection` key can be either _single_ or _multiple_. The `options` array fu
             {"name": "Option 3", "value": "opt3"},
             ...
         ]
-    },
-    ...
+    }
 ```
 
 `text`
 
 This represents a basic text input.
 
-```
-    ...
+```json
     "field-slug": {
         "name": "My text field",
         "type": "text"
-    },
-    ...
+    }
 ```
 
 `textarea`
 
 This represents a basic textarea. Useful for anything requiring large amounts of text.
 
-```
-    ...
+```json
     "field-slug": {
         "name": "My textarea field",
         "type": "textarea"
-    },
-    ...
+    }
 ```
