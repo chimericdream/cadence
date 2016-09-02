@@ -12,6 +12,18 @@ const FIVE_MINUTES = 300000;
 const apiInstances = {};
 const accountInfo = {};
 
+function getApiInstance(key, config) {
+    if (typeof apiInstances[key] === 'undefined') {
+        apiInstances[key] = new toodledo.API(config.fields).loadTokens(config.data);
+        apiInstances[key].on('tokens:loaded', (tokens) => {
+            const adapterConfig = JSON.parse(fs.readFileSync('config/adapters/toodledo.json'));
+            adapterConfig.accounts[key].data = tokens;
+            fs.writeFileSync('config/adapters/toodledo.json', JSON.stringify(adapterConfig, null, 4));
+        });
+    }
+    return apiInstances[key];
+}
+
 router.get('/data/:account/', (request, response) => {
     const accountSlug = request.params.account;
     const accounts = JSON.parse(fs.readFileSync('data/adapters/toodledo/account-info.json'));
@@ -25,50 +37,43 @@ router.get('/authorize/:account/', (request, response) => {
 });
 
 router.get('/account-info/:account/', (request, response) => {
-    const accountSlug = request.params.account;
+    const accountKey = request.params.account;
     const accounts = JSON.parse(fs.readFileSync('data/adapters/toodledo/account-info.json'));
 
     const adapterConfig = JSON.parse(fs.readFileSync('config/adapters/toodledo.json'));
-    if (!adapterConfig.accounts.hasOwnProperty(accountSlug)) {
+    if (!adapterConfig.accounts.hasOwnProperty(accountKey)) {
         throw new Error('account not found');
     }
 
-    const accountConfig = adapterConfig.accounts[accountSlug];
-    if (typeof apiInstances[accountSlug] === 'undefined') {
-        apiInstances[accountSlug] = new toodledo.API(accountConfig.fields).loadTokens(accountConfig.data);
-        apiInstances[accountSlug].on('tokens:loaded', (tokens) => {
-            const adapterConfig = JSON.parse(fs.readFileSync('config/adapters/toodledo.json'));
-            adapterConfig.accounts[accountSlug].data = tokens;
-            fs.writeFileSync('config/adapters/toodledo.json', JSON.stringify(adapterConfig, null, 4));
-        });
-    }
+    const accountConfig = adapterConfig.accounts[accountKey];
+    const api = getApiInstance(accountKey, accountConfig);
 
-    if (typeof accountInfo[accountSlug] === 'undefined') {
-        accountInfo[accountSlug] = new toodledo.AccountInfo(apiInstances[accountSlug]);
+    if (typeof accountInfo[accountKey] === 'undefined') {
+        accountInfo[accountKey] = new toodledo.AccountInfo(api);
 
-        accountInfo[accountSlug]
+        accountInfo[accountKey]
             .on('error', (exception) => {
                 if (exception.name === 'INVALID_ACCESS_TOKEN' || exception.name === 'NO_ACCESS_TOKEN') {
-                    apiInstances[accountSlug].refreshAccessToken()
+                    api.refreshAccessToken()
                         .then(() => {
-                            accountInfo[accountSlug].fetch();
+                            accountInfo[accountKey].fetch();
                         });
                 }
             })
             .on('account-info:loaded', () => {
-                accounts[accountSlug] = accountInfo[accountSlug].data;
-                accounts[accountSlug]['_retrieved'] = Date.now();
+                accounts[accountKey] = accountInfo[accountKey].data;
+                accounts[accountKey]['_retrieved'] = Date.now();
                 fs.writeFileSync('data/adapters/toodledo/account-info.json', JSON.stringify(accounts, null, 4));
             });
     }
 
-    if (accounts[accountSlug] && (accounts[accountSlug]['_retrieved'] + FIVE_MINUTES) >= Date.now()) {
-        response.send(JSON.stringify(accounts[accountSlug]));
+    if (accounts[accountKey] && (accounts[accountKey]['_retrieved'] + FIVE_MINUTES) >= Date.now()) {
+        response.send(JSON.stringify(accounts[accountKey]));
     } else {
-        accountInfo[accountSlug].once('account-info:loaded', () => {
-            response.send(JSON.stringify(accountInfo[accountSlug].data, null, 4));
+        accountInfo[accountKey].once('account-info:loaded', () => {
+            response.send(JSON.stringify(accountInfo[accountKey].data, null, 4));
         });
-        accountInfo[accountSlug].fetch();
+        accountInfo[accountKey].fetch();
     }
 });
 
