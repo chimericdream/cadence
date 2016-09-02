@@ -1,18 +1,23 @@
-[
-    {
+{
+    "toodledo": {
         "name": "Toodledo",
         "description": "",
-        "config-path": "toodledo",
-        "config-file-path": "toodledo.json",
-        "parent-config": null,
-        "enabled": true
+        "config-file": "toodledo.json",
+        "enabled": true,
+        "services": {}
     },
-    {
-        "name": "Google Calendar",
+    "google": {
+        "name": "Google APIs",
         "description": "",
-        "config-path": "google/calendar",
-        "config-file-path": "google/calendar.json",
-        "parent-config": "google.json",
-        "enabled": true
+        "config-file": "google.json",
+        "enabled": true,
+        "services": {
+            "calendar": {
+                "name": "Calendar",
+                "description": "",
+                "config-file": "calendar.json",
+                "enabled": true
+            }
+        }
     }
-]
+}
