@@ -20,7 +20,7 @@
                 <div class="list-group list-group-condensed">
                     <span class="list-group-item disabled">Accounts</span>
                     {{#each accounts~}}
-                        <a href="/admin/configuration/edit-account/{{ @../key }}/{{ slug }}/" class="list-group-item list-group-item-action">{{ name }}</a>
+                        <a href="/admin/configuration/edit-account/{{ @../key }}/{{ @key }}/" class="list-group-item list-group-item-action">{{ name }}</a>
                     {{~else~}}
                         <span class="list-group-item">No accounts added.</span>
                     {{~/each}}

@@ -12,8 +12,15 @@ router.get('/', (request, response) => {
     const adapters = JSON.parse(fs.readFileSync('config/adapters.json'));
 
     Object.keys(adapters).forEach((key) => {
-        const adapterConfig = JSON.parse(fs.readFileSync(`config/adapters/${adapters[key]['config-file']}`));
-        adapters[key].accounts = adapterConfig.accounts;
+        try {
+            adapters[key].accounts = JSON.parse(fs.readFileSync(`data/adapters/${key}/accounts.json`));
+        } catch (error) {
+            if (error.code === 'ENOENT') {
+                adapters[key].accounts = {};
+            } else {
+                throw error;
+            }
+        }
     });
 
     render('admin/configuration/index.hbs', response, {
@@ -50,6 +57,17 @@ router.get('/edit-account/*', (request, response) => {
     const adapterConfig = JSON.parse(fs.readFileSync(`config/adapters/${configPath}.json`));
     const adapters = JSON.parse(fs.readFileSync('config/adapters.json'));
 
+    let accounts;
+    try {
+        accounts = JSON.parse(fs.readFileSync(`data/adapters/${configPath}/accounts.json`));
+    } catch (error) {
+        if (error.code === 'ENOENT') {
+            accounts = {};
+        } else {
+            throw error;
+        }
+    }
+
     let adapter;
 
     adapter = {};
@@ -60,10 +78,15 @@ router.get('/edit-account/*', (request, response) => {
         }
     });
 
+    let account;
+
+    account = accounts[accountSlug];
+    account.slug = accountSlug;
+
     render('admin/configuration/adapter/index.hbs', response, {
         'adapter': adapter,
         'accountConfig': adapterConfig['account-template'],
-        'accountData': adapterConfig.accounts[accountSlug],
+        'accountData': account,
         'showSavedMsg': request.query.hasOwnProperty('saved')
     });
 });
@@ -79,14 +102,26 @@ router.post(
 
         const configPath = request.path.replace(/^\/edit-account\/(.+)\/$/, '$1');
         const adapterConfig = JSON.parse(fs.readFileSync(`config/adapters/${configPath}.json`));
+
+        let accounts;
+        try {
+            accounts = JSON.parse(fs.readFileSync(`data/adapters/${configPath}/accounts.json`));
+        } catch (error) {
+            if (error.code === 'ENOENT') {
+                accounts = {};
+            } else {
+                throw error;
+            }
+        }
+
         const body = request.body;
 
         const account = {};
+        const accountSlug = body['account-slug'];
         account.name = body['account-name'];
-        account.slug = body['account-slug'];
 
-        if (body['account-slug-previous'] !== '' && account.slug !== body['account-slug-previous']) {
-            delete adapterConfig.accounts[body['account-slug-previous']];
+        if (body['account-slug-previous'] !== '' && accountSlug !== body['account-slug-previous']) {
+            delete accounts[body['account-slug-previous']];
         }
 
         delete body['account-name'];
@@ -96,11 +131,11 @@ router.post(
         account.fields = body;
         account.data = adapterConfig['account-template'].data;
 
-        adapterConfig.accounts[account.slug] = account;
+        accounts[accountSlug] = account;
 
-        fs.writeFileSync(`config/adapters/${configPath}.json`, JSON.stringify(adapterConfig, null, 4));
+        fs.writeFileSync(`data/adapters/${configPath}/accounts.json`, JSON.stringify(accounts, null, 4));
 
-        response.redirect(`/admin/configuration/edit-account/${configPath}/${account.slug}/?saved`);
+        response.redirect(`/admin/configuration/edit-account/${configPath}/${accountSlug}/?saved`);
     }
 );
 

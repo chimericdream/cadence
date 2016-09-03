@@ -23,10 +23,10 @@
         </div>
     </div>
     <div class="form-group row">
-        <label for="account-slug" class="col-sm-2 col-form-label">JSON Key</label>
+        <label for="account-slug" class="col-sm-2 col-form-label">URL Slug</label>
         <div class="col-sm-10">
             <input name="account-slug" type="text" id="account-slug" class="form-control" value="{{ accountData.slug }}">
-            <small class="form-text text-muted">Will be used as the JSON key for the stored account data.</small>
+            <small class="form-text text-muted">Will also be used as the JSON key for the stored account data.</small>
         </div>
     </div>
 {{#each accountConfig.fields}}
