@@ -5,12 +5,11 @@ The `adapter-name.json` file is the core configuration for each adapter. The bas
     "account-template": {
         "fields": {...},
         "data": {...}
-    },
-    "accounts": {...}
+    }
 }
 ```
 
-The `account-template` block defines the configurable portions of an account (e.g. username, API key, and so on). The `accounts` section contains individual user accounts that have been configured in the application.
+The `account-template` block defines the configurable portions of an account (e.g. username, API key, and so on).
 
 **`account-template.fields`**: Each configurable field for an account is listed here. Valid types are `boolean`, `checkbox`, `radio`, `select`, `text`, and `textarea`. An example of each type's configuration is listed below. A field's JSON key is used as the form element name.
 
