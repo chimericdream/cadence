@@ -142,16 +142,26 @@ router.post(
 router.put(
     '/enable/*',
     (request, response) => {
-        console.log('hit enable');
-        response.send('enabled');
+        const adapter = request.path.replace(/^\/enable\/(.+)\/$/, '$1');
+        const adapters = JSON.parse(fs.readFileSync('config/adapters.json'));
+
+        adapters[adapter].enabled = true;
+        fs.writeFileSync(`config/adapters.json`, JSON.stringify(adapters, null, 4));
+
+        response.status(200).end();
     }
 );
 
 router.put(
     '/disable/*',
     (request, response) => {
-        console.log('hit disable');
-        response.send('disabled');
+        const adapter = request.path.replace(/^\/disable\/(.+)\/$/, '$1');
+        const adapters = JSON.parse(fs.readFileSync('config/adapters.json'));
+
+        adapters[adapter].enabled = false;
+        fs.writeFileSync(`config/adapters.json`, JSON.stringify(adapters, null, 4));
+
+        response.status(200).end();
     }
 );
 
