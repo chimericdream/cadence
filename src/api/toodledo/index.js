@@ -16,9 +16,9 @@ function getApiInstance(key, config) {
     if (typeof apiInstances[key] === 'undefined') {
         apiInstances[key] = new toodledo.API(config.fields).loadTokens(config.data);
         apiInstances[key].on('tokens:loaded', (tokens) => {
-            const adapterConfig = JSON.parse(fs.readFileSync('config/adapters/toodledo.json'));
-            adapterConfig.accounts[key].data = tokens;
-            fs.writeFileSync('config/adapters/toodledo.json', JSON.stringify(adapterConfig, null, 4));
+            const bridgeConfig = JSON.parse(fs.readFileSync('config/bridges/toodledo.json'));
+            bridgeConfig.accounts[key].data = tokens;
+            fs.writeFileSync('config/bridges/toodledo.json', JSON.stringify(bridgeConfig, null, 4));
         });
     }
     return apiInstances[key];
@@ -26,7 +26,7 @@ function getApiInstance(key, config) {
 
 function getAccountInfoInstance(key, api) {
     if (typeof accountInfo[key] === 'undefined') {
-        const accounts = JSON.parse(fs.readFileSync('data/adapters/toodledo/account-info.json'));
+        const accounts = JSON.parse(fs.readFileSync('data/bridges/toodledo/account-info.json'));
 
         accountInfo[key] = new toodledo.AccountInfo(api);
 
@@ -42,7 +42,7 @@ function getAccountInfoInstance(key, api) {
             .on('account-info:loaded', () => {
                 accounts[key] = accountInfo[key].data;
                 accounts[key]['_retrieved'] = Date.now();
-                fs.writeFileSync('data/adapters/toodledo/account-info.json', JSON.stringify(accounts, null, 4));
+                fs.writeFileSync('data/bridges/toodledo/account-info.json', JSON.stringify(accounts, null, 4));
             });
     }
     return accountInfo[key];
@@ -50,7 +50,7 @@ function getAccountInfoInstance(key, api) {
 
 router.get('/data/:account/', (request, response) => {
     const accountKey = request.params.account;
-    const accounts = JSON.parse(fs.readFileSync('data/adapters/toodledo/account-info.json'));
+    const accounts = JSON.parse(fs.readFileSync('data/bridges/toodledo/account-info.json'));
     response.send(JSON.stringify({
         'account-info': accounts[accountKey] || {}
     }));
@@ -62,19 +62,19 @@ router.get('/authorize/:account/', (request, response) => {
 
 router.get('/account-info/:account/', (request, response) => {
     const accountKey = request.params.account;
-    const accounts = JSON.parse(fs.readFileSync('data/adapters/toodledo/account-info.json'));
+    const accounts = JSON.parse(fs.readFileSync('data/bridges/toodledo/account-info.json'));
 
     if (accounts[accountKey] && (accounts[accountKey]['_retrieved'] + FIVE_MINUTES) >= Date.now()) {
         response.send(JSON.stringify(accounts[accountKey]));
         return;
     }
 
-    const adapterConfig = JSON.parse(fs.readFileSync('config/adapters/toodledo.json'));
-    if (!adapterConfig.accounts.hasOwnProperty(accountKey)) {
+    const bridgeConfig = JSON.parse(fs.readFileSync('config/bridges/toodledo.json'));
+    if (!bridgeConfig.accounts.hasOwnProperty(accountKey)) {
         throw new Error('account not found');
     }
 
-    const accountConfig = adapterConfig.accounts[accountKey];
+    const accountConfig = bridgeConfig.accounts[accountKey];
     const api = getApiInstance(accountKey, accountConfig);
     const accountInfo = getAccountInfoInstance(accountKey, api);
 

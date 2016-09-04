@@ -1,4 +1,4 @@
-The `adapter-name.json` file is the core configuration for each adapter. The basic structure looks like this:
+The `bridge-name.json` file is the core configuration for each bridge. The basic structure looks like this:
 
 ```json
 {

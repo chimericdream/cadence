@@ -1,8 +1,8 @@
 {{> layout/header }}
 
-<h1 class="page-header">Adapter Configuration</h1>
+<h1 class="page-header">Bridge Configuration</h1>
 
-<h2>{{ adapter.name }}</h2>
+<h2>{{ bridge.name }}</h2>
 
 {{#if showSavedMsg}}
 <div class="alert alert-success alert-dismissible fade in" role="alert">
@@ -13,7 +13,7 @@
 </div>
 {{/if}}
 
-<form action="/admin/configuration/edit-account/{{ adapter.key }}/" method="post">
+<form action="/admin/configuration/edit-account/{{ bridge.key }}/" method="post">
     <input type="hidden" name="account-slug-previous" value="{{ accountData.slug }}">
     <div class="form-group row">
         <label for="account-name" class="col-sm-2 col-form-label">Account Name</label>

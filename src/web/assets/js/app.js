@@ -1,4 +1,4 @@
-$('.adapter-enable-button, .adapter-disable-button').on('click', (event) => {
+$('.bridge-enable-button, .bridge-disable-button').on('click', (event) => {
     event.preventDefault();
     event.stopPropagation();
 
@@ -10,7 +10,7 @@ $('.adapter-enable-button, .adapter-disable-button').on('click', (event) => {
         'method': 'PUT',
         'success': () => {
             $title.find('span').toggle();
-            $el.parent().find('.adapter-enable-button, .adapter-disable-button').toggle();
+            $el.parent().find('.bridge-enable-button, .bridge-disable-button').toggle();
         }
     });
 });

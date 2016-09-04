@@ -4,14 +4,14 @@
         "description": "",
         "config-file": "toodledo.json",
         "enabled": true,
-        "services": {}
+        "components": {}
     },
     "google": {
         "name": "Google APIs",
         "description": "",
         "config-file": "google.json",
         "enabled": true,
-        "services": {
+        "components": {
             "calendar": {
                 "name": "Calendar",
                 "description": "",

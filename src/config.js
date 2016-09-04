@@ -19,7 +19,7 @@ module.exports = class Configuration {
                     'sourceComments': false
                 }
             },
-            'adapters': {
+            'bridges': {
                 'google': {},
                 'toodledo': {}
             }

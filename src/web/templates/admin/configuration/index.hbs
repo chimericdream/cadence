@@ -2,10 +2,10 @@
 
 <h1 class="page-header">Configuration</h1>
 
-<h2>Adapters</h2>
+<h2>Bridges</h2>
 
 <div class="row">
-{{#each adapters}}
+{{#each bridges}}
     <div class="col-xs-12 col-sm-4 col-md-3">
         <div class="card">
             <img class="card-img-top" src="https://placekitten.com/400/150" alt="Card image cap">
@@ -28,8 +28,8 @@
             </div>
             <div class="card-footer">
                 <a href="/admin/configuration/add-account/{{ @key }}/" class="pull-left btn btn-sm btn-primary"><i class="fa fa-cogs" aria-hidden="true"></i> Add Account</a>
-                <a {{#if enabled}}style="display: none;" {{/if}}href="/admin/configuration/enable/{{ @key }}/" class="adapter-enable-button pull-right btn btn-sm btn-success"><i class="fa fa-check" aria-hidden="true"></i> Enable</a>
-                <a {{#unless enabled}}style="display: none;" {{/unless}}href="/admin/configuration/disable/{{ @key }}/" class="adapter-disable-button pull-right btn btn-sm btn-danger"><i class="fa fa-ban" aria-hidden="true"></i> Disable</a>
+                <a {{#if enabled}}style="display: none;" {{/if}}href="/admin/configuration/enable/{{ @key }}/" class="bridge-enable-button pull-right btn btn-sm btn-success"><i class="fa fa-check" aria-hidden="true"></i> Enable</a>
+                <a {{#unless enabled}}style="display: none;" {{/unless}}href="/admin/configuration/disable/{{ @key }}/" class="bridge-disable-button pull-right btn btn-sm btn-danger"><i class="fa fa-ban" aria-hidden="true"></i> Disable</a>
             </div>
         </div>
     </div>

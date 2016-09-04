@@ -9,14 +9,14 @@ const render = require('../../../../helpers/render');
 const router = express.Router();
 
 router.get('/', (request, response) => {
-    const adapters = JSON.parse(fs.readFileSync('config/adapters.json'));
+    const bridges = JSON.parse(fs.readFileSync('config/bridges.json'));
 
-    Object.keys(adapters).forEach((key) => {
+    Object.keys(bridges).forEach((key) => {
         try {
-            adapters[key].accounts = JSON.parse(fs.readFileSync(`data/adapters/${key}/accounts.json`));
+            bridges[key].accounts = JSON.parse(fs.readFileSync(`data/bridges/${key}/accounts.json`));
         } catch (error) {
             if (error.code === 'ENOENT') {
-                adapters[key].accounts = {};
+                bridges[key].accounts = {};
             } else {
                 throw error;
             }
@@ -24,28 +24,28 @@ router.get('/', (request, response) => {
     });
 
     render('admin/configuration/index.hbs', response, {
-        'adapters': adapters
+        'bridges': bridges
     });
 });
 
 router.get('/add-account/*', (request, response) => {
     const configPath = request.path.replace(/^\/add-account\/(.+)\/$/, '$1') + '.json';
-    const adapterConfig = JSON.parse(fs.readFileSync(`config/adapters/${configPath}`));
-    const adapters = JSON.parse(fs.readFileSync('config/adapters.json'));
+    const bridgeConfig = JSON.parse(fs.readFileSync(`config/bridges/${configPath}`));
+    const bridges = JSON.parse(fs.readFileSync('config/bridges.json'));
 
-    let adapter;
+    let bridge;
 
-    adapter = {};
-    Object.keys(adapters).forEach((key) => {
-        if (adapters[key]['config-file'] === configPath) {
-            adapter = adapters[key];
-            adapter.key = key;
+    bridge = {};
+    Object.keys(bridges).forEach((key) => {
+        if (bridges[key]['config-file'] === configPath) {
+            bridge = bridges[key];
+            bridge.key = key;
         }
     });
 
-    render('admin/configuration/adapter/index.hbs', response, {
-        'adapter': adapter,
-        'accountConfig': adapterConfig['account-template'],
+    render('admin/configuration/bridge/index.hbs', response, {
+        'bridge': bridge,
+        'accountConfig': bridgeConfig['account-template'],
         'accountData': {}
     });
 });
@@ -54,12 +54,12 @@ router.get('/add-account/*', (request, response) => {
 router.get('/edit-account/*', (request, response) => {
     const configPath = request.path.replace(/^\/edit-account\/([^\/]+)\/.+\/$/, '$1');
     const accountSlug = request.path.replace(/^\/edit-account\/[^\/]+\/(.+)\/$/, '$1');
-    const adapterConfig = JSON.parse(fs.readFileSync(`config/adapters/${configPath}.json`));
-    const adapters = JSON.parse(fs.readFileSync('config/adapters.json'));
+    const bridgeConfig = JSON.parse(fs.readFileSync(`config/bridges/${configPath}.json`));
+    const bridges = JSON.parse(fs.readFileSync('config/bridges.json'));
 
     let accounts;
     try {
-        accounts = JSON.parse(fs.readFileSync(`data/adapters/${configPath}/accounts.json`));
+        accounts = JSON.parse(fs.readFileSync(`data/bridges/${configPath}/accounts.json`));
     } catch (error) {
         if (error.code === 'ENOENT') {
             accounts = {};
@@ -68,13 +68,13 @@ router.get('/edit-account/*', (request, response) => {
         }
     }
 
-    let adapter;
+    let bridge;
 
-    adapter = {};
-    Object.keys(adapters).forEach((key) => {
-        if (adapters[key]['config-file'] === `${ configPath }.json`) {
-            adapter = adapters[key];
-            adapter.key = key;
+    bridge = {};
+    Object.keys(bridges).forEach((key) => {
+        if (bridges[key]['config-file'] === `${ configPath }.json`) {
+            bridge = bridges[key];
+            bridge.key = key;
         }
     });
 
@@ -83,9 +83,9 @@ router.get('/edit-account/*', (request, response) => {
     account = accounts[accountSlug];
     account.slug = accountSlug;
 
-    render('admin/configuration/adapter/index.hbs', response, {
-        'adapter': adapter,
-        'accountConfig': adapterConfig['account-template'],
+    render('admin/configuration/bridge/index.hbs', response, {
+        'bridge': bridge,
+        'accountConfig': bridgeConfig['account-template'],
         'accountData': account,
         'showSavedMsg': request.query.hasOwnProperty('saved')
     });
@@ -101,11 +101,11 @@ router.post(
         }
 
         const configPath = request.path.replace(/^\/edit-account\/(.+)\/$/, '$1');
-        const adapterConfig = JSON.parse(fs.readFileSync(`config/adapters/${configPath}.json`));
+        const bridgeConfig = JSON.parse(fs.readFileSync(`config/bridges/${configPath}.json`));
 
         let accounts;
         try {
-            accounts = JSON.parse(fs.readFileSync(`data/adapters/${configPath}/accounts.json`));
+            accounts = JSON.parse(fs.readFileSync(`data/bridges/${configPath}/accounts.json`));
         } catch (error) {
             if (error.code === 'ENOENT') {
                 accounts = {};
@@ -129,11 +129,11 @@ router.post(
         delete body['account-slug-previous'];
 
         account.fields = body;
-        account.data = adapterConfig['account-template'].data;
+        account.data = bridgeConfig['account-template'].data;
 
         accounts[accountSlug] = account;
 
-        fs.writeFileSync(`data/adapters/${configPath}/accounts.json`, JSON.stringify(accounts, null, 4));
+        fs.writeFileSync(`data/bridges/${configPath}/accounts.json`, JSON.stringify(accounts, null, 4));
 
         response.redirect(`/admin/configuration/edit-account/${configPath}/${accountSlug}/?saved`);
     }
@@ -142,11 +142,11 @@ router.post(
 router.put(
     '/enable/*',
     (request, response) => {
-        const adapter = request.path.replace(/^\/enable\/(.+)\/$/, '$1');
-        const adapters = JSON.parse(fs.readFileSync('config/adapters.json'));
+        const bridge = request.path.replace(/^\/enable\/(.+)\/$/, '$1');
+        const bridges = JSON.parse(fs.readFileSync('config/bridges.json'));
 
-        adapters[adapter].enabled = true;
-        fs.writeFileSync(`config/adapters.json`, JSON.stringify(adapters, null, 4));
+        bridges[bridge].enabled = true;
+        fs.writeFileSync(`config/bridges.json`, JSON.stringify(bridges, null, 4));
 
         response.status(200).end();
     }
@@ -155,11 +155,11 @@ router.put(
 router.put(
     '/disable/*',
     (request, response) => {
-        const adapter = request.path.replace(/^\/disable\/(.+)\/$/, '$1');
-        const adapters = JSON.parse(fs.readFileSync('config/adapters.json'));
+        const bridge = request.path.replace(/^\/disable\/(.+)\/$/, '$1');
+        const bridges = JSON.parse(fs.readFileSync('config/bridges.json'));
 
-        adapters[adapter].enabled = false;
-        fs.writeFileSync(`config/adapters.json`, JSON.stringify(adapters, null, 4));
+        bridges[bridge].enabled = false;
+        fs.writeFileSync(`config/bridges.json`, JSON.stringify(bridges, null, 4));
 
         response.status(200).end();
     }
