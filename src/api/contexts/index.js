@@ -35,7 +35,6 @@ router.post('/:id', bodyParser.json(), (request, response) => {
     context.updated = Date.now();
 
     history.push({
-        "description": context.description,
         "value": context.value,
         "updated": context.updated
     });

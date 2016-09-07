@@ -51,7 +51,6 @@ router.post('/edit/:id', bodyParser.urlencoded({ 'extended': false }), (request,
     context.updated = Date.now();
 
     history.push({
-        "description": context.description,
         "value": context.value,
         "updated": context.updated
     });
@@ -88,7 +87,6 @@ router.post('/add', bodyParser.urlencoded({ 'extended': false }), (request, resp
 
     fs.writeFileSync(`data/contexts.json`, JSON.stringify(contexts, null, 4));
     fs.writeFileSync(`data/contexts/${ context.id }.json`, JSON.stringify([{
-        "description": context.description,
         "value": context.value,
         "updated": context.updated
     }], null, 4));
