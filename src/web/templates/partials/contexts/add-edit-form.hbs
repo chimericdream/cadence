@@ -1,0 +1,85 @@
+<form action="/contexts/{{#if context}}edit/{{ context.id }}{{ else }}add{{/if}}/" method="POST">
+    <div class="form-group row">
+        <label for="context-id" class="col-sm-2 col-form-label">ID</label>
+        <div class="col-sm-10">
+            {{#if context}}
+                <p class="form-control-static">{{ context.id }}</p>
+                <input type="hidden" name="context-id">
+            {{ else }}
+                <input type="text" id="context-id" class="form-control" name="context-id">
+                <small class="form-text text-muted">This will be used in the URL for the context.</small>
+            {{/if}}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="context-description" class="col-sm-2 col-form-label">Description</label>
+        <div class="col-sm-10">
+            <textarea id="context-description" class="form-control" name="context-description" rows="3">{{#if context}}{{ context.description }}{{/if}}</textarea>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="context-type" class="col-sm-2 col-form-label">Type</label>
+        <div class="col-sm-10">
+            {{#if context}}
+                <p class="form-control-static">{{ context.type }}</p>
+            {{ else }}
+                <select class="form-control" id="context-type" name="context-type">
+                    <option value=""></option>
+                    <option value="boolean">Boolean</option>
+                    <option value="json">JSON Object</option>
+                    <option value="text">Plain Text</option>
+                </select>
+            {{/if}}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">{{#unless context}}Default {{/unless}}Value</label>
+        <div class="col-sm-10">
+            {{#if context}}
+                {{#equal context.type "boolean"}}
+                    <label class="form-check-inline">
+                        <input class="form-check-input" type="radio" name="context-value-boolean" id="context-value-boolean-true" value="true"{{#equal context.value "true"}} checked{{/equal}}> True
+                    </label>
+                    <label class="form-check-inline">
+                        <input class="form-check-input" type="radio" name="context-value-boolean" id="context-value-boolean-false" value="false"{{#equal context.value "false"}} checked{{/equal}}> False
+                    </label>
+                {{/equal}}
+
+                {{#equal context.type "json"}}
+                    <textarea class="form-control" name="context-value-json" rows="3">{{ context.value }}</textarea>
+                {{/equal}}
+
+                {{#equal context.type "text"}}
+                    <input type="text" class="form-control" name="context-value-text" value="{{ context.value }}">
+                {{/equal}}
+            {{ else }}
+                <div id="context-value-notype">
+                    <p class="form-control-static">Select a type above in order to specify a default value.</p>
+                </div>
+
+                <div id="context-value-boolean" class="hidden-xs-up">
+                    <label class="form-check-inline">
+                        <input class="form-check-input" type="radio" name="context-value-boolean" id="context-value-boolean-true" value="true"> True
+                    </label>
+                    <label class="form-check-inline">
+                        <input class="form-check-input" type="radio" name="context-value-boolean" id="context-value-boolean-false" value="false"> False
+                    </label>
+                </div>
+
+                <div id="context-value-json" class="hidden-xs-up">
+                    <textarea class="form-control" name="context-value-json" rows="3"></textarea>
+                </div>
+
+                <div id="context-value-text" class="hidden-xs-up">
+                    <input type="text" class="form-control" name="context-value-text">
+                </div>
+            {{/if}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-10 offset-sm-2">
+            <button type="submit" class="btn btn-primary pull-left">Save</button>
+            <button type="reset" class="btn btn-link pull-right">Reset</button>
+        </div>
+    </div>
+</form>

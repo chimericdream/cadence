@@ -1,0 +1,14 @@
+.nav-pills {
+    .nav-header {
+        display: block;
+        font-weight: bold;
+        padding: $nav-link-padding;
+        @include border-radius($nav-pills-border-radius);
+    }
+}
+
+.nav-stacked {
+    + .nav-stacked {
+        margin-top: $grid-gutter-width / 2;
+    }
+}

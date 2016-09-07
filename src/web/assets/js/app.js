@@ -28,3 +28,22 @@ $('#account-name').on('blur', () => {
         $('#account-slug').val(safeSlug);
     }
 });
+
+$('#context-type').on('change', (event) => {
+    const $el = $(event.target);
+    $('#context-value-notype, #context-value-boolean, #context-value-json, #context-value-text').addClass('hidden-xs-up');
+    switch ($el.val()) {
+        case 'boolean':
+            $('#context-value-boolean').removeClass('hidden-xs-up');
+            break;
+        case 'json':
+            $('#context-value-json').removeClass('hidden-xs-up');
+            break;
+        case 'text':
+            $('#context-value-text').removeClass('hidden-xs-up');
+            break;
+        default:
+            $('#context-value-notype').removeClass('hidden-xs-up');
+            break;
+    }
+});

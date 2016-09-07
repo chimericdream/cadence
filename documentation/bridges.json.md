@@ -1,3 +1,9 @@
+Logos
+
+Logos for bridges should be saved as `{root}/src/web/assets/images/logos/bridge-name.png`. For consistency, logos should be 600px by 300px.
+
+### Configuration JSON
+
 The `bridges.json` file contains the primary list of bridges. Each bridge's data structure looks something like this:
 
 ```json

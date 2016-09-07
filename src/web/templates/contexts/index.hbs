@@ -1,0 +1,68 @@
+{{> layout/header }}
+
+<h1 class="page-header">Contexts</h1>
+
+<div class="row">
+    <div class="col-xs-12">
+        <p>Contexts are arbitrary pieces of data which track the state of a particular item or entity. A context's value can be used in a workflow for branching (if/then) or as additional data. Contexts can be updated via simple web calls (such as those from <a href="https://ifttt.com/">IFTTT</a>). For example, a context could be "At home", and its value would be toggled "true" or "false". You could then use this in workflows to make decisions, such as "If my front door opens and I am not at home, send me a text."</p>
+
+        {{#if showSavedMsg}}
+            <div class="alert alert-success alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+                </button>
+                Context saved.
+            </div>
+        {{/if}}
+
+        <a href="/contexts/add/" class="btn btn-primary"><i class="fa fa-plus"></i> Add Context</a>
+
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <!-- TODO: Figure out a better way to do this. -->
+                    <th style="width: 58px;">&nbsp;</th>
+                    <th>ID</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Value</th>
+                    <th>Last Updated</th>
+                </tr>
+            </thead>
+            <tbody>
+            {{#each contexts}}
+                <tr>
+                    <td><a href="/contexts/edit/{{ id }}/" class="btn btn-sm btn-outline-primary" title="Edit context"><i class="fa fa-edit"></i></a></td>
+                    <td>{{ id }}</td>
+                    <td>{{ description }}</td>
+                    <td>{{ type }}</td>
+                    <td>{{ value }}</td>
+                    <td>{{ dateFormat updated }}</td>
+                </tr>
+            {{ else }}
+                <tr>
+                    <td colspan="6">No contexts found.</td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="add-context-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            {{> contexts/add_edit_form }}
+        </div>
+    </div>
+</div>
+
+<div id="edit-context-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            {{> contexts/add_edit_form }}
+        </div>
+    </div>
+</div>
+
+{{> layout/footer }}

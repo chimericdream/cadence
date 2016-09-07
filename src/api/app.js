@@ -7,6 +7,7 @@ const logger = require('winston');
 
 const EventEmitter = events.EventEmitter;
 
+const contexts = require('./contexts/index');
 const google = require('./google/index');
 const toodledo = require('./toodledo/index');
 
@@ -20,6 +21,7 @@ module.exports = class ApiApplication extends EventEmitter {
     }
 
     init() {
+        this.server.use('/contexts', contexts);
         this.server.use('/google', google);
         this.server.use('/toodledo', toodledo);
 

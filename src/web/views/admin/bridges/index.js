@@ -23,7 +23,7 @@ router.get('/', (request, response) => {
         }
     });
 
-    render('admin/configuration/index.hbs', response, {
+    render('admin/bridges/index.hbs', response, {
         'bridges': bridges
     });
 });
@@ -43,7 +43,7 @@ router.get('/add-account/*', (request, response) => {
         }
     });
 
-    render('admin/configuration/bridge/index.hbs', response, {
+    render('admin/bridges/bridge/index.hbs', response, {
         'bridge': bridge,
         'accountConfig': bridgeConfig['account-template'],
         'accountData': {}
@@ -83,7 +83,7 @@ router.get('/edit-account/*', (request, response) => {
     account = accounts[accountSlug];
     account.slug = accountSlug;
 
-    render('admin/configuration/bridge/index.hbs', response, {
+    render('admin/bridges/bridge/index.hbs', response, {
         'bridge': bridge,
         'accountConfig': bridgeConfig['account-template'],
         'accountData': account,
@@ -135,7 +135,7 @@ router.post(
 
         fs.writeFileSync(`data/bridges/${configPath}/accounts.json`, JSON.stringify(accounts, null, 4));
 
-        response.redirect(`/admin/configuration/edit-account/${configPath}/${accountSlug}/?saved`);
+        response.redirect(`/admin/bridges/edit-account/${configPath}/${accountSlug}/?saved`);
     }
 );
 

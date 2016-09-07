@@ -1,6 +1,7 @@
 'use strict';
 
 const hbs = require('hbs');
+const moment = require('moment');
 
 hbs.registerHelper('equal', function(a, b, opts) {
     if (a === b) {
@@ -25,6 +26,18 @@ hbs.registerHelper('sum', function(a, b) {
 
 hbs.registerHelper('json', function(object) {
     return JSON.stringify(object, null, 4);
+});
+
+hbs.registerHelper('startswith', function(string, value, opts) {
+    if (string.search(value) !== 0) {
+        return opts.inverse(this);
+    }
+    return opts.fn(this);
+});
+
+hbs.registerHelper('dateFormat', function(timestamp, options) {
+    const fmt = options.hash.format || 'MMM Do, YYYY, h:mm:ss a';
+    return moment(timestamp).format(fmt);
 });
 
 hbs.registerHelper('contains', function(array, value, opts) {

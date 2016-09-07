@@ -12,8 +12,7 @@ const EventEmitter = events.EventEmitter;
 
 const home = require('./views/index');
 const admin = require('./views/admin/index');
-const google = require('./views/google/index');
-const toodledo = require('./views/toodledo/index');
+const contexts = require('./views/contexts/index');
 
 require('../helpers/hbs-helpers');
 
@@ -46,8 +45,7 @@ module.exports = class WebApplication extends EventEmitter {
     init() {
         this.server.use('/', home);
         this.server.use('/admin', admin);
-        this.server.use('/google', google);
-        this.server.use('/toodledo', toodledo);
+        this.server.use('/contexts', contexts);
 
         return this;
     }
