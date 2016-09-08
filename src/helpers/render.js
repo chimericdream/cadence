@@ -10,6 +10,7 @@ const sidebarLinks = {
         'links': [
             {'path': '/contexts/', 'text': 'Contexts'},
             {'path': '/relationships/', 'text': 'Relationships'},
+            {'path': '/repositories/', 'text': 'Repositories'},
             {'path': '/workflows/', 'text': 'Workflows'}
         ]
     }

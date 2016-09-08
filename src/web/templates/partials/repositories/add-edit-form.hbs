@@ -1,0 +1,85 @@
+<form action="/repositories/{{#if repository}}edit/{{ repository.id }}{{ else }}add{{/if}}/" method="POST">
+    <div class="form-group row">
+        <label for="repository-id" class="col-sm-2 col-form-label">ID</label>
+        <div class="col-sm-10">
+            {{#if repository}}
+                <p class="form-control-static">{{ repository.id }}</p>
+                <input type="hidden" name="repository-id">
+            {{ else }}
+                <input type="text" id="repository-id" class="form-control" name="repository-id">
+                <small class="form-text text-muted">This will be used in the URL for the repository.</small>
+            {{/if}}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="repository-description" class="col-sm-2 col-form-label">Description</label>
+        <div class="col-sm-10">
+            <textarea id="repository-description" class="form-control" name="repository-description" rows="3">{{#if repository}}{{ repository.description }}{{/if}}</textarea>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="repository-type" class="col-sm-2 col-form-label">Type</label>
+        <div class="col-sm-10">
+            {{#if repository}}
+                <p class="form-control-static">{{ repository.type }}</p>
+            {{ else }}
+                <select class="form-control" id="repository-type" name="repository-type">
+                    <option value=""></option>
+                    <option value="boolean">Boolean</option>
+                    <option value="json">JSON Object</option>
+                    <option value="text">Plain Text</option>
+                </select>
+            {{/if}}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">{{#unless repository}}Default {{/unless}}Value</label>
+        <div class="col-sm-10">
+            {{#if repository}}
+                {{#equal repository.type "boolean"}}
+                    <label class="form-check-inline">
+                        <input class="form-check-input" type="radio" name="repository-value-boolean" id="repository-value-boolean-true" value="true"{{#equal repository.value "true"}} checked{{/equal}}> True
+                    </label>
+                    <label class="form-check-inline">
+                        <input class="form-check-input" type="radio" name="repository-value-boolean" id="repository-value-boolean-false" value="false"{{#equal repository.value "false"}} checked{{/equal}}> False
+                    </label>
+                {{/equal}}
+
+                {{#equal repository.type "json"}}
+                    <textarea class="form-control" name="repository-value-json" rows="3">{{ repository.value }}</textarea>
+                {{/equal}}
+
+                {{#equal repository.type "text"}}
+                    <input type="text" class="form-control" name="repository-value-text" value="{{ repository.value }}">
+                {{/equal}}
+            {{ else }}
+                <div id="repository-value-notype">
+                    <p class="form-control-static">Select a type above in order to specify a default value.</p>
+                </div>
+
+                <div id="repository-value-boolean" class="hidden-xs-up">
+                    <label class="form-check-inline">
+                        <input class="form-check-input" type="radio" name="repository-value-boolean" id="repository-value-boolean-true" value="true"> True
+                    </label>
+                    <label class="form-check-inline">
+                        <input class="form-check-input" type="radio" name="repository-value-boolean" id="repository-value-boolean-false" value="false"> False
+                    </label>
+                </div>
+
+                <div id="repository-value-json" class="hidden-xs-up">
+                    <textarea class="form-control" name="repository-value-json" rows="3"></textarea>
+                </div>
+
+                <div id="repository-value-text" class="hidden-xs-up">
+                    <input type="text" class="form-control" name="repository-value-text">
+                </div>
+            {{/if}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-10 offset-sm-2">
+            <button type="submit" class="btn btn-primary pull-left">Save</button>
+            <button type="reset" class="btn btn-link pull-right">Reset</button>
+        </div>
+    </div>
+</form>

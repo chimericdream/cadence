@@ -85,11 +85,17 @@ router.post('/add', bodyParser.urlencoded({ 'extended': false }), (request, resp
     }
     contexts[context.id] = context;
 
-    fs.writeFileSync(`data/contexts.json`, JSON.stringify(contexts, null, 4));
-    fs.writeFileSync(`data/contexts/${ context.id }.json`, JSON.stringify([{
-        "value": context.value,
-        "updated": context.updated
-    }], null, 4));
+    fs.writeFileSync(
+        `data/contexts.json`,
+        JSON.stringify(contexts, null, 4)
+    );
+    fs.writeFileSync(
+        `data/contexts/${ context.id }.json`,
+        JSON.stringify([].push({
+            "value": context.value,
+            "updated": context.updated
+        }), null, 4)
+    );
 
     response.redirect(`/contexts/?saved`);
 });
