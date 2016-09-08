@@ -20,9 +20,9 @@ The bridge's key is used in the configuration URL and should be a lower-case alp
 
 The `config-file` property defines the location of the bridge's JSON configuration file, relative to `{root}/config/bridges/`. This will typically match the bridge's primary key, followed by ".json", but may be different if appropriate.
 
-The `enabled` flag tells the NCL application whether the components provided by the bridge should be made available to users when configuring tasks.
+The `enabled` flag tells the Cadence application whether the components provided by the bridge should be made available to users when configuring tasks.
 
-The `services` block will contain a set of "sub-bridges", which are discrete APIs which share account information with the primary bridge. For example, the **Google Bridge** for NCL provides APIs for a wide range of Google's products, such as Gmail, Drive, Calendar, and many more. Rather than individually configuring account information for an bridge's services, they share account data with the parent bridge. Each service may be enabled or disabled individually, and some may have their own specific configuration settings.
+The `services` block will contain a set of "sub-bridges", which are discrete APIs which share account information with the primary bridge. For example, the **Google Bridge** for Cadence provides APIs for a wide range of Google's products, such as Gmail, Drive, Calendar, and many more. Rather than individually configuring account information for an bridge's services, they share account data with the parent bridge. Each service may be enabled or disabled individually, and some may have their own specific configuration settings.
 
 The block for a service provided by an bridge looks something like this:
 

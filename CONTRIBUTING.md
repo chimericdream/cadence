@@ -5,7 +5,7 @@
 The [Mozilla guidelines for writing bug reports](https://developer.mozilla.org/en-US/docs/Mozilla/QA/Bug_writing_guidelines) is fantastic, so I won't repeat the whole thing here. Here is a general summary of what to do when submitting a bug report:
 
 * Open one issue per bug, question, or feature request.
-* Search existing [Issues](https://github.com/chimericdream/node-connected-life/issues) to be sure your issue hasn't already been reported.
+* Search existing [Issues](https://github.com/chimericdream/cadence/issues) to be sure your issue hasn't already been reported.
 * If reporting a bug, be as clear as possible. Precise steps to reproduce the error are ideal.
 
 ## Making Changes
@@ -17,7 +17,7 @@ The [Mozilla guidelines for writing bug reports](https://developer.mozilla.org/e
 ## Submitting the Pull Request
 
 * Push your branch to your fork of the repository.
-* Submit a pull request from your issue or feature branch to the `master` branch on the `node-connected-life` repository.
+* Submit a pull request from your issue or feature branch to the `master` branch on the `cadence` repository.
 * Make sure your pull request builds successfully, including the ESLint script and the test suite.
 * If your code adds a new feature or fixes a bug in an existing feature, it should include the appropriate unit tests.
 * Be sure to tag any issues your pull request is taking care of / contributing to.

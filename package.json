@@ -1,19 +1,19 @@
 {
-  "name": "node-connected-life",
+  "name": "cadence",
   "version": "0.0.1-alpha",
   "description": "A Node.js application to help automate your connected life",
   "author": "Bill Parrott <bill@chimericdream.com>",
-  "homepage": "https://github.com/chimericdream/node-connected-life",
+  "homepage": "https://github.com/chimericdream/cadence",
   "scripts": {
     "test": "istanbul cover node_modules/mocha/bin/_mocha \"test/**/*.js\"",
     "lint": "eslint src",
     "devlint": "eslint src -- --dev",
-    "app": "node src/cl-server.js"
+    "app": "node src/cadence-server.js"
   },
   "main": "src/cl-server.js",
-  "repository": "chimericdream/node-connected-life",
+  "repository": "chimericdream/cadence",
   "bugs": {
-    "url": "https://github.com/chimericdream/node-connected-life/issues"
+    "url": "https://github.com/chimericdream/cadence/issues"
   },
   "keywords": [
     "api",

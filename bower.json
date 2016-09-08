@@ -1,5 +1,5 @@
 {
-  "name": "node-connected-life",
+  "name": "cadence",
   "description": "A Node.js application to help automate your connected life",
   "main": "src/cl-server.js",
   "authors": [
@@ -11,7 +11,7 @@
     "rest",
     "automation"
   ],
-  "homepage": "https://github.com/chimericdream/node-connected-life",
+  "homepage": "https://github.com/chimericdream/cadence",
   "ignore": [
     "**/.*",
     "node_modules",

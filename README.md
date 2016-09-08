@@ -1,4 +1,4 @@
-## Node Connected Life
+## Cadence
 
 This application is made up of a number of scripts and API wrappers for different services. The premise is simple: our lives are complicated, and it would be nice if we could automate some of the more mundane tasks.
 
@@ -10,7 +10,7 @@ This software is in a very early alpha state, and as such is not ready for use. 
 
 ### Contributing &amp; Feedback
 
-Read the [contributing doc](https://github.com/chimericdream/node-connected-life/blob/master/CONTRIBUTING.md) for detailed information, but know that contributions are welcome! Whether it takes the form of bug reports, feature requests, questions, or general discussions, no contribution is too small.
+Read the [contributing doc](https://github.com/chimericdream/cadence/blob/master/CONTRIBUTING.md) for detailed information, but know that contributions are welcome! Whether it takes the form of bug reports, feature requests, questions, or general discussions, no contribution is too small.
 
 ### Documentation
 
@@ -18,4 +18,4 @@ The documentation, as with everything else, is still being developed.
 
 ### License
 
-This software is released under the MIT license. See the [license file](https://github.com/chimericdream/node-connected-life/blob/master/LICENSE.md) for the full text.
+This software is released under the MIT license. See the [license file](https://github.com/chimericdream/cadence/blob/master/LICENSE.md) for the full text.
