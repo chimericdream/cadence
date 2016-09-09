@@ -2,7 +2,7 @@
 <nav class="nav nav-pills nav-stacked">
     <span class="nav-header">{{ @key }}</span>
     {{#each links}}
-        <a class="nav-link{{#equal ../../currentUrl path}} active{{ else }}{{#startswith ../../currentUrl path}} active{{/startswith}}{{/equal}}" href="{{ path }}">{{ text }}</a>
+        <a class="nav-link{{#equal ../../currentUrl path}} active{{ else }}{{#startswith ../../currentUrl path}} active{{/startswith}}{{/equal}}" href="{{ path }}"><i class="fa fa-{{ icon }}"></i> {{ text }}</a>
     {{/each}}
 </nav>
 {{/each}}

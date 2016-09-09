@@ -3,14 +3,14 @@ const _ = require('lodash');
 const sidebarLinks = {
     'Configuration': {
         'links': [
-            {'path': '/admin/bridges/', 'text': 'Bridges'}
+            {'path': '/admin/bridges/', 'text': 'Bridges', 'icon': 'code'}
         ]
     },
     'Connections': {
         'links': [
-            {'path': '/shards/', 'text': 'Shards'},
-            {'path': '/relationships/', 'text': 'Relationships'},
-            {'path': '/workflows/', 'text': 'Workflows'}
+            {'path': '/shards/', 'text': 'Shards', 'icon': 'database'},
+            {'path': '/relationships/', 'text': 'Relationships', 'icon': 'exchange'},
+            {'path': '/workflows/', 'text': 'Workflows', 'icon': 'sitemap'}
         ]
     }
 };

@@ -13,16 +13,24 @@
                     <hr>
                 {{/if}}
                 <div class="list-group list-group-condensed">
-                    <span class="list-group-item disabled">Accounts</span>
+                    <span class="list-group-item disabled"><i class="fa fa-users"></i> Accounts</span>
                     {{#each accounts~}}
-                        <a href="/admin/bridges/edit-account/{{ @../key }}/{{ @key }}/" class="list-group-item list-group-item-action">{{ name }}</a>
+                        <span class="list-group-item list-group-item-action">
+                            <a href="">{{ name }}</a>
+                            <span class="pull-xs-right">
+                                <a class="text-primary" href="/admin/bridges/edit-account/{{ @../key }}/{{ @key }}/"><i class="fa fa-archive"></i></a>
+                                <a class="text-muted" href="/admin/bridges/account-data/{{ @../key }}/{{ @key }}/"><i class="fa fa-archive"></i></a>
+                                <!-- /admin/bridges/delete-account/{{ @../key }}/{{ @key }}/ -->
+                                <a class="text-danger" href="#" data-bridge-name="{{ ../name }}" data-bridge-key="{{ @../key }}" data-account-key="{{ @key }}"><i class="fa fa-remove"></i></a>
+                            </span>
+                        </span>
                     {{~else~}}
                         <span class="list-group-item">No accounts added.</span>
                     {{~/each}}
                 </div>
             </div>
             <div class="card-footer">
-                <a href="/admin/bridges/add-account/{{ @key }}/" class="btn btn-sm btn-primary"><i class="fa fa-cogs" aria-hidden="true"></i> Add Account</a>
+                <a href="/admin/bridges/add-account/{{ @key }}/" class="btn btn-sm btn-primary"><i class="fa fa-user-plus" aria-hidden="true"></i> Add Account</a>
                 <a {{#if enabled}}style="display: none;" {{/if}}href="/admin/bridges/enable/{{ @key }}/" class="bridge-enable-button btn btn-sm btn-success"><i class="fa fa-check" aria-hidden="true"></i> Enable</a>
                 <a {{#unless enabled}}style="display: none;" {{/unless}}href="/admin/bridges/disable/{{ @key }}/" class="bridge-disable-button btn btn-sm btn-danger"><i class="fa fa-ban" aria-hidden="true"></i> Disable</a>
             </div>
