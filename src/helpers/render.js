@@ -3,7 +3,7 @@ const _ = require('lodash');
 const sidebarLinks = {
     'Configuration': {
         'links': [
-            {'path': '/admin/bridges/', 'text': 'Bridges', 'icon': 'code'}
+            {'path': '/admin/plugins/', 'text': 'Plugins', 'icon': 'code'}
         ]
     },
     'Connections': {

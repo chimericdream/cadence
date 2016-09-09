@@ -76,7 +76,7 @@ router.post('/add', bodyParser.urlencoded({ 'extended': false }), (request, resp
         'id': body['shard-id'],
         'description': body['shard-description'],
         'type': body['shard-type'],
-        'value': body[typeValue],
+        'value': (body['shard-type'] === 'json') ? JSON.parse(body[typeValue]) : body[typeValue],
         'updated': Date.now()
     };
 
@@ -85,16 +85,18 @@ router.post('/add', bodyParser.urlencoded({ 'extended': false }), (request, resp
     }
     shards[shard.id] = shard;
 
+    const history = [{
+        "value": shard.value,
+        "updated": shard.updated
+    }];
+
     fs.writeFileSync(
         `data/shards.json`,
         JSON.stringify(shards, null, 4)
     );
     fs.writeFileSync(
         `data/shards/${ shard.id }.json`,
-        JSON.stringify([].push({
-            "value": shard.value,
-            "updated": shard.updated
-        }), null, 4)
+        JSON.stringify(history, null, 4)
     );
 
     response.redirect(`/shards/?saved`);

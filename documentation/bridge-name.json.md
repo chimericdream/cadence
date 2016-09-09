@@ -1,4 +1,4 @@
-The `bridge-name.json` file is the core configuration for each bridge. The basic structure looks like this:
+The `plugin-name.json` file is the core configuration for each plugin. The basic structure looks like this:
 
 ```json
 {

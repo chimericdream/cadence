@@ -1,0 +1,42 @@
+{{> layout/header }}
+
+<h1 class="page-header">Plugins</h1>
+
+<div class="row">
+{{#each plugins}}
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+        <div class="card">
+            <img class="card-img-top" src="/assets/images/logos/{{ @key }}.png" alt="{{ name }} logo">
+            <div class="card-block">
+                {{#if description }}
+                    <p class="card-text">{{ description }}</p>
+                    <hr>
+                {{/if}}
+                <div class="list-group list-group-condensed">
+                    <span class="list-group-item disabled"><i class="fa fa-users"></i> Accounts</span>
+                    {{#each accounts~}}
+                        <span class="list-group-item list-group-item-action">
+                            <a href="">{{ name }}</a>
+                            <span class="pull-xs-right">
+                                <a class="text-primary" href="/admin/plugins/edit-account/{{ @../key }}/{{ @key }}/"><i class="fa fa-archive"></i></a>
+                                <a class="text-muted" href="/admin/plugins/account-data/{{ @../key }}/{{ @key }}/"><i class="fa fa-archive"></i></a>
+                                <!-- /admin/plugins/delete-account/{{ @../key }}/{{ @key }}/ -->
+                                <a class="js-delete-account" href="#" data-plugin-name="{{ ../name }}" data-plugin-key="{{ @../key }}" data-account-key="{{ @key }}"><i class="fa fa-remove text-danger"></i></a>
+                            </span>
+                        </span>
+                    {{~else~}}
+                        <span class="list-group-item">No accounts added.</span>
+                    {{~/each}}
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="/admin/plugins/add-account/{{ @key }}/" class="btn btn-sm btn-primary"><i class="fa fa-user-plus" aria-hidden="true"></i> Add Account</a>
+                <a {{#if enabled}}style="display: none;" {{/if}}href="/admin/plugins/enable/{{ @key }}/" class="plugin-enable-button btn btn-sm btn-success"><i class="fa fa-check" aria-hidden="true"></i> Enable</a>
+                <a {{#unless enabled}}style="display: none;" {{/unless}}href="/admin/plugins/disable/{{ @key }}/" class="plugin-disable-button btn btn-sm btn-danger"><i class="fa fa-ban" aria-hidden="true"></i> Disable</a>
+            </div>
+        </div>
+    </div>
+{{/each}}
+</div>
+
+{{> layout/footer }}

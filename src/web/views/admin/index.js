@@ -6,9 +6,9 @@ const render = require('../../../helpers/render');
 // eslint-disable-next-line new-cap
 const router = express.Router();
 
-const bridges = require('./bridges/index');
+const plugins = require('./plugins/index');
 
-router.use('/bridges', bridges);
+router.use('/plugins', plugins);
 
 router.get('/', (request, response) => {
     response.send('admin home page');
