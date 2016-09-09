@@ -29,21 +29,21 @@ $('#account-name').on('blur', () => {
     }
 });
 
-$('#context-type').on('change', (event) => {
+$('#shard-type').on('change', (event) => {
     const $el = $(event.target);
-    $('#context-value-notype, #context-value-boolean, #context-value-json, #context-value-text').addClass('hidden-xs-up');
+    $('#shard-value-notype, #shard-value-boolean, #shard-value-json, #shard-value-text').addClass('hidden-xs-up');
     switch ($el.val()) {
         case 'boolean':
-            $('#context-value-boolean').removeClass('hidden-xs-up');
+            $('#shard-value-boolean').removeClass('hidden-xs-up');
             break;
         case 'json':
-            $('#context-value-json').removeClass('hidden-xs-up');
+            $('#shard-value-json').removeClass('hidden-xs-up');
             break;
         case 'text':
-            $('#context-value-text').removeClass('hidden-xs-up');
+            $('#shard-value-text').removeClass('hidden-xs-up');
             break;
         default:
-            $('#context-value-notype').removeClass('hidden-xs-up');
+            $('#shard-value-notype').removeClass('hidden-xs-up');
             break;
     }
 });

@@ -12,8 +12,7 @@ const EventEmitter = events.EventEmitter;
 
 const home = require('./views/index');
 const admin = require('./views/admin/index');
-const contexts = require('./views/contexts/index');
-const repositories = require('./views/repositories/index');
+const shards = require('./views/shards/index');
 
 require('../helpers/hbs-helpers');
 
@@ -46,8 +45,7 @@ module.exports = class WebApplication extends EventEmitter {
     init() {
         this.server.use('/', home);
         this.server.use('/admin', admin);
-        this.server.use('/contexts', contexts);
-        this.server.use('/repositories', repositories);
+        this.server.use('/shards', shards);
 
         return this;
     }

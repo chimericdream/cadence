@@ -8,9 +8,8 @@ const sidebarLinks = {
     },
     'Connections': {
         'links': [
-            {'path': '/contexts/', 'text': 'Contexts'},
+            {'path': '/shards/', 'text': 'Shards'},
             {'path': '/relationships/', 'text': 'Relationships'},
-            {'path': '/repositories/', 'text': 'Repositories'},
             {'path': '/workflows/', 'text': 'Workflows'}
         ]
     }
