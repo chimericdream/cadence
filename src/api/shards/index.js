@@ -7,6 +7,16 @@ const fs = require('fs');
 // eslint-disable-next-line new-cap
 const router = express.Router();
 
+router.get('/history/:id', (request, response) => {
+    const shards = JSON.parse(fs.readFileSync(`data/shards.json`));
+    if (!shards.hasOwnProperty(request.params.id)) {
+        // TODO: Make a "shard not found" template
+        response.status(404).send('');
+    }
+    const history = JSON.parse(fs.readFileSync(`data/shards/${ request.params.id }.json`));
+    response.json(history);
+});
+
 router.get('/:id', (request, response) => {
     const shards = JSON.parse(fs.readFileSync(`data/shards.json`));
     if (!shards.hasOwnProperty(request.params.id)) {

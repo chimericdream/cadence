@@ -29,6 +29,16 @@ router.get('/edit/:id', (request, response) => {
     render('shards/edit.hbs', response, {'shard': shards[request.params.id]});
 });
 
+router.get('/history/:id', (request, response) => {
+    const shards = JSON.parse(fs.readFileSync(`data/shards.json`));
+    if (!shards.hasOwnProperty(request.params.id)) {
+        // TODO: Make a "shard not found" template
+        response.status(404).send('');
+    }
+    const history = JSON.parse(fs.readFileSync(`data/shards/${ request.params.id }.json`));
+    render('shards/history.hbs', response, {'shard': shards[request.params.id], 'history': history});
+});
+
 router.post('/edit/:id', bodyParser.urlencoded({ 'extended': false }), (request, response) => {
     if (!request.body) {
         return response.sendStatus(400);
