@@ -47,7 +47,7 @@ router.post('/edit/:id', bodyParser.urlencoded({ 'extended': false }), (request,
     const typeValue = `shard-value-${shard.type}`;
 
     shard.description = body['shard-description'];
-    shard.value = body[typeValue];
+    shard.value = (shard.type === 'json') ? JSON.parse(body[typeValue]) : body[typeValue];
     shard.updated = Date.now();
 
     history.push({

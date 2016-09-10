@@ -39,7 +39,7 @@
                     <td>{{ id }}</td>
                     <td>{{ description }}</td>
                     <td>{{ type }}</td>
-                    <td>{{ value }}</td>
+                    <td>{{#equal type "json"}}<pre><code>{{ json value }}</code></pre>{{ else }}{{ value }}{{/equal}}</td>
                     <td>{{ dateFormat updated }}</td>
                 </tr>
             {{ else }}

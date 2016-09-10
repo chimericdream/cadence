@@ -46,7 +46,7 @@
                 {{/equal}}
 
                 {{#equal shard.type "json"}}
-                    <textarea class="form-control" name="shard-value-json" rows="3">{{ shard.value }}</textarea>
+                    <textarea class="form-control text-monospace" name="shard-value-json" rows="3">{{ json shard.value }}</textarea>
                 {{/equal}}
 
                 {{#equal shard.type "text"}}
