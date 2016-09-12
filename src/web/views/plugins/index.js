@@ -3,7 +3,7 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const fs = require('fs');
-const render = require('../../../../helpers/render');
+const render = require('../../../helpers/render');
 
 // eslint-disable-next-line new-cap
 const router = express.Router();
@@ -23,7 +23,7 @@ router.get('/', (request, response) => {
         }
     });
 
-    render('admin/plugins/index.hbs', response, {
+    render('plugins/index.hbs', response, {
         'plugins': plugins
     });
 });
@@ -43,7 +43,7 @@ router.get('/add-account/*', (request, response) => {
         }
     });
 
-    render('admin/plugins/plugin/index.hbs', response, {
+    render('plugins/plugin/index.hbs', response, {
         'plugin': plugin,
         'accountConfig': pluginConfig['account-template'],
         'accountData': {}
@@ -83,7 +83,7 @@ router.get('/edit-account/*', (request, response) => {
     account = accounts[accountSlug];
     account.slug = accountSlug;
 
-    render('admin/plugins/plugin/index.hbs', response, {
+    render('plugins/plugin/index.hbs', response, {
         'plugin': plugin,
         'accountConfig': pluginConfig['account-template'],
         'accountData': account,
@@ -135,7 +135,7 @@ router.post(
 
         fs.writeFileSync(`data/plugins/${configPath}/accounts.json`, JSON.stringify(accounts, null, 4));
 
-        response.redirect(`/admin/plugins/edit-account/${configPath}/${accountSlug}/?saved`);
+        response.redirect(`/plugins/edit-account/${configPath}/${accountSlug}/?saved`);
     }
 );
 

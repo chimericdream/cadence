@@ -11,7 +11,7 @@ const sass = require('express-compile-sass');
 const EventEmitter = events.EventEmitter;
 
 const home = require('./views/index');
-const admin = require('./views/admin/index');
+const plugins = require('./views/plugins/index');
 const shards = require('./views/shards/index');
 
 require('../helpers/hbs-helpers');
@@ -44,7 +44,7 @@ module.exports = class WebApplication extends EventEmitter {
 
     init() {
         this.server.use('/', home);
-        this.server.use('/admin', admin);
+        this.server.use('/plugins', plugins);
         this.server.use('/shards', shards);
 
         return this;
