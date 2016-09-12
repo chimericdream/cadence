@@ -36,7 +36,7 @@ router.get('/history/:id', (request, response) => {
         response.status(404).send('');
     }
     const history = JSON.parse(fs.readFileSync(`data/shards/${ request.params.id }.json`));
-    render('shards/history.hbs', response, {'shard': shards[request.params.id], 'history': history});
+    render('shards/history.hbs', response, {'key': request.params.id, 'shard': shards[request.params.id], 'history': history});
 });
 
 router.post('/edit/:id', bodyParser.urlencoded({ 'extended': false }), (request, response) => {
