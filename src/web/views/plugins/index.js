@@ -51,9 +51,9 @@ router.get('/add-account/*', (request, response) => {
 });
 
 // display the edit page for an account
-router.get('/edit-account/*', (request, response) => {
-    const configPath = request.path.replace(/^\/edit-account\/([^\/]+)\/.+\/$/, '$1');
-    const accountSlug = request.path.replace(/^\/edit-account\/[^\/]+\/(.+)\/$/, '$1');
+router.get('/edit-account/:plugin/:account/', (request, response) => {
+    const configPath = request.params.plugin;
+    const accountSlug = request.params.account;
     const pluginConfig = JSON.parse(fs.readFileSync(`config/plugins/${configPath}.json`));
     const plugins = JSON.parse(fs.readFileSync('config/plugins.json'));
 
