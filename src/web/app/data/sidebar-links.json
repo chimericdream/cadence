@@ -1,0 +1,14 @@
+{
+    "Configuration": {
+        "links": [
+            {"path": "/plugins", "text": "Plugins", "icon": "code"}
+        ]
+    },
+    "Connections": {
+        "links": [
+            {"path": "/shards", "text": "Shards", "icon": "database"},
+            {"path": "/relationships", "text": "Relationships", "icon": "exchange"},
+            {"path": "/workflows", "text": "Workflows", "icon": "sitemap"}
+        ]
+    }
+}

@@ -1,6 +1,6 @@
 nbproject
 node_modules
 npm-debug.log
-data/
+/data/
 src/web/bower/
 .idea
