@@ -8,26 +8,6 @@ const render = require('../../../helpers/render');
 // eslint-disable-next-line new-cap
 const router = express.Router();
 
-router.get('/', (request, response) => {
-    const plugins = JSON.parse(fs.readFileSync('config/plugins.json'));
-
-    Object.keys(plugins).forEach((key) => {
-        try {
-            plugins[key].accounts = JSON.parse(fs.readFileSync(`data/plugins/${key}/accounts.json`));
-        } catch (error) {
-            if (error.code === 'ENOENT') {
-                plugins[key].accounts = {};
-            } else {
-                throw error;
-            }
-        }
-    });
-
-    render('plugins/index.hbs', response, {
-        'plugins': plugins
-    });
-});
-
 router.get('/add-account/*', (request, response) => {
     const configPath = request.path.replace(/^\/add-account\/(.+)\/$/, '$1') + '.json';
     const pluginConfig = JSON.parse(fs.readFileSync(`config/plugins/${configPath}`));
@@ -136,32 +116,6 @@ router.post(
         fs.writeFileSync(`data/plugins/${configPath}/accounts.json`, JSON.stringify(accounts, null, 4));
 
         response.redirect(`/plugins/edit-account/${configPath}/${accountSlug}/?saved`);
-    }
-);
-
-router.put(
-    '/enable/*',
-    (request, response) => {
-        const plugin = request.path.replace(/^\/enable\/(.+)\/$/, '$1');
-        const plugins = JSON.parse(fs.readFileSync('config/plugins.json'));
-
-        plugins[plugin].enabled = true;
-        fs.writeFileSync(`config/plugins.json`, JSON.stringify(plugins, null, 4));
-
-        response.status(200).end();
-    }
-);
-
-router.put(
-    '/disable/*',
-    (request, response) => {
-        const plugin = request.path.replace(/^\/disable\/(.+)\/$/, '$1');
-        const plugins = JSON.parse(fs.readFileSync('config/plugins.json'));
-
-        plugins[plugin].enabled = false;
-        fs.writeFileSync(`config/plugins.json`, JSON.stringify(plugins, null, 4));
-
-        response.status(200).end();
     }
 );
 

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Cadence</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="/assets/sass/main.scss" rel="stylesheet">
+</head>
+<body>
+    <div id="cadence-app"><span>Loading Cadence UI...</span></div>
+
+    <script src="/bower/requirejs/require.js"></script>
+    <script>
+        require.config({
+            'baseUrl': '/app',
+            'paths': {
+                'backbone': '/bower/backbone/backbone-min',
+                'bootstrap': '/bower/bootstrap/dist/js/bootstrap.min',
+                'handlebars': '/bower/handlebars/handlebars.amd.min',
+                'json': '/bower/requirejs-plugins/src/json',
+                'jquery': '/bower/jquery/dist/jquery.min',
+                'lodash': '/bower/lodash/dist/lodash.min',
+                'moment': '/bower/moment/min/moment.min',
+                'tether': '/bower/tether/dist/js/tether.min',
+                'text': '/bower/text/text',
+                'underscore': '/bower/underscore/underscore-min'
+            }
+        });
+        require(['cadence']);
+    </script>
+</body>
+</html>

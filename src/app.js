@@ -3,18 +3,14 @@
 const _ = require('lodash');
 const express = require('express');
 const events = require('events');
-const hbs = require('hbs');
+const fs = require('fs');
 const logger = require('winston');
 const path = require('path');
 const sass = require('express-compile-sass');
 
 const EventEmitter = events.EventEmitter;
 
-const home = require('./views/index');
-const plugins = require('./views/plugins/index');
-const shards = require('./views/shards/index');
-
-require('../helpers/hbs-helpers');
+const api = require('./api/main');
 
 module.exports = class WebApplication extends EventEmitter {
     constructor(config) {
@@ -25,27 +21,31 @@ module.exports = class WebApplication extends EventEmitter {
         this.server = express();
         this.server.use(sass(
             _.merge(
-                {'root': __dirname},
+                {'root': path.join(__dirname, 'web')},
                 this.config.web.sass
             )
         ));
         this.server.use(
             '/bower',
-            express.static(path.join(__dirname, 'bower'))
+            express.static(path.join(__dirname, 'web/bower'))
         );
         this.server.use(
             '/assets',
-            express.static(path.join(__dirname, 'assets'))
+            express.static(path.join(__dirname, 'web/assets'))
         );
-        this.server.set('view engine', 'hbs');
-        this.server.set('views', path.join(__dirname, 'templates'));
-        hbs.registerPartials(path.join(__dirname, 'templates/partials'));
+        this.server.use(
+            '/app',
+            express.static(path.join(__dirname, 'web/app'))
+        );
     }
 
     init() {
-        this.server.use('/', home);
-        this.server.use('/plugins', plugins);
-        this.server.use('/shards', shards);
+        this.server.use('/api', api);
+        this.server.get('/', (request, response) => {
+            const html = fs.readFileSync('src/index.html');
+            response.set('Content-Type', 'text/html');
+            response.send(html);
+        });
 
         return this;
     }

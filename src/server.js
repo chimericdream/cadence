@@ -18,8 +18,7 @@ const args = require('yargs')
 const fs = require('fs');
 
 const AppConfig = require('./config');
-const WebApplication = require('./web/app');
-const ApiApplication = require('./api/app');
+const WebApplication = require('./app');
 
 let localConfig;
 
@@ -32,7 +31,5 @@ if (typeof args.config !== 'undefined') {
 
 const config = new AppConfig(localConfig);
 const web = new WebApplication(config);
-const api = new ApiApplication(config);
 
 web.init().start();
-api.init().start();
