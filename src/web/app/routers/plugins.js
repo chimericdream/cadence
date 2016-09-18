@@ -4,7 +4,8 @@ define('routers/plugins', ['backbone'], (Backbone) => {
     const Router = Backbone.Router.extend({
         'routes': {
             'plugins': 'pluginList',
-            'plugins/add-account/:plugin': 'addAccount'
+            'plugins/:plugin/add-account': 'addAccount',
+            'plugins/:plugin/edit-account/:account': 'editAccount'
         }
     });
 
@@ -22,11 +23,20 @@ define('routers/plugins', ['backbone'], (Backbone) => {
     Router.prototype.addAccount = function(plugin) {
         require(['views/plugins/add-account'], (AddAccountView) => {
             const view = new AddAccountView(plugin);
-            view.render()
-                .then(() => {
-                    $('#cadence-app').children().detach();
-                    $('#cadence-app').append(view.$el);
-                });
+            view.render();
+
+            $('#cadence-app').children().detach();
+            $('#cadence-app').append(view.$el);
+        });
+    };
+
+    Router.prototype.editAccount = function(plugin, account) {
+        require(['views/plugins/edit-account'], (EditAccountView) => {
+            const view = new EditAccountView(plugin, account);
+            view.render();
+
+            $('#cadence-app').children().detach();
+            $('#cadence-app').append(view.$el);
         });
     };
 

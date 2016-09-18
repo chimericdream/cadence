@@ -11,12 +11,12 @@ define(
         });
 
         Cadence.prototype.initialize = function() {
-            console.log('initializing router');
             this._subRouters = {
                 'plugins': new PluginRouter()
             };
+
             $('body').on('click', 'a', (event) => {
-                const href = event.target.pathname;
+                const href = $(event.currentTarget).attr('href');
                 if (href.search(/^(?:\w+:)?\/\/.*$/) === -1) {
                     event.preventDefault();
                     event.stopPropagation();
@@ -39,6 +39,7 @@ define(
 
         const app = new Cadence();
 
+        $('body').removeClass('js-cadence-pre-init');
         app.start();
     });
     // $('.plugin-enable-button, .plugin-disable-button').on('click', (event) => {

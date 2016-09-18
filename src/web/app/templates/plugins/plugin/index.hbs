@@ -13,35 +13,27 @@
 </div>
 {{/if}}
 
-<form action="/plugins/edit-account/{{ plugin.key }}/" method="post">
-    <input type="hidden" name="account-slug-previous" value="{{ accountData.slug }}">
+<form action="/plugins/{{ plugin.id }}/{{#if account.id }}{{ account.id }}{{ else }}add-account{{/if}}/" method="post">
     <div class="form-group row">
-        <label for="account-name" class="col-sm-2 col-form-label">Account Name</label>
+        <label for="account-id" class="col-sm-2 col-form-label">Account ID</label>
         <div class="col-sm-10">
-            <input name="account-name" type="text" id="account-name" class="form-control" value="{{ accountData.name }}">
+            <input name="account-id" type="text" id="account-id" class="form-control" value="{{ account.id }}">
             <small class="form-text text-muted">Something easy to remember, like your username.</small>
         </div>
     </div>
-    <div class="form-group row">
-        <label for="account-slug" class="col-sm-2 col-form-label">URL Slug</label>
-        <div class="col-sm-10">
-            <input name="account-slug" type="text" id="account-slug" class="form-control" value="{{ accountData.slug }}">
-            <small class="form-text text-muted">Will also be used as the JSON key for the stored account data.</small>
-        </div>
-    </div>
-{{#each accountConfig.fields}}
+{{#each fields}}
     <div class="form-group row">
         <label for="config--{{ @key }}" class="col-sm-2 col-form-label">{{ name }}</label>
         <div class="col-sm-10">
             {{#equal type "select"}}
                 <select name="{{ @key }}" id="config--{{ @key }}" class="form-control"{{#equal selection "multiple"}} multiple{{/equal}}>
                     {{#each options}}
-                        <option value="{{ value }}"{{#contains (getFrom ../../accountData.fields @../key) value}} selected{{/contains}}>{{ name }}</option>
+                        <option value="{{ value }}"{{#contains (getFrom ../../account.fields @../key) value}} selected{{/contains}}>{{ name }}</option>
                     {{/each}}
                 </select>
             {{/equal}}
             {{#equal type "text"}}
-                <input name="{{ @key }}" type="text" id="config--{{ @key }}" class="form-control" value="{{getFrom ../accountData.fields @key }}">
+                <input name="{{ @key }}" type="text" id="config--{{ @key }}" class="form-control" value="{{getFrom ../account.fields @key }}">
             {{/equal}}
         </div>
     </div>

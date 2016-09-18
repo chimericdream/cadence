@@ -12,6 +12,29 @@
 
 @import "shards";
 
+body.js-cadence-pre-init {
+    #cadence-app {
+        background-color: $gray-dark;
+        bottom: 0;
+        left: 0;
+        position: fixed;
+        right: 0;
+        top: 0;
+
+        & > div {
+            height: 10vh;
+            left: 50%;
+            line-height: 10vh;
+            padding: 0;
+            position: absolute;
+            text-align: center;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 15vw;
+        }
+    }
+}
+
 .placeholders {
     margin-bottom: 30px;
     text-align: center;

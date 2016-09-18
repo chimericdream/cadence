@@ -18,7 +18,7 @@
                         <span class="list-group-item list-group-item-action">
                             <a href="">{{ name }}</a>
                             <span class="pull-xs-right">
-                                <a href="/plugins/edit-account/{{ @../key }}/{{ @key }}" class="text-primary"><i class="fa fa-edit"></i></a>
+                                <a href="/plugins/{{ @../key }}/edit-account/{{ @key }}" class="text-primary"><i class="fa fa-edit"></i></a>
                                 <a href="/plugins/account-data/{{ @../key }}/{{ @key }}" class="text-muted"><i class="fa fa-archive"></i></a>
                                 <!-- /plugins/delete-account/{{ @../key }}/{{ @key }}/ -->
                                 <a href="#" class="js-delete-account" data-plugin-name="{{ ../name }}" data-plugin-key="{{ @../key }}" data-account-key="{{ @key }}"><i class="fa fa-remove text-danger"></i></a>
@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="card-footer">
-                <a href="#" class="js-add-account btn btn-sm btn-primary" data-plugin="{{ @key }}"><i class="fa fa-user-plus" aria-hidden="true"></i> Add Account</a>
+                <a href="/plugins/{{ @key }}/add-account" class="btn btn-sm btn-primary"><i class="fa fa-user-plus" aria-hidden="true"></i> Add Account</a>
                 <a href="#" class="js-enable-plugin btn btn-sm btn-success" data-plugin="{{ @key }}"{{#if enabled}} style="display: none;"{{/if}}><i class="fa fa-check" aria-hidden="true"></i> Enable</a>
                 <a href="#" class="js-disable-plugin btn btn-sm btn-danger" data-plugin="{{ @key }}"{{#unless enabled}} style="display: none;"{{/unless}}><i class="fa fa-ban" aria-hidden="true"></i> Disable</a>
             </div>

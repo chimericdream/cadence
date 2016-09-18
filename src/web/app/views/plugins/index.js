@@ -35,10 +35,11 @@ define('views/plugins/index', ['backbone', 'views/base', 'collections/plugins', 
     };
 
     View.prototype.render = function() {
+        this.$el.children().detach();
+
         return this.plugins
             .fetch()
             .done((data, status, xhr) => {
-                this.$el.children().detach();
                 this.$el.append(this.renderTemplate(PluginPageTemplate, {
                     'plugins': data
                 }));

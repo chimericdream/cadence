@@ -1,6 +1,6 @@
 'use strict';
 
-define('views/plugins/add-account', ['backbone', 'views/base', 'collections/plugins', 'models/plugin', 'text!templates/plugins/plugin/index.hbs'], (Backbone, BaseView, PluginCollection, PluginModel, AddAccountTemplate) => {
+define('views/plugins/add-account', ['backbone', 'views/base', 'collections/plugins', 'models/plugin', 'text!templates/plugins/plugin/index.hbs'], (Backbone, BaseView, PluginCollection, PluginModel, AddEditAccountTemplate) => {
     const View = BaseView.extend({});
 
     View.prototype.initialize = function(plugin) {
@@ -8,14 +8,17 @@ define('views/plugins/add-account', ['backbone', 'views/base', 'collections/plug
     };
 
     View.prototype.render = function() {
-        // return this.plugins
-        //     .fetch()
-        //     .done((data, status, xhr) => {
-        //         this.$el.children().detach();
-        //         this.$el.append(this.renderTemplate(AddAccountTemplate, {
-        //             'plugins': data
-        //         }));
-        //     });
+        this.$el.children().detach();
+
+        return this.plugin
+            .getAccountTemplate()
+            .done((data, status, xhr) => {
+                this.$el.append(this.renderTemplate(AddEditAccountTemplate, {
+                    'plugin': this.plugin.attributes,
+                    'fields': data['account-template'].fields,
+                    'account': {}
+                }));
+            });
     };
 
     return View;

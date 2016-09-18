@@ -1,6 +1,6 @@
 'use strict';
 
-define('models/plugin', ['jquery', 'backbone'], ($, Backbone) => {
+define('models/plugin', ['jquery', 'lodash', 'backbone'], ($, _, Backbone) => {
     const Model = Backbone.Model.extend({
         'urlRoot': '/api/plugins',
         'defaults': {
@@ -10,16 +10,16 @@ define('models/plugin', ['jquery', 'backbone'], ($, Backbone) => {
             'config-file': '',
             'enabled': false,
             'components': {},
-            'account-template': {
-                'fields': {},
-                'data': {}
-            },
             'accounts': {}
         }
     });
 
+    Model.prototype.getAccountTemplate = function() {
+        return $.ajax(`${ this.url() }/account-template`);
+    };
+
     Model.prototype.enable = function() {
-        const url = `${this.url()}/enable`;
+        const url = `${ this.url() }/enable`;
         return $.ajax({
             'url': url,
             'method': 'PUT',
@@ -30,7 +30,7 @@ define('models/plugin', ['jquery', 'backbone'], ($, Backbone) => {
     };
 
     Model.prototype.disable = function() {
-        const url = `${this.url()}/disable`;
+        const url = `${ this.url() }/disable`;
         return $.ajax({
             'url': url,
             'method': 'PUT',
