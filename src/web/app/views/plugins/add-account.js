@@ -1,25 +1,65 @@
 'use strict';
 
-define('views/plugins/add-account', ['backbone', 'views/base', 'collections/plugins', 'models/plugin', 'text!templates/plugins/plugin/index.hbs'], (Backbone, BaseView, PluginCollection, PluginModel, AddEditAccountTemplate) => {
-    const View = BaseView.extend({});
+define(
+    'views/plugins/add-account',
+    [
+        'jquery',
+        'backbone',
+        'views/base',
+        'collections/plugins',
+        'models/plugin',
+        'models/plugins/account',
+        'text!templates/plugins/plugin/index.hbs'
+    ],
+    (
+        $,
+        Backbone,
+        BaseView,
+        PluginCollection,
+        PluginModel,
+        AccountModel,
+        AddEditAccountTemplate
+    ) => {
+        const View = BaseView.extend({
+            'events': {
+                'click #save-account-btn': 'addAccount'
+            }
+        });
 
-    View.prototype.initialize = function(plugin) {
-        this.plugin = new PluginModel({'id': plugin});
-    };
-
-    View.prototype.render = function() {
-        this.$el.children().detach();
-
-        return this.plugin
-            .getAccountTemplate()
-            .done((data, status, xhr) => {
-                this.$el.append(this.renderTemplate(AddEditAccountTemplate, {
-                    'plugin': this.plugin.attributes,
-                    'fields': data['account-template'].fields,
-                    'account': {}
-                }));
+        View.prototype.addAccount = function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const url = $('#plugin-account-form').attr('action');
+            $.ajax({
+                'url': url,
+                'method': 'POST',
+                'processData': false,
+                'dataType': 'text',
+                'data': $('#plugin-account-form').serialize()
+            }).done((data, status, xhr) => {
+                this.trigger('account:added', {
+                    'account': xhr.getResponseHeader('X-Cadence-Account-ID'),
+                    'plugin': xhr.getResponseHeader('X-Cadence-Plugin')
+                });
             });
-    };
+        };
 
-    return View;
-});
+        View.prototype.render = function(data) {
+            this.$el.children().detach();
+
+            const plugin = new PluginModel({'id': data.plugin});
+
+            return plugin
+                .getAccountTemplate()
+                .done((data) => {
+                    this.$el.append(this.renderTemplate(AddEditAccountTemplate, {
+                        'plugin': plugin.attributes,
+                        'fields': data['account-template'].fields,
+                        'account': {}
+                    }));
+                });
+        };
+
+        return View;
+    }
+);

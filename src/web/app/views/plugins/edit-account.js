@@ -20,36 +20,36 @@ define(
         AccountModel,
         AddEditAccountTemplate
     ) => {
-    const View = BaseView.extend({});
+        const View = BaseView.extend({});
 
-    View.prototype.initialize = function(plugin, account) {
-        this.plugin = new PluginModel({'id': plugin});
-        this.account = new AccountModel({
-            'id': account,
-            'plugin': this.plugin
-        });
-    };
+        View.prototype.render = function(data) {
+            let fields;
 
-    View.prototype.render = function() {
-        let fields;
-        const templatePlugin = this.plugin
-            .getAccountTemplate()
-            .done((data) => {
-                fields = data['account-template'].fields
+            const plugin = new PluginModel({'id': data.plugin});
+            const account = new AccountModel({
+                'id': data.account,
+                'plugin': plugin
             });
-        const accountPromise = this.account.fetch();
 
-        this.$el.children().detach();
+            const templatePlugin = plugin
+                .getAccountTemplate()
+                .done((data) => {
+                    fields = data['account-template'].fields
+                });
+            const accountPromise = account.fetch();
 
-        return $.when(templatePlugin, accountPromise)
-            .then(() => {
-                this.$el.append(this.renderTemplate(AddEditAccountTemplate, {
-                    'plugin': this.plugin.attributes,
-                    'fields': fields,
-                    'account': this.account.attributes
-                }));
-            });
-    };
+            this.$el.children().detach();
 
-    return View;
-});
+            return $.when(templatePlugin, accountPromise)
+                .then(() => {
+                    this.$el.append(this.renderTemplate(AddEditAccountTemplate, {
+                        'plugin': plugin.attributes,
+                        'fields': fields,
+                        'account': account.attributes
+                    }));
+                });
+        };
+
+        return View;
+    }
+);

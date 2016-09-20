@@ -4,16 +4,7 @@
 
 <h2>{{ plugin.name }}</h2>
 
-{{#if showSavedMsg}}
-<div class="alert alert-success alert-dismissible fade in" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
-    </button>
-    Account information saved.
-</div>
-{{/if}}
-
-<form action="/plugins/{{ plugin.id }}/{{#if account.id }}{{ account.id }}{{ else }}add-account{{/if}}/" method="post">
+<form id="plugin-account-form" action="/api/plugins/{{ plugin.id }}/{{#if account.id }}{{ account.id }}{{ else }}add-account{{/if}}/" method="post">
     <div class="form-group row">
         <label for="account-id" class="col-sm-2 col-form-label">Account ID</label>
         <div class="col-sm-10">
@@ -40,8 +31,10 @@
 {{/each}}
     <div class="row">
         <div class="col-sm-10 offset-sm-2">
-            <button type="submit" class="btn btn-primary pull-left">Save</button>
-            <button type="reset" class="btn btn-link pull-right">Reset</button>
+            <button id="save-account-btn" type="submit" class="btn btn-primary pull-left">Save</button>
+
+            <button id="cancel-new-account-btn" class="btn btn-link pull-right text-danger">Cancel</button>
+            <button type="reset" class="btn btn-link pull-right text-warning">Reset</button>
         </div>
     </div>
 </form>

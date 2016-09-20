@@ -1,0 +1,18 @@
+@if $enable-flex {
+    .btn-group.row {
+        display: flex;
+    }
+}
+
+.btn-group {
+    .btn {
+        border-left-width: 0;
+        border-right-width: 0;
+        &:first-child {
+            border-left-width: $input-btn-border-width;
+        }
+        &:last-child {
+            border-right-width: $input-btn-border-width;
+        }
+    }
+}

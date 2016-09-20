@@ -1,5 +1,6 @@
 'use strict';
 
+const bodyParser = require('body-parser');
 const express = require('express');
 const fs = require('fs');
 
@@ -81,7 +82,49 @@ router.get('/:plugin/account-template', (request, response) => {
 });
 
 // add account
-router.post('/:plugin/add-account', (request, response) => {});
+router.post(
+    '/:plugin/add-account',
+    bodyParser.urlencoded({ 'extended': false }),
+    (request, response) => {
+        if (!request.body) {
+            return response.sendStatus(400);
+        }
+
+        const plugin = request.params.plugin;
+        const pluginConfig = JSON.parse(fs.readFileSync(`config/plugins/${ plugin }.json`));
+
+        let accounts;
+        try {
+            accounts = JSON.parse(fs.readFileSync(`data/plugins/${ plugin }/accounts.json`));
+        } catch (error) {
+            if (error.code === 'ENOENT') {
+                accounts = {};
+            } else {
+                throw error;
+            }
+        }
+
+        const body = request.body;
+
+        const account = {};
+        const accountId = body['account-id'];
+
+        delete body['account-id'];
+
+        account.fields = body;
+        account.data = pluginConfig['account-template'].data;
+
+        accounts[accountId] = account;
+
+        fs.writeFileSync(`data/plugins/${ plugin }/accounts.json`, JSON.stringify(accounts, null, 4));
+
+        response.status(201)
+            .set({
+                'X-Cadence-Account-ID': accountId,
+                'X-Cadence-Plugin': plugin
+            })
+            .end();
+    });
 
 // view account
 router.get('/:plugin/accounts/:account', (request, response) => {

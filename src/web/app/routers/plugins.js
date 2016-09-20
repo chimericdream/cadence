@@ -1,7 +1,7 @@
 'use strict';
 
-define('routers/plugins', ['backbone'], (Backbone) => {
-    const Router = Backbone.Router.extend({
+define('routers/plugins', ['routers/base'], (BaseRouter) => {
+    const Router = BaseRouter.extend({
         'routes': {
             'plugins': 'pluginList',
             'plugins/:plugin/add-account': 'addAccount',
@@ -10,69 +10,37 @@ define('routers/plugins', ['backbone'], (Backbone) => {
     });
 
     Router.prototype.pluginList = function() {
-        require(['views/plugins/index'], (ListView) => {
-            const view = new ListView();
-            view.render()
-                .then(() => {
-                    $('#cadence-app').children().detach();
-                    $('#cadence-app').append(view.$el);
-                });
+        let account;
+        if (typeof this._addedAccount !== 'undefined') {
+            account = this._addedAccount;
+            account.action = 'add';
+            delete this._addedAccount;
+        }
+        this.getView('views/plugins/index', (ListView) => {
+            this.render(ListView, {'modifiedAccount': account});
         });
     };
 
     Router.prototype.addAccount = function(plugin) {
-        require(['views/plugins/add-account'], (AddAccountView) => {
-            const view = new AddAccountView(plugin);
-            view.render();
-
-            $('#cadence-app').children().detach();
-            $('#cadence-app').append(view.$el);
+        this.getView('views/plugins/add-account', (AddAccountView) => {
+            if (!AddAccountView.isEventListenedTo('account:added')) {
+                this.listenTo(AddAccountView, 'account:added', (data) => {
+                    this._addedAccount = data;
+                    this.navigate('/plugins', {'trigger': true});
+                });
+            }
+            this.render(AddAccountView, {'plugin': plugin});
         });
     };
 
     Router.prototype.editAccount = function(plugin, account) {
-        require(['views/plugins/edit-account'], (EditAccountView) => {
-            const view = new EditAccountView(plugin, account);
-            view.render();
-
-            $('#cadence-app').children().detach();
-            $('#cadence-app').append(view.$el);
+        this.getView('views/plugins/edit-account', (EditAccountView) => {
+            this.render(EditAccountView, {'plugin': plugin, 'account': account});
         });
     };
 
     return Router;
 });
-// $('.plugin-enable-button, .plugin-disable-button').on('click', (event) => {
-//     event.preventDefault();
-//     event.stopPropagation();
-//
-//     const $el = $(event.target);
-//     const $title = $el.parent().parent().find('.card-title');
-//
-//     $.ajax({
-//         'url': $el[0].href,
-//         'method': 'PUT',
-//         'success': () => {
-//             $title.find('span').toggle();
-//             $el.parent().find('.plugin-enable-button, .plugin-disable-button').toggle();
-//         }
-//     });
-// });
-//
-// $('#account-name').on('blur', () => {
-//     if ($('#account-slug').val() === '') {
-//         let safeSlug;
-//         safeSlug = $('#account-name')
-//             .val()
-//             .toLowerCase()
-//             .replace(/[^a-z0-9]/g, '-')
-//             .replace(/^(.+)-$/, '$1')
-//             .replace(/^-(.+)$/, '$1');
-//
-//         $('#account-slug').val(safeSlug);
-//     }
-// });
-//
 // $('#shard-type').on('change', (event) => {
 //     const $el = $(event.target);
 //     $('#shard-value-notype, #shard-value-boolean, #shard-value-json, #shard-value-text').addClass('hidden-xs-up');
