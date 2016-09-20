@@ -91,6 +91,7 @@ router.post(
         }
 
         const plugin = request.params.plugin;
+        const plugins = JSON.parse(fs.readFileSync('config/plugins.json'));
         const pluginConfig = JSON.parse(fs.readFileSync(`config/plugins/${ plugin }.json`));
 
         let accounts;
@@ -121,7 +122,7 @@ router.post(
         response.status(201)
             .set({
                 'X-Cadence-Account-ID': accountId,
-                'X-Cadence-Plugin': plugin
+                'X-Cadence-Plugin': plugins[plugin].name
             })
             .end();
     });

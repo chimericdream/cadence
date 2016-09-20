@@ -1,0 +1,27 @@
+.notifyjs-corner {
+    transform: translate(-7px, 54px);
+    width: 20vw;
+}
+
+.notifyjs-twbs-base {
+    padding: $alert-padding;
+    margin-bottom: $spacer-y;
+    border: $alert-border-width solid transparent;
+    @include border-radius($alert-border-radius);
+}
+
+.notifyjs-twbs-success {
+    @include alert-variant($alert-success-bg, $alert-success-border, $alert-success-text);
+}
+
+.notifyjs-twbs-info {
+    @include alert-variant($alert-info-bg, $alert-info-border, $alert-info-text);
+}
+
+.notifyjs-twbs-warning {
+    @include alert-variant($alert-warning-bg, $alert-warning-border, $alert-warning-text);
+}
+
+.notifyjs-twbs-danger {
+    @include alert-variant($alert-danger-bg, $alert-danger-border, $alert-danger-text);
+}

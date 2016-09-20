@@ -2,8 +2,8 @@
 
 define(
     'cadence',
-    ['jquery', 'backbone', 'routers/plugins', 'util/hbs-helpers', 'util/load-partials'],
-    ($, Backbone, PluginRouter) => {
+    ['jquery', 'backbone', 'notifyjs', 'routers/plugins', 'util/hbs-helpers', 'util/load-partials', 'util/load-jq-plugins'],
+    ($, Backbone, notifyjs, PluginRouter) => {
         const Cadence = Backbone.Router.extend({
             'routes': {
                 '': 'home'

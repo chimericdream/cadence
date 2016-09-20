@@ -37,10 +37,12 @@ define(
                 'dataType': 'text',
                 'data': $('#plugin-account-form').serialize()
             }).done((data, status, xhr) => {
-                this.trigger('account:added', {
+                const accountData = {
                     'account': xhr.getResponseHeader('X-Cadence-Account-ID'),
                     'plugin': xhr.getResponseHeader('X-Cadence-Plugin')
-                });
+                };
+                $.notify(`Account <kbd>${ accountData.account }</kbd> added to ${ accountData.plugin }.`);
+                this.trigger('account:added');
             });
         };
 

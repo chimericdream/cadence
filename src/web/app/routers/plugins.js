@@ -10,22 +10,15 @@ define('routers/plugins', ['routers/base'], (BaseRouter) => {
     });
 
     Router.prototype.pluginList = function() {
-        let account;
-        if (typeof this._addedAccount !== 'undefined') {
-            account = this._addedAccount;
-            account.action = 'add';
-            delete this._addedAccount;
-        }
         this.getView('views/plugins/index', (ListView) => {
-            this.render(ListView, {'modifiedAccount': account});
+            this.render(ListView);
         });
     };
 
     Router.prototype.addAccount = function(plugin) {
         this.getView('views/plugins/add-account', (AddAccountView) => {
             if (!AddAccountView.isEventListenedTo('account:added')) {
-                this.listenTo(AddAccountView, 'account:added', (data) => {
-                    this._addedAccount = data;
+                this.listenTo(AddAccountView, 'account:added', () => {
                     this.navigate('/plugins', {'trigger': true});
                 });
             }
