@@ -22,11 +22,11 @@ define(
     ) => {
         const View = BaseView.extend({
             'events': {
-                'click #save-account-btn': 'addAccount'
+                'click #save-account-btn': 'saveAccount'
             }
         });
 
-        View.prototype.addAccount = function(event) {
+        View.prototype.saveAccount = function(event) {
             event.preventDefault();
             event.stopPropagation();
             const url = $('#plugin-account-form').attr('action');
@@ -42,7 +42,7 @@ define(
                     'plugin': xhr.getResponseHeader('X-Cadence-Plugin')
                 };
                 $.notify(`Account <kbd>${ accountData.account }</kbd> added to ${ accountData.plugin }.`);
-                this.trigger('account:added');
+                this.trigger('account:saved');
             });
         };
 

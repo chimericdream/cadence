@@ -17,8 +17,8 @@ define('routers/plugins', ['routers/base'], (BaseRouter) => {
 
     Router.prototype.addAccount = function(plugin) {
         this.getView('views/plugins/add-account', (AddAccountView) => {
-            if (!AddAccountView.isEventListenedTo('account:added')) {
-                this.listenTo(AddAccountView, 'account:added', () => {
+            if (!AddAccountView.isEventListenedTo('account:saved')) {
+                this.listenTo(AddAccountView, 'account:saved', () => {
                     this.navigate('/plugins', {'trigger': true});
                 });
             }
@@ -28,6 +28,11 @@ define('routers/plugins', ['routers/base'], (BaseRouter) => {
 
     Router.prototype.editAccount = function(plugin, account) {
         this.getView('views/plugins/edit-account', (EditAccountView) => {
+            if (!EditAccountView.isEventListenedTo('account:saved')) {
+                this.listenTo(EditAccountView, 'account:saved', () => {
+                    this.navigate('/plugins', {'trigger': true});
+                });
+            }
             this.render(EditAccountView, {'plugin': plugin, 'account': account});
         });
     };

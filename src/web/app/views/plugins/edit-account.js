@@ -20,7 +20,31 @@ define(
         AccountModel,
         AddEditAccountTemplate
     ) => {
-        const View = BaseView.extend({});
+        const View = BaseView.extend({
+            'events': {
+                'click #save-account-btn': 'saveAccount'
+            }
+        });
+
+        View.prototype.saveAccount = function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const url = $('#plugin-account-form').attr('action');
+            $.ajax({
+                'url': url,
+                'method': 'POST',
+                'processData': false,
+                'dataType': 'text',
+                'data': $('#plugin-account-form').serialize()
+            }).done((data, status, xhr) => {
+                const accountData = {
+                    'account': xhr.getResponseHeader('X-Cadence-Account-ID'),
+                    'plugin': xhr.getResponseHeader('X-Cadence-Plugin')
+                };
+                $.notify(`Account <kbd>${ accountData.account }</kbd> in ${ accountData.plugin } updated.`);
+                this.trigger('account:saved');
+            });
+        };
 
         View.prototype.render = function(data) {
             let fields;
