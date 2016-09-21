@@ -9,7 +9,7 @@ define(
         'collections/plugins',
         'models/plugin',
         'models/plugins/account',
-        'text!templates/plugins/plugin/index.hbs'
+        'text!templates/plugins/accounts/add-edit.hbs'
     ],
     (
         $,
@@ -26,6 +26,7 @@ define(
             }
         });
 
+        // TODO: make this use the AccountModel and its `create()` method
         View.prototype.saveAccount = function(event) {
             event.preventDefault();
             event.stopPropagation();
@@ -53,10 +54,10 @@ define(
 
             return plugin
                 .getAccountTemplate()
-                .done((data) => {
+                .done((response) => {
                     this.$el.append(this.renderTemplate(AddEditAccountTemplate, {
                         'plugin': plugin.attributes,
-                        'fields': data['account-template'].fields,
+                        'fields': response['account-template'].fields,
                         'account': {}
                     }));
                 });

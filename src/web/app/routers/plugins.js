@@ -4,6 +4,7 @@ define('routers/plugins', ['routers/base'], (BaseRouter) => {
     const Router = BaseRouter.extend({
         'routes': {
             'plugins': 'pluginList',
+            'plugins/:plugin/accounts/:account': 'viewAccount',
             'plugins/:plugin/add-account': 'addAccount',
             'plugins/:plugin/edit-account/:account': 'editAccount'
         }
@@ -34,6 +35,12 @@ define('routers/plugins', ['routers/base'], (BaseRouter) => {
                 });
             }
             this.render(EditAccountView, {'plugin': plugin, 'account': account});
+        });
+    };
+
+    Router.prototype.viewAccount = function(plugin, account) {
+        this.getView('views/plugins/view-account', (ViewAccountView) => {
+            this.render(ViewAccountView, {'plugin': plugin, 'account': account});
         });
     };
 

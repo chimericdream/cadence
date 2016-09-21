@@ -1,8 +1,8 @@
 {{> layout/header }}
 
-<h1 class="page-header">Plugin Configuration</h1>
+<h1 class="page-header">{{ plugin.name }}</h1>
 
-<h2>{{ plugin.name }}</h2>
+<h2>Account Configuration</h2>
 
 <form id="plugin-account-form" action="/api/plugins/{{ plugin.id }}/{{#if account.id }}accounts/{{ account.id }}{{ else }}add-account{{/if}}/" method="post">
     <div class="form-group row">
@@ -28,7 +28,7 @@
                 </select>
             {{/equal}}
             {{#equal type "text"}}
-                <input name="{{ @key }}" type="text" id="config--{{ @key }}" class="form-control" value="{{getFrom ../account.fields @key }}">
+                <input name="{{ @key }}" type="text" id="config--{{ @key }}" class="form-control" value="{{ getFrom ../account.fields @key }}">
             {{/equal}}
         </div>
     </div>

@@ -1,0 +1,13 @@
+.account-data--config-fields {
+    .account-config-option {
+        &:after {
+            content: ", ";
+        }
+
+        &:last-child {
+            &:after {
+                content: "";
+            }
+        }
+    }
+}

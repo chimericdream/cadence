@@ -9,7 +9,7 @@ define(
         'collections/plugins',
         'models/plugin',
         'models/plugins/account',
-        'text!templates/plugins/plugin/index.hbs'
+        'text!templates/plugins/accounts/add-edit.hbs'
     ],
     (
         $,
@@ -26,6 +26,7 @@ define(
             }
         });
 
+        // TODO: make this use the AccountModel and its `save()` method
         View.prototype.saveAccount = function(event) {
             event.preventDefault();
             event.stopPropagation();
@@ -55,16 +56,16 @@ define(
                 'plugin': plugin
             });
 
-            const templatePlugin = plugin
+            const accountTemplatePromise = plugin
                 .getAccountTemplate()
-                .done((data) => {
-                    fields = data['account-template'].fields
+                .done((response) => {
+                    fields = response['account-template'].fields
                 });
             const accountPromise = account.fetch();
 
             this.$el.children().detach();
 
-            return $.when(templatePlugin, accountPromise)
+            return $.when(accountTemplatePromise, accountPromise)
                 .then(() => {
                     this.$el.append(this.renderTemplate(AddEditAccountTemplate, {
                         'plugin': plugin.attributes,

@@ -19,6 +19,10 @@ define('models/plugins/account', ['jquery', 'lodash', 'backbone'], ($, _, Backbo
         return `${ this.urlRoot }/${ this.get('plugin').get('id') }/add-account`;
     };
 
+    Model.prototype.dataUrl = function() {
+        return `${ this.urlRoot }/${ this.get('plugin').get('id') }/data/${ this.get('id') }`;
+    };
+
     Model.prototype.create = function() {
         return $.ajax({
             'url': this.createUrl(),
@@ -26,6 +30,13 @@ define('models/plugins/account', ['jquery', 'lodash', 'backbone'], ($, _, Backbo
             'processData': false,
             'dataType': 'json',
             'data': this.attributes
+        });
+    };
+
+    Model.prototype.getData = function() {
+        return $.ajax({
+            'url': this.dataUrl(),
+            'dataType': 'json'
         });
     };
 
