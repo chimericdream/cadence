@@ -1,6 +1,6 @@
 'use strict';
 
-define(['jquery', 'notifyjs'], ($) => {
+define(['jquery', 'bootstrap', 'notifyjs'], ($) => {
     $.notify.addStyle('twbs', {
         html: '<div><span data-notify-html></span></div>'
     });

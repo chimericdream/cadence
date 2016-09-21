@@ -4,7 +4,6 @@ define(
     'views/plugins/edit-account',
     [
         'jquery',
-        'backbone',
         'views/base',
         'collections/plugins',
         'models/plugin',
@@ -13,7 +12,6 @@ define(
     ],
     (
         $,
-        Backbone,
         BaseView,
         PluginCollection,
         PluginModel,

@@ -48,6 +48,8 @@ function getAccountInfoInstance(key, api) {
     return accountInfo[key];
 }
 
+// TODO: Refactor this so that each plugin specifies the pieces of data it
+// provides. Then, the higher-level API call can do this call for any plugin
 router.get('/data/:account/', (request, response) => {
     const accountKey = request.params.account;
     const accounts = JSON.parse(fs.readFileSync('data/plugins/toodledo/account-info.json'));
@@ -82,6 +84,31 @@ router.get('/account-info/:account/', (request, response) => {
         response.send(JSON.stringify(accountInfo.data, null, 4));
     });
     accountInfo.fetch();
+});
+
+// TODO: Refactor this so that each plugin specifies the pieces of data it
+// provides. Then, the higher-level API call can do this call for any plugin
+// delete account
+router.delete('/accounts/:account', (request, response) => {
+    const account = request.params.account;
+    const accounts = JSON.parse(fs.readFileSync('data/plugins/toodledo/accounts.json'));
+
+    if (typeof accounts[account] === 'undefined') {
+        response.sendStatus(404);
+        return;
+    }
+
+    const accountInfoObj = JSON.parse(fs.readFileSync('data/plugins/toodledo/account-info.json'));
+
+    if (typeof accountInfoObj[account] !== 'undefined') {
+        delete accountInfoObj[account];
+        fs.writeFileSync('data/plugins/toodledo/account-info.json', JSON.stringify(accountInfoObj, null, 4));
+    }
+
+    delete accounts[account];
+    fs.writeFileSync('data/plugins/toodledo/accounts.json', JSON.stringify(accounts, null, 4));
+
+    response.sendStatus(204);
 });
 
 module.exports = router;

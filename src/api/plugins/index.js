@@ -130,7 +130,8 @@ router.post(
     bodyParser.urlencoded({ 'extended': false }),
     (request, response) => {
         if (!request.body) {
-            return response.sendStatus(400);
+            response.sendStatus(400);
+            return;
         }
 
         const plugin = request.params.plugin;
@@ -156,18 +157,13 @@ router.post(
     bodyParser.urlencoded({ 'extended': false }),
     (request, response) => {
     if (!request.body) {
-        return response.sendStatus(400);
+        response.sendStatus(400);
+        return;
     }
 
     const plugin = request.params.plugin;
     const accountId = request.params.account;
     saveAccount(plugin, accountId, request.body, response);
 });
-
-// delete account
-router.delete('/:plugin/accounts/:account', (request, response) => {});
-
-// get all data for account
-router.get('/:plugin/accounts/:account/data', (request, response) => {});
 
 module.exports = router;
