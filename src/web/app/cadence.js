@@ -2,8 +2,8 @@
 
 define(
     'cadence',
-    ['jquery', 'backbone', 'notifyjs', 'routers/plugins', 'util/hbs-helpers', 'util/load-partials', 'util/load-jq-plugins'],
-    ($, Backbone, notifyjs, PluginRouter) => {
+    ['jquery', 'backbone', 'notifyjs', 'routers/plugins', 'routers/shards', 'util/hbs-helpers', 'util/load-partials', 'util/load-jq-plugins'],
+    ($, Backbone, notifyjs, PluginRouter, ShardRouter) => {
         const Cadence = Backbone.Router.extend({
             'routes': {
                 '': 'home'
@@ -12,7 +12,8 @@ define(
 
         Cadence.prototype.initialize = function() {
             this._subRouters = {
-                'plugins': new PluginRouter()
+                'plugins': new PluginRouter(),
+                'shards': new ShardRouter()
             };
 
             $('body').on('click', 'a', (event) => {

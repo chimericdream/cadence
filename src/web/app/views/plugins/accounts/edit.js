@@ -1,7 +1,7 @@
 'use strict';
 
 define(
-    'views/plugins/edit-account',
+    'views/plugins/accounts/edit',
     [
         'jquery',
         'views/base',

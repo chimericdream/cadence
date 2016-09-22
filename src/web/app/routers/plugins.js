@@ -4,9 +4,9 @@ define('routers/plugins', ['routers/base'], (BaseRouter) => {
     const Router = BaseRouter.extend({
         'routes': {
             'plugins': 'pluginList',
-            'plugins/:plugin/accounts/:account': 'viewAccount',
-            'plugins/:plugin/add-account': 'addAccount',
-            'plugins/:plugin/edit-account/:account': 'editAccount'
+            'plugins/:plugin/accounts/add': 'addAccount',
+            'plugins/:plugin/accounts/view/:account': 'viewAccount',
+            'plugins/:plugin/accounts/edit/:account': 'editAccount'
         }
     });
 
@@ -17,7 +17,7 @@ define('routers/plugins', ['routers/base'], (BaseRouter) => {
     };
 
     Router.prototype.addAccount = function(plugin) {
-        this.getView('views/plugins/add-account', (AddAccountView) => {
+        this.getView('views/plugins/accounts/add', (AddAccountView) => {
             if (!AddAccountView.isEventListenedTo('account:saved')) {
                 this.listenTo(AddAccountView, 'account:saved', () => {
                     this.navigate('/plugins', {'trigger': true});
@@ -28,7 +28,7 @@ define('routers/plugins', ['routers/base'], (BaseRouter) => {
     };
 
     Router.prototype.editAccount = function(plugin, account) {
-        this.getView('views/plugins/edit-account', (EditAccountView) => {
+        this.getView('views/plugins/accounts/edit', (EditAccountView) => {
             if (!EditAccountView.isEventListenedTo('account:saved')) {
                 this.listenTo(EditAccountView, 'account:saved', () => {
                     this.navigate('/plugins', {'trigger': true});
@@ -39,7 +39,7 @@ define('routers/plugins', ['routers/base'], (BaseRouter) => {
     };
 
     Router.prototype.viewAccount = function(plugin, account) {
-        this.getView('views/plugins/view-account', (ViewAccountView) => {
+        this.getView('views/plugins/accounts/view', (ViewAccountView) => {
             this.render(ViewAccountView, {'plugin': plugin, 'account': account});
         });
     };

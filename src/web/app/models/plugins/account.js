@@ -1,6 +1,6 @@
 'use strict';
 
-define('models/plugins/account', ['jquery', 'lodash', 'backbone'], ($, _, Backbone) => {
+define('models/plugins/account', ['jquery', 'backbone'], ($, Backbone) => {
     const Model = Backbone.Model.extend({
         'urlRoot': '/api/plugins',
         'defaults': {

@@ -1,7 +1,7 @@
 'use strict';
 
 define(
-    'views/plugins/add-account',
+    'views/plugins/accounts/add',
     [
         'jquery',
         'views/base',
