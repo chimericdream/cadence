@@ -64,7 +64,7 @@ define(
                     shard.set('value', $('#shard-value-text input').val());
                     break;
             }
-            shard.create()
+            shard.save()
                 .done(() => {
                     $.notify(`Shard <kbd>${ shard.get('id') }</kbd> created.`);
                     this.trigger('shard:saved');
