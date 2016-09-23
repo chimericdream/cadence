@@ -2,12 +2,12 @@
 
 const _ = require('lodash');
 const express = require('express');
-const events = require('events');
-const fs = require('fs');
+const fsp = require('fs-promise');
 const logger = require('winston');
 const path = require('path');
 const sass = require('express-compile-sass');
 
+const events = require('events');
 const EventEmitter = events.EventEmitter;
 
 const api = require('./api/main');
@@ -40,14 +40,24 @@ module.exports = class WebApplication extends EventEmitter {
     }
 
     init() {
-        this.server.use('/api', api);
+        this.server.use('/api', api.router);
         this.server.get('/', (request, response) => {
-            const html = fs.readFileSync('src/index.html');
-            response.set('Content-Type', 'text/html');
-            response.send(html);
+            fsp.readFile('src/index.html')
+                .then((html) => {
+                    response.set('Content-Type', 'text/html');
+                    response.send(html);
+                });
         });
 
         return this;
+    }
+
+    ensureFiles() {
+        const promises = [];
+        api.dataFiles.forEach((file) => {
+            promises.push(fsp.ensureFile(file));
+        });
+        return Promise.all(promises);
     }
 
     start() {

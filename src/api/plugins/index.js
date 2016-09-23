@@ -1,8 +1,9 @@
 'use strict';
 
+const _ = require('lodash');
 const bodyParser = require('body-parser');
 const express = require('express');
-const fs = require('fs');
+const fsp = require('fs-promise');
 
 // eslint-disable-next-line new-cap
 const router = express.Router();
@@ -10,118 +11,201 @@ const router = express.Router();
 const google = require('./google/index');
 const toodledo = require('./toodledo/index');
 
-router.use('/google', google);
-router.use('/toodledo', toodledo);
+router.use('/google', google.router);
+router.use('/toodledo', toodledo.router);
 
 // get all plugins
 // TODO: [Refactor] This method and the one below it are nearly identical.
 router.get('/', (request, response) => {
-    const plugins = JSON.parse(fs.readFileSync('config/plugins.json'));
+    let plugins;
 
-    Object.keys(plugins).forEach((key) => {
-        try {
-            plugins[key].accounts = JSON.parse(fs.readFileSync(`data/plugins/${ key }/accounts.json`));
-        } catch (error) {
-            if (error.code === 'ENOENT') {
-                plugins[key].accounts = {};
-            } else {
-                throw error;
-            }
-        }
-    });
+    fsp.readFile('config/plugins.json')
+        .then((data) => {
+            const promises = [];
 
-    response.json(plugins);
+            plugins = JSON.parse(data);
+
+            Object.keys(plugins).forEach((key) => {
+                promises.push(
+                    fsp.readFile(`data/plugins/${ key }/accounts.json`)
+                        .then((accountData) => {
+                            plugins[key].accounts = JSON.parse(accountData);
+                        })
+                        .catch(() => {
+                            plugins[key].accounts = {};
+                        })
+                );
+            });
+
+            return Promise.all(promises);
+        })
+        .then(() => {
+            response.json(plugins);
+        })
+        .catch((error) => {
+            console.dir(error);
+            response.status(500).end();
+        });
 });
 
 // get one plugin
 router.get('/:plugin', (request, response) => {
-    const plugins = JSON.parse(fs.readFileSync('config/plugins.json'));
     const key = request.params.plugin;
 
-    try {
-        plugins[key].accounts = JSON.parse(fs.readFileSync(`data/plugins/${ key }/accounts.json`));
-    } catch (error) {
-        if (error.code === 'ENOENT') {
-            plugins[key].accounts = {};
-        } else {
-            throw error;
-        }
-    }
+    let plugins, pluginConfig, accounts, status;
 
-    response.json(plugins[key]);
+    const pluginPromise = fsp.readFile('config/plugins.json')
+        .then((data) => {
+            plugins = JSON.parse(data);
+        });
+
+    const configPromise = fsp.readFile(`config/plugins/${ key }.json`)
+        .then((data) => {
+            pluginConfig = JSON.parse(data);
+        });
+
+    const accountPromise = fsp.readFile(`data/plugins/${ key }/accounts.json`)
+        .then((data) => {
+            accounts = JSON.parse(data);
+        })
+        .catch((error) => {
+            if (error.code === 'ENOENT') {
+                accounts = {};
+                return Promise.resolve();
+            } else {
+                return Promise.reject(error);
+            }
+        });
+
+    Promise.all([pluginPromise, configPromise, accountPromise])
+        .then(() => {
+            const plugin = plugins[key];
+            plugin.accounts = accounts;
+            plugin.config = pluginConfig;
+
+            response.json(plugin);
+        })
+        .catch((error) => {
+            console.dir(error);
+            response.status(500).end();
+        });
 });
 
 // enable a plugin
 router.put('/:plugin/enable', (request, response) => {
-    const plugin = request.params.plugin;
-    const plugins = JSON.parse(fs.readFileSync('config/plugins.json'));
-
-    plugins[plugin].enabled = true;
-    fs.writeFileSync('config/plugins.json', JSON.stringify(plugins, null, 4));
-
-    response.status(200).end();
+    fsp.readFile('config/plugins.json')
+        .then((data) => {
+            const plugins = JSON.parse(data);
+            plugins[request.params.plugin].enabled = true;
+            return fsp.writeFile('config/plugins.json', JSON.stringify(plugins, null, 4));
+        })
+        .then(() => {
+            response.status(200).end();
+        })
+        .catch((error) => {
+            console.dir(error);
+            response.status(500).end();
+        });
 });
 
 // disable a plugin
 router.put('/:plugin/disable', (request, response) => {
-    const plugin = request.params.plugin;
-    const plugins = JSON.parse(fs.readFileSync('config/plugins.json'));
-
-    plugins[plugin].enabled = false;
-    fs.writeFileSync('config/plugins.json', JSON.stringify(plugins, null, 4));
-
-    response.status(200).end();
+    fsp.readFile('config/plugins.json')
+        .then((data) => {
+            const plugins = JSON.parse(data);
+            plugins[request.params.plugin].enabled = false;
+            return fsp.writeFile('config/plugins.json', JSON.stringify(plugins, null, 4));
+        })
+        .then(() => {
+            response.status(200).end();
+        })
+        .catch((error) => {
+            console.dir(error);
+            response.status(500).end();
+        });
 });
 
 // get all accounts
 router.get('/:plugin/accounts', (request, response) => {
     const plugin = request.params.plugin;
-    response.json(JSON.parse(fs.readFileSync(`data/plugins/${ plugin }/accounts.json`)));
+    fsp.readFile(`data/plugins/${ plugin }/accounts.json`)
+        .then((data) => {
+            response.json(JSON.parse(data));
+        })
+        .catch((error) => {
+            console.dir(error);
+            response.status(500).end();
+        });
 });
 
 // get template used when creating an account
 router.get('/:plugin/account-template', (request, response) => {
     const plugin = request.params.plugin;
-    response.json(JSON.parse(fs.readFileSync(`config/plugins/${ plugin }.json`)));
+    fsp.readFile(`config/plugins/${ plugin }.json`)
+        .then((data) => {
+            response.json(JSON.parse(data));
+        })
+        .catch((error) => {
+            console.dir(error);
+            response.status(500).end();
+        });
 });
 
 function saveAccount(plugin, accountId, body, response) {
-    const plugins = JSON.parse(fs.readFileSync('config/plugins.json'));
-    const pluginConfig = JSON.parse(fs.readFileSync(`config/plugins/${ plugin }.json`));
+    let plugins, pluginConfig, accounts, status;
 
-    let accounts;
-    try {
-        accounts = JSON.parse(fs.readFileSync(`data/plugins/${ plugin }/accounts.json`));
-    } catch (error) {
-        if (error.code === 'ENOENT') {
-            accounts = {};
-        } else {
-            throw error;
-        }
-    }
+    const pluginPromise = fsp.readFile('config/plugins.json')
+        .then((data) => {
+            plugins = JSON.parse(data);
+        });
 
-    const account = {};
+    const configPromise = fsp.readFile(`config/plugins/${ plugin }.json`)
+        .then((data) => {
+            pluginConfig = JSON.parse(data);
+        });
 
-    account.fields = body;
-    account.data = pluginConfig['account-template'].data;
-
-    let status;
-    if (typeof accounts[accountId] === 'undefined') {
-        status = 201;
-    } else {
-        status = 204;
-    }
-
-    accounts[accountId] = account;
-
-    fs.writeFileSync(`data/plugins/${ plugin }/accounts.json`, JSON.stringify(accounts, null, 4));
-
-    response.status(status)
-        .set({
-            'X-Cadence-Account-ID': accountId,
-            'X-Cadence-Plugin': plugins[plugin].name
+    const accountPromise = fsp.readFile(`data/plugins/${ plugin }/accounts.json`)
+        .then((data) => {
+            accounts = JSON.parse(data);
         })
-        .end();
+        .catch((error) => {
+            if (error.code === 'ENOENT') {
+                accounts = {};
+                return Promise.resolve();
+            } else {
+                return Promise.reject(error);
+            }
+        });
+
+    Promise.all([pluginPromise, configPromise, accountPromise])
+        .then(() => {
+            const account = {};
+
+            account.fields = body;
+            account.data = pluginConfig['account-template'].data;
+
+            if (typeof accounts[accountId] === 'undefined') {
+                status = 201;
+            } else {
+                status = 204;
+            }
+
+            accounts[accountId] = account;
+
+            return fsp.writeFile(`data/plugins/${ plugin }/accounts.json`, JSON.stringify(accounts, null, 4));
+        })
+        .then(() => {
+            response.status(status)
+                .set({
+                    'X-Cadence-Account-ID': accountId,
+                    'X-Cadence-Plugin': plugins[plugin].name
+                })
+                .end();
+        })
+        .catch((error) => {
+            console.dir(error);
+            response.status(500).end();
+        });
 }
 
 // add account
@@ -145,10 +229,17 @@ router.post(
 // view account
 router.get('/:plugin/accounts/:account', (request, response) => {
     const plugin = request.params.plugin;
-    const account = request.params.account;
-    const accounts = JSON.parse(fs.readFileSync(`data/plugins/${ plugin }/accounts.json`));
+    fsp.readFile(`data/plugins/${ plugin }/accounts.json`)
+        .then((data) => {
+            const accounts = JSON.parse(data);
+            const account = request.params.account;
 
-    response.json(accounts[account]);
+            response.json(accounts[account]);
+        })
+        .catch((error) => {
+            console.dir(error);
+            response.status(500).end();
+        });
 });
 
 // edit account
@@ -166,4 +257,12 @@ router.post(
     saveAccount(plugin, accountId, request.body, response);
 });
 
-module.exports = router;
+module.exports = {
+    'router': router,
+    'dataFiles': _.concat([
+            'config/plugins.json'
+        ],
+        google.dataFiles,
+        toodledo.dataFiles
+    )
+};

@@ -1,54 +1,87 @@
 'use strict';
 
+const _ = require('lodash');
 const bodyParser = require('body-parser');
 const express = require('express');
-const fs = require('fs');
+const fsp = require('fs-promise');
 
 // eslint-disable-next-line new-cap
 const router = express.Router();
 
 router.get('/', (request, response) => {
-    const shards = JSON.parse(fs.readFileSync('data/shards.json'));
-    response.json(shards);
+    fsp.readFile('data/shards.json')
+        .then((data) => {
+            // TODO: can I get away with just response.send(data)?
+            response.json(JSON.parse(data));
+        })
+        .catch((error) => {
+            console.dir(error);
+            response.status(500).end();
+        });
 });
 
 router.get('/:id', (request, response) => {
-    const shards = JSON.parse(fs.readFileSync('data/shards.json'));
-    const shard = shards[request.params.id];
-    if (typeof shard === 'undefined') {
-        // TODO: Make a "shard not found" template
-        response.status(404).send('');
-        return;
-    }
-    response.json(shard);
+    fsp.readFile('data/shards.json')
+        .then((data) => {
+            const shards = JSON.parse(data);
+            const shard = shards[request.params.id];
+
+            if (typeof shard === 'undefined') {
+                // TODO: Make a "shard not found" template
+                response.status(404).send('');
+                return;
+            }
+
+            response.json(shard);
+        })
+        .catch((error) => {
+            console.dir(error);
+            response.status(500).end();
+        });
 });
 
 router.delete('/:id', (request, response) => {
-    const shards = JSON.parse(fs.readFileSync('data/shards.json'));
-    const shard = shards[request.params.id];
-    if (typeof shard === 'undefined') {
-        // TODO: Make a "shard not found" template
-        response.status(404).send('');
-        return;
-    }
+    let shards;
+    const deleteId = request.params.id;
 
-    delete shards[request.params.id];
-    fs.unlinkSync(`data/shards/${ shard.id }.json`);
-    fs.writeFileSync('data/shards.json', JSON.stringify(shards, null, 4));
+    fsp.readFile('data/shards.json')
+        .then((data) => {
+            shards = JSON.parse(data);
 
-    response.status(204).end();
+            const shard = shards[deleteId];
+            if (typeof shard === 'undefined') {
+                // TODO: Make a "shard not found" template
+                response.status(404).send('');
+
+                // TODO: Figure out how this will work with the promise-based logic now
+                return Promise.reject();
+            }
+
+            delete shards[deleteId];
+            const deletePromise = fsp.unlink(`data/shards/${ shard.id }.json`);
+            const shardPromise = fsp.writeFile('data/shards.json', JSON.stringify(shards, null, 4));
+
+            return Promise.all([deletePromise, shardPromise]);
+        })
+        .then(() => {
+            response.status(204).end();
+        })
+        .catch((error) => {
+            console.dir(error);
+            response.status(500).end();
+        });
 });
 
 router.get('/history/:id', (request, response) => {
-    const shards = JSON.parse(fs.readFileSync('data/shards.json'));
-    const shard = shards[request.params.id];
-    if (typeof shard === 'undefined') {
-        // TODO: Make a "shard not found" template
-        response.status(404).send('');
-        return;
-    }
-    const history = JSON.parse(fs.readFileSync(`data/shards/${ shard.id }.json`));
-    response.json(history);
+    fsp.readFile(`data/shards/${ request.params.id }.json`)
+        .then((data) => {
+            // TODO: can I get away with just response.send(data)?
+            response.json(JSON.parse(data));
+        })
+        .catch((error) => {
+            console.dir(error);
+            response.status(500).end();
+        });
 });
 
 router.put(
@@ -60,28 +93,50 @@ router.put(
             return response.status(400).end();
         }
 
-        const shards = JSON.parse(fs.readFileSync('data/shards.json'));
+        let shards, history;
         const shard = request.body;
-
-        let history;
-        if (typeof shards[shard.id] === 'undefined') {
-            history = [];
-        } else {
-            history = JSON.parse(fs.readFileSync(`data/shards/${ shard.id }.json`));
+        if (typeof shard.updated === 'undefined') {
+            shard.updated = Date.now();
         }
 
-        history.push({
-            'value': shard.value,
-            'updated': shard.updated
-        });
+        fsp.readFile('data/shards.json')
+            .then((data) => {
+                shards = JSON.parse(data);
 
-        shards[shard.id] = shard;
+                if (typeof shards[shard.id] === 'undefined') {
+                    return Promise.resolve(JSON.stringify([]));
+                } else {
+                    return fsp.readFile(`data/shards/${ shard.id }.json`);
+                }
+            })
+            .then((data) => {
+                history = JSON.parse(data);
 
-        fs.writeFileSync('data/shards.json', JSON.stringify(shards, null, 4));
-        fs.writeFileSync(`data/shards/${ shard.id }.json`, JSON.stringify(history, null, 4));
+                history.push({
+                    'value': shard.value,
+                    'updated': shard.updated
+                });
 
-        response.status(204).end();
+                shards[shard.id] = shard;
+
+                const shardPromise = fsp.writeFile('data/shards.json', JSON.stringify(shards, null, 4));
+                const historyPromise = fsp.writeFile(`data/shards/${ shard.id }.json`, JSON.stringify(history, null, 4));
+
+                return Promise.all([shardPromise, historyPromise]);
+            })
+            .then(() => {
+                response.status(204).end();
+            })
+            .catch((error) => {
+                console.dir(error);
+                response.status(500).end();
+            });
     }
 );
 
-module.exports = router;
+module.exports = {
+    'router': router,
+    'dataFiles': [
+        'data/shards.json'
+    ]
+};

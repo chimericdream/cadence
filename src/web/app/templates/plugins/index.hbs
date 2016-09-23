@@ -28,8 +28,8 @@
                             <a href="#collapse-{{ @key }}-actions" data-toggle="collapse" data-parent="{{ @../key }}-account-list" aria-expanded="false">{{ @key }}</a>
                             <div id="collapse-{{ @key }}-actions" class="collapse container">
                                 <div class="btn-group row">
-                                    <a href="/plugins/{{ @../key }}/edit-account/{{ @key }}" class="btn btn-outline-primary btn-sm col-xs">Edit <i class="fa fa-edit"></i></a>
-                                    <a href="/plugins/{{ @../key }}/accounts/{{ @key }}" class="btn btn-outline-inverse btn-sm col-xs">Data <i class="fa fa-archive"></i></a>
+                                    <a href="/plugins/{{ @../key }}/accounts/edit/{{ @key }}" class="btn btn-outline-primary btn-sm col-xs">Edit <i class="fa fa-edit"></i></a>
+                                    <a href="/plugins/{{ @../key }}/accounts/view/{{ @key }}" class="btn btn-outline-inverse btn-sm col-xs">Data <i class="fa fa-archive"></i></a>
                                     <a href="#" class="js-delete-account btn btn-outline-danger btn-sm col-xs" data-plugin-name="{{ ../name }}" data-plugin-key="{{ @../key }}" data-account-key="{{ @key }}">Delete <i class="fa fa-remove"></i></a>
                                 </div>
                             </div>
@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div class="card-footer">
-                <a href="/plugins/{{ @key }}/add-account" class="btn btn-sm btn-primary"><i class="fa fa-user-plus" aria-hidden="true"></i> Add Account</a>
+                <a href="/plugins/{{ @key }}/accounts/add" class="btn btn-sm btn-primary"><i class="fa fa-user-plus" aria-hidden="true"></i> Add Account</a>
                 <a href="#" class="js-enable-plugin btn btn-sm btn-success" data-plugin="{{ @key }}"{{#if enabled}} style="display: none;"{{/if}}><i class="fa fa-check" aria-hidden="true"></i> Enable</a>
                 <a href="#" class="js-disable-plugin btn btn-sm btn-danger" data-plugin="{{ @key }}"{{#unless enabled}} style="display: none;"{{/unless}}><i class="fa fa-ban" aria-hidden="true"></i> Disable</a>
             </div>

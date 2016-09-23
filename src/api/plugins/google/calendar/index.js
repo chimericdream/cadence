@@ -9,4 +9,9 @@ router.get('/', (request, response) => {
     response.send('Google Calendar home page');
 });
 
-module.exports = router;
+module.exports = {
+    'router': router,
+    'dataFiles': [
+        'config/plugins/google/calendar.json'
+    ]
+};

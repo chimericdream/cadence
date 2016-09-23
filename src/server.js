@@ -14,22 +14,30 @@ const args = require('yargs')
     .alias('help', 'h')
     .argv;
 
-// eslint-disable-next-line id-length
-const fs = require('fs');
+const fsp = require('fs-promise');
 
 const AppConfig = require('./config');
 const WebApplication = require('./app');
 
 let localConfig;
 
-if (typeof args.config !== 'undefined') {
-    // eslint-disable-next-line no-sync
-    localConfig = JSON.parse(fs.readFileSync(args.config, 'utf-8'));
-} else {
-    localConfig = {};
-}
+const configPromise = fsp.readFile(args.config, 'utf-8')
+    .then((data) => {
+        localConfig = JSON.parse(data);
+        return Promise.resolve();
+    })
+    .catch(() => {
+        localConfig = {};
+        return Promise.resolve();
+    });
 
-const config = new AppConfig(localConfig);
-const web = new WebApplication(config);
+configPromise.then(() => {
+    const config = new AppConfig(localConfig);
+    const web = new WebApplication(config);
 
-web.init().start();
+    web.init();
+    web.ensureFiles()
+        .then(() => {
+            web.start();
+        });
+});

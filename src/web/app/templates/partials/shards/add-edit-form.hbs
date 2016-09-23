@@ -38,20 +38,26 @@
         <div class="col-sm-10">
             {{#if shard}}
                 {{#equal shard.type "boolean"}}
+                <div id="shard-value-boolean">
                     <label class="form-check-inline">
                         <input class="form-check-input" type="radio" name="shard-value-boolean" id="shard-value-boolean-true" value="true"{{#equal shard.value true}} checked{{/equal}}> True
                     </label>
                     <label class="form-check-inline">
                         <input class="form-check-input" type="radio" name="shard-value-boolean" id="shard-value-boolean-false" value="false"{{#equal shard.value false}} checked{{/equal}}> False
                     </label>
+                </div>
                 {{/equal}}
 
                 {{#equal shard.type "json"}}
+                <div id="shard-value-json">
                     <textarea class="form-control text-monospace" name="shard-value-json" rows="3">{{ json shard.value }}</textarea>
+                </div>
                 {{/equal}}
 
                 {{#equal shard.type "text"}}
+                <div id="shard-value-text">
                     <input type="text" class="form-control" name="shard-value-text" value="{{ shard.value }}">
+                </div>
                 {{/equal}}
             {{ else }}
                 <div id="shard-value-notype">
