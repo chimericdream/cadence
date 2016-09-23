@@ -22,7 +22,7 @@ module.exports = class WebApplication extends EventEmitter {
         this.server.use(sass(
             _.merge(
                 {'root': path.join(__dirname, 'web')},
-                this.config.web.sass
+                this.config.sass
             )
         ));
         this.server.use(
@@ -61,7 +61,7 @@ module.exports = class WebApplication extends EventEmitter {
     }
 
     start() {
-        this.server.listen(this.config.web.port, () => {
+        this.server.listen(this.config.port, () => {
             logger.info('web server started!');
         });
 
