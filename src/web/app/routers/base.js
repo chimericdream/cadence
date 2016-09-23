@@ -5,6 +5,10 @@ define('routers/base', ['backbone'], function(Backbone) {
 
     const Router = Backbone.Router.extend();
 
+    Router.prototype.initialize = function() {
+        this.$app = $('#cadence-app');
+    };
+
     Router.prototype.isEventListenedTo = function(eventName) {
         return (this._events) ? !!this._events[eventName] : false;
     };
@@ -23,8 +27,10 @@ define('routers/base', ['backbone'], function(Backbone) {
 
     Router.prototype.render = function(view, data) {
         view.render(data);
-        $('#cadence-app').children().detach();
-        $('#cadence-app').append(view.$el);
+
+        this.$app.children().detach();
+        $('body').removeClass('js-cadence-pre-init');
+        this.$app.append(view.$el);
     };
 
     return Router;

@@ -1,12 +1,12 @@
-<form id="shard-form" action="/shards/{{#if shard}}edit/{{ shard.id }}{{ else }}add{{/if}}/" method="POST">
+<form id="shard-form">
     <div class="form-group row">
         <label for="shard-id" class="col-sm-2 col-form-label">ID</label>
         <div class="col-sm-10">
             {{#if shard}}
                 <p class="form-control-static">{{ shard.id }}</p>
-                <input type="hidden" name="shard-id">
+                <input type="hidden" id="shard-id" name="shard-id" value="{{ shard.id }}">
             {{ else }}
-                <input type="text" id="shard-id" class="form-control" name="shard-id">
+                <input type="text" id="shard-id" class="form-control" name="shard-id" required>
                 <small class="form-text text-muted">This will be used in the URL for the shard.</small>
             {{/if}}
         </div>
@@ -22,8 +22,9 @@
         <div class="col-sm-10">
             {{#if shard}}
                 <p class="form-control-static">{{ shard.type }}</p>
+                <input type="hidden" id="shard-type" name="shard-type" value="{{ shard.type }}">
             {{ else }}
-                <select class="form-control" id="shard-type" name="shard-type">
+                <select class="form-control" id="shard-type" name="shard-type" required>
                     <option value=""></option>
                     <option value="boolean">Boolean</option>
                     <option value="json">JSON Object</option>
@@ -78,7 +79,7 @@
     </div>
     <div class="row">
         <div class="col-sm-10 offset-sm-2">
-            <button type="submit" class="btn btn-primary pull-left">Save</button>
+            <button id="save-shard-btn" class="btn btn-primary pull-left">Save</button>
             <button type="reset" class="btn btn-link pull-right">Reset</button>
         </div>
     </div>

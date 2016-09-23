@@ -33,6 +33,7 @@ router.delete('/:id', (request, response) => {
     }
 
     delete shards[request.params.id];
+    fs.unlinkSync(`data/shards/${ shard.id }.json`);
     fs.writeFileSync('data/shards.json', JSON.stringify(shards, null, 4));
 
     response.status(204).end();
@@ -50,72 +51,75 @@ router.get('/history/:id', (request, response) => {
     response.json(history);
 });
 
-router.post('/edit/:id', bodyParser.urlencoded({ 'extended': false }), (request, response) => {
-    if (!request.body) {
-        return response.sendStatus(400);
+router.put(
+    '/:id',
+    bodyParser.json(),
+    (request, response) => {
+        if (!request.body) {
+            // TODO: error message
+            return response.status(400).end();
+        }
+
+        const shards = JSON.parse(fs.readFileSync('data/shards.json'));
+        const shard = request.body;
+
+        if (typeof shards[request.params.id] === 'undefined') {
+            // TODO: Make a "shard not found" template
+            response.status(404).send('');
+            return;
+        }
+
+        if (shard.id !== request.params.id) {
+            // TODO: error message
+            return response.status(400).end();
+        }
+
+        const history = JSON.parse(fs.readFileSync(`data/shards/${ shard.id }.json`));
+        const typeValue = `shard-value-${ shard.type }`;
+
+        history.push({
+            'value': shard.value,
+            'updated': shard.updated
+        });
+
+        shards[shard.id] = shard;
+
+        fs.writeFileSync('data/shards.json', JSON.stringify(shards, null, 4));
+        fs.writeFileSync(`data/shards/${ shard.id }.json`, JSON.stringify(history, null, 4));
+
+        response.status(204).end();
     }
+);
 
-    const shards = JSON.parse(fs.readFileSync('data/shards.json'));
-    const shard = shards[request.params.id];
-    if (typeof shard === 'undefined') {
-        // TODO: Make a "shard not found" template
-        response.status(404).send('');
-        return;
+router.post(
+    '/add',
+    bodyParser.json(),
+    (request, response) => {
+        if (!request.body) {
+            // TODO: error message
+            return response.status(400).end();
+        }
+
+        const shards = JSON.parse(fs.readFileSync('data/shards.json'));
+        const shard = request.body;
+
+        if (typeof shards[shard.id] !== 'undefined') {
+            // TODO: send this back with the response
+            console.log('You cannot have two shards with the same id');
+            return response.status(400).end();
+        }
+        shards[shard.id] = shard;
+
+        const history = [{
+            'value': shard.value,
+            'updated': shard.updated
+        }];
+
+        fs.writeFileSync('data/shards.json', JSON.stringify(shards, null, 4));
+        fs.writeFileSync(`data/shards/${ shard.id }.json`, JSON.stringify(history, null, 4));
+
+        response.status(201).end();
     }
-
-    const body = request.body;
-
-    const history = JSON.parse(fs.readFileSync(`data/shards/${ shard.id }.json`));
-    const typeValue = `shard-value-${ shard.type }`;
-
-    shard.description = body['shard-description'];
-    shard.value = (shard.type === 'json') ? JSON.parse(body[typeValue]) : body[typeValue];
-    shard.updated = Date.now();
-
-    history.push({
-        'value': shard.value,
-        'updated': shard.updated
-    });
-
-    shards[shard.id] = shard;
-
-    fs.writeFileSync('data/shards.json', JSON.stringify(shards, null, 4));
-    fs.writeFileSync(`data/shards/${ shard.id }.json`, JSON.stringify(history, null, 4));
-
-    response.redirect(`/shards/?saved`);
-});
-
-router.post('/add', bodyParser.urlencoded({ 'extended': false }), (request, response) => {
-    if (!request.body) {
-        return response.sendStatus(400);
-    }
-
-    const shards = JSON.parse(fs.readFileSync('data/shards.json'));
-    const body = request.body;
-
-    const typeValue = `shard-value-${body['shard-type']}`;
-    const shard = {
-        'id': body['shard-id'],
-        'description': body['shard-description'],
-        'type': body['shard-type'],
-        'value': (body['shard-type'] === 'json') ? JSON.parse(body[typeValue]) : body[typeValue],
-        'updated': Date.now()
-    };
-
-    if (typeof shards[shard.id] !== 'undefined') {
-        throw 'You cannot have two shards with the same id';
-    }
-    shards[shard.id] = shard;
-
-    const history = [{
-        'value': shard.value,
-        'updated': shard.updated
-    }];
-
-    fs.writeFileSync('data/shards.json', JSON.stringify(shards, null, 4));
-    fs.writeFileSync(`data/shards/${ shard.id }.json`, JSON.stringify(history, null, 4));
-
-    response.status(201).end();
-});
+);
 
 module.exports = router;

@@ -5,9 +5,10 @@ define('models/shard', ['jquery', 'backbone'], ($, Backbone) => {
         'urlRoot': '/api/shards',
         'defaults': {
             'id': '',
-            'plugin': null,
-            'fields': {},
-            'data': {}
+            'description': '',
+            'type': '',
+            'value': '',
+            'updated': 0
         }
     });
 
@@ -23,13 +24,19 @@ define('models/shard', ['jquery', 'backbone'], ($, Backbone) => {
         return `${ this.urlRoot }/history/${ this.get('id') }`;
     };
 
+    Model.prototype.save = function() {
+        this.set('updated', Date.now());
+        return Backbone.Model.prototype.save.call(this);
+    };
+
     Model.prototype.create = function() {
+        this.set('updated', Date.now());
         return $.ajax({
             'url': this.createUrl(),
             'method': 'POST',
+            'contentType': 'application/json',
             'processData': false,
-            'dataType': 'json',
-            'data': this.attributes
+            'data': JSON.stringify(this.attributes)
         });
     };
 

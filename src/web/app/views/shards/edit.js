@@ -24,18 +24,31 @@ define(
         View.prototype.saveShard = function(event) {
             event.preventDefault();
             event.stopPropagation();
-            const url = $('#shard-form').attr('action');
-            $.ajax({
-                'url': url,
-                'method': 'POST',
-                'processData': false,
-                'dataType': 'text',
-                'data': $('#shard-form').serialize()
-            }).done((data, status, xhr) => {
-                const shardId = xhr.getResponseHeader('X-Cadence-Shard-ID');
-                $.notify(`Shard <kbd>${ shardId }</kbd> updated.`);
-                this.trigger('shard:saved');
+            const shard = new ShardModel({
+                'id': $('#shard-id').val(),
+                'description': $('#shard-description').val(),
+                'type': $('#shard-type').val()
             });
+            switch (shard.get('type')) {
+                case 'boolean':
+                    if ($('input[name=shard-value-boolean]:checked').val() === 'true') {
+                        shard.set('value', true);
+                    } else {
+                        shard.set('value', false);
+                    }
+                    break;
+                case 'json':
+                    shard.set('value', JSON.parse($('#shard-value-json textarea').val()));
+                    break;
+                case 'text':
+                    shard.set('value', $('#shard-value-text input').val());
+                    break;
+            }
+            shard.save()
+                .done(() => {
+                    $.notify(`Shard <kbd>${ shard.get('id') }</kbd> updated.`);
+                    this.trigger('shard:saved');
+                });
         };
 
         View.prototype.render = function(data) {
