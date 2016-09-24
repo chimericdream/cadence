@@ -20,7 +20,7 @@ define(
     ) => {
         const View = BaseView.extend({
             'events': {
-                'click .modal-action-button': 'confirmAction'
+                'click .js-modal-action-button': 'confirmAction'
             }
         });
 
