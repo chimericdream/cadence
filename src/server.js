@@ -21,7 +21,7 @@ const WebApplication = require('./app');
 
 let localConfig;
 
-const configPromise = fsp.readFile(args.config, 'utf-8')
+const configPromise = fsp.readFile(args.localConfig, 'utf-8')
     .then((data) => {
         localConfig = JSON.parse(data);
         return Promise.resolve();
