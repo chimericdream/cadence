@@ -2,15 +2,6 @@
 
 <h1 class="page-header">Plugins</h1>
 
-{{#if modifiedAccount}}
-    <div class="alert alert-success alert-dismissible fade in" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
-        </button>
-        Account <kbd>{{ modifiedAccount.account }}</kbd> {{#equal modifiedAccount.action 'add'}}added{{ else }}updated{{/equal}}.
-    </div>
-{{/if}}
-
 <div class="row">
 {{#each plugins}}
     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">

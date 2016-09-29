@@ -1,13 +1,8 @@
 @import "variables";
 
-@import "../../bower/bootstrap/scss/bootstrap";
-@import "bootstrap";
-
-@import "../../bower/font-awesome/scss/font-awesome";
+@import "../../bower/ictus/src/scss/complete";
 
 @import "jquery";
-
-@import "code";
 
 @import "layout";
 @import "sidebar";
@@ -38,19 +33,4 @@ body.js-cadence-pre-init {
             width: 15vw;
         }
     }
-}
-
-.placeholders {
-    margin-bottom: 30px;
-    text-align: center;
-}
-.placeholders h4 {
-    margin-bottom: 0;
-}
-.placeholder {
-    margin-bottom: 20px;
-}
-.placeholder img {
-    display: inline-block;
-    border-radius: 50%;
 }
