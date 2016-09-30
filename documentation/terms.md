@@ -15,3 +15,6 @@ a connection between two entities wherein a particular field is kept in sync bet
 
 #### Shard
 a piece of data not directly associated with a Plugin, Component, or Entity. A shard's value can be used in a workflow for branching (if/then) or as additional data. Shards can be updated via REST calls (such as those from IFTTT). For example, a shard could be "Joe at home", and its value would be toggled "true" or "false". Shards may also be complex structured data (i.e. JSON objects), such as a Fitbit daily activity summary or a weekly driving summary from Automatic. These are especially handy for generating graphs and other data visualizations.
+
+#### Collection
+similar to a shard, but instead of containing a single value, a collection can contain multiple items. Basically an array of shard-like objects.
