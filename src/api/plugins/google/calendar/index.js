@@ -13,5 +13,6 @@ module.exports = {
     'router': router,
     'dataFiles': [
         'config/plugins/google/calendar.json'
-    ]
+    ],
+    'dataDirs': []
 };

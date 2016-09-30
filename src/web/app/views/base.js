@@ -8,14 +8,15 @@ define('views/base', ['lodash', 'backbone', 'handlebars', 'json!data/sidebar-lin
     };
 
     View.prototype.renderTemplate = function(template, data) {
+        const fragment = Backbone.history.getFragment();
+        const hbs = Handlebars.compile(template);
+
         data = data || {};
 
         _.merge(data, {
-            'currentUrl': '/',
-            'sidebarLinks': SidebarLinks
+            'current-page': `/${ fragment }`,
+            'sidebar-links': SidebarLinks
         });
-
-        const hbs = Handlebars.compile(template);
 
         return hbs(data);
     };

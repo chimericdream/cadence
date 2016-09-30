@@ -19,5 +19,9 @@ module.exports = {
         ],
         shards.dataFiles,
         plugins.dataFiles
+    ),
+    'dataDirs': _.concat([],
+        shards.dataDirs,
+        plugins.dataDirs
     )
 };

@@ -4,6 +4,7 @@ const _ = require('lodash');
 const bodyParser = require('body-parser');
 const express = require('express');
 const fsp = require('fs-promise');
+const getJson = require('../../helpers/get-json');
 
 // eslint-disable-next-line new-cap
 const router = express.Router();
@@ -11,8 +12,7 @@ const router = express.Router();
 router.get('/', (request, response) => {
     fsp.readFile('data/shards.json')
         .then((data) => {
-            // TODO: can I get away with just response.send(data)?
-            response.json(JSON.parse(data));
+            response.json(getJson(data));
         })
         .catch((error) => {
             console.dir(error);
@@ -23,7 +23,7 @@ router.get('/', (request, response) => {
 router.get('/:id', (request, response) => {
     fsp.readFile('data/shards.json')
         .then((data) => {
-            const shards = JSON.parse(data);
+            const shards = getJson(data);
             const shard = shards[request.params.id];
 
             if (typeof shard === 'undefined') {
@@ -46,7 +46,7 @@ router.delete('/:id', (request, response) => {
 
     fsp.readFile('data/shards.json')
         .then((data) => {
-            shards = JSON.parse(data);
+            shards = getJson(data);
 
             const shard = shards[deleteId];
             if (typeof shard === 'undefined') {
@@ -75,8 +75,7 @@ router.delete('/:id', (request, response) => {
 router.get('/history/:id', (request, response) => {
     fsp.readFile(`data/shards/${ request.params.id }.json`)
         .then((data) => {
-            // TODO: can I get away with just response.send(data)?
-            response.json(JSON.parse(data));
+            response.json(getJson(data));
         })
         .catch((error) => {
             console.dir(error);
@@ -101,7 +100,7 @@ router.put(
 
         fsp.readFile('data/shards.json')
             .then((data) => {
-                shards = JSON.parse(data);
+                shards = getJson(data);
 
                 if (typeof shards[shard.id] === 'undefined') {
                     return Promise.resolve(JSON.stringify([]));
@@ -110,7 +109,7 @@ router.put(
                 }
             })
             .then((data) => {
-                history = JSON.parse(data);
+                history = getJson(data);
 
                 history.push({
                     'value': shard.value,
@@ -138,5 +137,8 @@ module.exports = {
     'router': router,
     'dataFiles': [
         'data/shards.json'
+    ],
+    'dataDirs': [
+        'data/shards'
     ]
 };

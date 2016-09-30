@@ -9,9 +9,7 @@ define(
         'routers/home',
         'routers/plugins',
         'routers/shards',
-        'util/hbs-helpers',
-        'util/load-partials',
-        'util/load-jq-plugins'
+        'util/cadence-init'
     ],
     (
         $,

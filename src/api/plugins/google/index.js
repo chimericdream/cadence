@@ -17,6 +17,9 @@ router.get('/', (request, response) => {
 module.exports = {
     'router': router,
     'dataFiles': _.concat([
-        'config/plugins/google.json'
-    ], calendar.dataFiles)
+            'config/plugins/google.json'
+        ],
+        calendar.dataFiles
+    ),
+    'dataDirs': []
 };

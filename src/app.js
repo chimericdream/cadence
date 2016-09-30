@@ -27,15 +27,27 @@ module.exports = class WebApplication extends EventEmitter {
         ));
         this.server.use(
             '/bower',
-            express.static(path.join(__dirname, 'web/bower'))
+            express.static(path.join(__dirname, 'web/bower'), {
+                'setHeaders': (res, filePath) => {
+                    res.type(path.extname(filePath));
+                }
+            })
         );
         this.server.use(
             '/assets',
-            express.static(path.join(__dirname, 'web/assets'))
+            express.static(path.join(__dirname, 'web/assets'), {
+                'setHeaders': (res, filePath) => {
+                    res.type(path.extname(filePath));
+                }
+            })
         );
         this.server.use(
             '/app',
-            express.static(path.join(__dirname, 'web/app'))
+            express.static(path.join(__dirname, 'web/app'), {
+                'setHeaders': (res, filePath) => {
+                    res.type(path.extname(filePath));
+                }
+            })
         );
     }
 
@@ -56,6 +68,9 @@ module.exports = class WebApplication extends EventEmitter {
         const promises = [];
         api.dataFiles.forEach((file) => {
             promises.push(fsp.ensureFile(file));
+        });
+        api.dataDirs.forEach((dir) => {
+            promises.push(fsp.ensureDir(dir));
         });
         return Promise.all(promises);
     }

@@ -3,6 +3,7 @@
 const _ = require('lodash');
 const express = require('express');
 const fsp = require('fs-promise');
+const getJson = require('../../../helpers/get-json');
 const toodledo = require('node-toodledo');
 
 // eslint-disable-next-line new-cap
@@ -19,7 +20,7 @@ function getApiInstance(key, config) {
         apiInstances[key].on('tokens:loaded', (tokens) => {
             fsp.readFile('config/plugins/toodledo.json')
                 .then((data) => {
-                    const pluginConfig = JSON.parse(data);
+                    const pluginConfig = getJson(data);
                     pluginConfig.accounts[key].data = tokens;
                     fsp.writeFile('config/plugins/toodledo.json', JSON.stringify(pluginConfig, null, 4));
                 })
@@ -43,7 +44,7 @@ function getAccountInfoInstance(key, api) {
             .on('account-info:loaded', () => {
                 fsp.readFile('data/plugins/toodledo/account-info.json')
                     .then((data) => {
-                        const accounts = JSON.parse(data);
+                        const accounts = getJson(data);
 
                         accounts[key] = accountInfo[key].data;
                         accounts[key]['_retrieved'] = Date.now();
@@ -61,7 +62,7 @@ router.get('/data/:account/', (request, response) => {
     const accountKey = request.params.account;
     fsp.readFile('data/plugins/toodledo/account-info.json')
         .then((data) => {
-            const accounts = JSON.parse(data);
+            const accounts = getJson(data);
             response.send(JSON.stringify({
                 'account-info': accounts[accountKey] || {}
             }));
@@ -83,11 +84,11 @@ router.get('/account-info/:account/', (request, response) => {
 
     const accountPromise = fsp.readFile('data/plugins/toodledo/account-info.json')
         .then((data) => {
-            accounts = JSON.parse(data);
+            accounts = getJson(data);
         });
     const pluginConfigPromise = fsp.readFile('config/plugins/toodledo.json')
         .then((data) => {
-            pluginConfig = JSON.parse(data);
+            pluginConfig = getJson(data);
         });
 
     Promise.all([accountPromise, pluginConfigPromise])
@@ -120,12 +121,12 @@ router.delete('/accounts/:account', (request, response) => {
     let accounts, accountInfoObj;
     const accountPromise = fsp.readFile('data/plugins/toodledo/accounts.json')
         .then((data) => {
-            accounts = JSON.parse(data);
+            accounts = getJson(data);
             return Promise.resolve();
         });
     const accountInfoPromise = fsp.readFile('data/plugins/toodledo/account-info.json')
         .then((data) => {
-            accountInfoObj = JSON.parse(data);
+            accountInfoObj = getJson(data);
             return Promise.resolve();
         });
 
@@ -155,5 +156,6 @@ module.exports = {
         'config/plugins/toodledo.json',
         'data/plugins/toodledo/accounts.json',
         'data/plugins/toodledo/account-info.json'
-    ]
+    ],
+    'dataDirs': []
 };

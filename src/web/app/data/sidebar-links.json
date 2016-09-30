@@ -1,10 +1,19 @@
 {
-    "Configuration": {
+    "home": {
+        "text": "Dashboard",
+        "icon": "dashboard",
+        "path": "/"
+    },
+    "configuration": {
+        "text": "Configuration",
+        "icon": "cogs",
         "links": [
             {"path": "/plugins", "text": "Plugins", "icon": "code"}
         ]
     },
-    "Connections": {
+    "connections": {
+        "text": "Connections",
+        "icon": "share-alt",
         "links": [
             {"path": "/shards", "text": "Shards", "icon": "database"},
             {"path": "/relationships", "text": "Relationships", "icon": "exchange"},

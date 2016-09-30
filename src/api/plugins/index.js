@@ -4,6 +4,7 @@ const _ = require('lodash');
 const bodyParser = require('body-parser');
 const express = require('express');
 const fsp = require('fs-promise');
+const getJson = require('../../helpers/get-json');
 
 // eslint-disable-next-line new-cap
 const router = express.Router();
@@ -23,13 +24,13 @@ router.get('/', (request, response) => {
         .then((data) => {
             const promises = [];
 
-            plugins = JSON.parse(data);
+            plugins = getJson(data);
 
             Object.keys(plugins).forEach((key) => {
                 promises.push(
                     fsp.readFile(`data/plugins/${ key }/accounts.json`)
                         .then((accountData) => {
-                            plugins[key].accounts = JSON.parse(accountData);
+                            plugins[key].accounts = getJson(accountData);
                         })
                         .catch(() => {
                             plugins[key].accounts = {};
@@ -56,17 +57,17 @@ router.get('/:plugin', (request, response) => {
 
     const pluginPromise = fsp.readFile('config/plugins.json')
         .then((data) => {
-            plugins = JSON.parse(data);
+            plugins = getJson(data);
         });
 
     const configPromise = fsp.readFile(`config/plugins/${ key }.json`)
         .then((data) => {
-            pluginConfig = JSON.parse(data);
+            pluginConfig = getJson(data);
         });
 
     const accountPromise = fsp.readFile(`data/plugins/${ key }/accounts.json`)
         .then((data) => {
-            accounts = JSON.parse(data);
+            accounts = getJson(data);
         })
         .catch((error) => {
             if (error.code === 'ENOENT') {
@@ -95,7 +96,7 @@ router.get('/:plugin', (request, response) => {
 router.put('/:plugin/enable', (request, response) => {
     fsp.readFile('config/plugins.json')
         .then((data) => {
-            const plugins = JSON.parse(data);
+            const plugins = getJson(data);
             plugins[request.params.plugin].enabled = true;
             return fsp.writeFile('config/plugins.json', JSON.stringify(plugins, null, 4));
         })
@@ -112,7 +113,7 @@ router.put('/:plugin/enable', (request, response) => {
 router.put('/:plugin/disable', (request, response) => {
     fsp.readFile('config/plugins.json')
         .then((data) => {
-            const plugins = JSON.parse(data);
+            const plugins = getJson(data);
             plugins[request.params.plugin].enabled = false;
             return fsp.writeFile('config/plugins.json', JSON.stringify(plugins, null, 4));
         })
@@ -130,7 +131,7 @@ router.get('/:plugin/accounts', (request, response) => {
     const plugin = request.params.plugin;
     fsp.readFile(`data/plugins/${ plugin }/accounts.json`)
         .then((data) => {
-            response.json(JSON.parse(data));
+            response.json(getJson(data));
         })
         .catch((error) => {
             console.dir(error);
@@ -143,7 +144,7 @@ router.get('/:plugin/account-template', (request, response) => {
     const plugin = request.params.plugin;
     fsp.readFile(`config/plugins/${ plugin }.json`)
         .then((data) => {
-            response.json(JSON.parse(data));
+            response.json(getJson(data));
         })
         .catch((error) => {
             console.dir(error);
@@ -156,17 +157,17 @@ function saveAccount(plugin, accountId, body, response) {
 
     const pluginPromise = fsp.readFile('config/plugins.json')
         .then((data) => {
-            plugins = JSON.parse(data);
+            plugins = getJson(data);
         });
 
     const configPromise = fsp.readFile(`config/plugins/${ plugin }.json`)
         .then((data) => {
-            pluginConfig = JSON.parse(data);
+            pluginConfig = getJson(data);
         });
 
     const accountPromise = fsp.readFile(`data/plugins/${ plugin }/accounts.json`)
         .then((data) => {
-            accounts = JSON.parse(data);
+            accounts = getJson(data);
         })
         .catch((error) => {
             if (error.code === 'ENOENT') {
@@ -231,7 +232,7 @@ router.get('/:plugin/accounts/:account', (request, response) => {
     const plugin = request.params.plugin;
     fsp.readFile(`data/plugins/${ plugin }/accounts.json`)
         .then((data) => {
-            const accounts = JSON.parse(data);
+            const accounts = getJson(data);
             const account = request.params.account;
 
             response.json(accounts[account]);
@@ -264,5 +265,9 @@ module.exports = {
         ],
         google.dataFiles,
         toodledo.dataFiles
+    ),
+    'dataDirs': _.concat([],
+        google.dataDirs,
+        toodledo.dataDirs
     )
 };
