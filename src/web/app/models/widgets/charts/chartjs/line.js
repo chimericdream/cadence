@@ -3,21 +3,17 @@
 
 define(['jquery', 'backbone'], ($, Backbone) => {
     const Model = Backbone.Model.extend({
-        'urlRoot': '/api/plugins',
+        'urlRoot': '/api/widgets',
         'defaults': {
             'id': '',
             'name': '',
-            'description': '',
-            'config-file': '',
-            'enabled': false,
-            'components': {},
-            'accounts': {}
+            'options': {
+                'type': 'line',
+                'data': {},
+                'options': {}
+            }
         }
     });
-
-    Model.prototype.getAccountTemplate = function() {
-        return $.ajax(`${ this.url() }/account-template`);
-    };
 
     Model.prototype.enable = function() {
         const url = `${ this.url() }/enable`;

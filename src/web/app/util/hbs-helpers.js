@@ -1,3 +1,4 @@
+/* global define */
 'use strict';
 
 define(['handlebars', 'moment'], (Handlebars, moment) => {

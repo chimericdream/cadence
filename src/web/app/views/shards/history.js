@@ -1,7 +1,7 @@
+/* global define */
 'use strict';
 
 define(
-    'views/shards/history',
     [
         'jquery',
         'views/base',
@@ -21,7 +21,7 @@ define(
 
             this.$el.children().detach();
 
-            let history
+            let history;
             const shardPromise = shard.fetch();
             const historyPromise = shard.getHistory()
                 .done((response) => {

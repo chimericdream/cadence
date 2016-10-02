@@ -1,5 +1,6 @@
+/* global define */
 'use strict';
 
 define([
-    './hbs-helpers', './load-partials', './load-ictus', './load-jq-plugins'
+    './hbs-helpers', './load-partials', './load-jq-plugins'
 ], () => {});

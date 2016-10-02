@@ -1,6 +1,7 @@
+/* global define */
 'use strict';
 
-define('routers/base', ['backbone'], function(Backbone) {
+define(['backbone'], function(Backbone) {
     const views = {};
 
     const Router = Backbone.Router.extend();

@@ -1,6 +1,7 @@
+/* global define */
 'use strict';
 
-define('collections/plugins', ['backbone', 'models/plugin'], (Backbone, PluginModel) => {
+define(['backbone', 'models/plugin'], (Backbone, PluginModel) => {
     const Collection = Backbone.Collection.extend({
         'url': '/api/plugins/',
         'model': PluginModel

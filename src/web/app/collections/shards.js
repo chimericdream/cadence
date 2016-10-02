@@ -1,6 +1,7 @@
+/* global define */
 'use strict';
 
-define('collections/shards', ['backbone', 'models/shard'], (Backbone, ShardModel) => {
+define(['backbone', 'models/shard'], (Backbone, ShardModel) => {
     const Collection = Backbone.Collection.extend({
         'url': '/api/shards/',
         'model': ShardModel

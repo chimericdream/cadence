@@ -1,7 +1,7 @@
+/* global define */
 'use strict';
 
 define(
-    'views/plugins/index',
     ['jquery', 'lodash', 'views/base', 'views/plugins/accounts/delete-modal', 'collections/plugins', 'models/plugin', 'models/plugins/account', 'text!templates/plugins/index.hbs'],
     ($, _, BaseView, DeleteAccountModalView, PluginCollection, PluginModel, AccountModel, PluginPageTemplate) => {
         const View = BaseView.extend({

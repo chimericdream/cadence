@@ -1,7 +1,7 @@
+/* global define */
 'use strict';
 
 define(
-    'views/shards/add',
     [
         'jquery',
         'views/base',

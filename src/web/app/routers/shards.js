@@ -1,6 +1,7 @@
+/* global define */
 'use strict';
 
-define('routers/shards', ['routers/base'], (BaseRouter) => {
+define(['routers/base'], (BaseRouter) => {
     const Router = BaseRouter.extend({
         'routes': {
             'shards': 'shardList',

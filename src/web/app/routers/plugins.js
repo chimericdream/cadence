@@ -1,6 +1,7 @@
+/* global define */
 'use strict';
 
-define('routers/plugins', ['routers/base'], (BaseRouter) => {
+define(['routers/base'], (BaseRouter) => {
     const Router = BaseRouter.extend({
         'routes': {
             'plugins': 'pluginList',

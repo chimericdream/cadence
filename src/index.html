@@ -20,25 +20,31 @@
     <script>
         require.config({
             'baseUrl': '/app',
-            'bundles': {
-                'ictus': [
-                    'ictus-core',
-                    'ictus-jquery',
-                    'bootstrap',
-                    'chartjs',
-                    'jquery',
-                    'moment',
-                    'notifyjs',
-                    'tether'
-                ]
-            },
+//            'bundles': {
+//                'ictus': [
+//                    'ictus-core',
+//                    'ictus-jquery',
+//                    'bootstrap',
+//                    'chartjs',
+//                    'jquery',
+//                    'moment',
+//                    'notifyjs',
+//                    'tether'
+//                ]
+//            },
             'paths': {
                 'backbone': '/bower/backbone/backbone-min',
+                'bootstrap': '/bower/bootstrap/dist/js/bootstrap.min',
+                'chartjs': '/bower/chart.js/dist/Chart',
                 'handlebars': '/bower/handlebars/handlebars.amd.min',
                 'ictus': '/bower/ictus/dist/js/ictus',
                 'js-cookie': '/bower/js-cookie/src/js.cookie',
                 'json': '/bower/requirejs-plugins/src/json',
+                'jquery': '/bower/jquery/dist/jquery.min',
                 'lodash': '/bower/lodash/dist/lodash.min',
+                'moment': '/bower/moment/min/moment.min',
+                'notifyjs': '/bower/notifyjs/dist/notify',
+                'tether': '/bower/tether/dist/js/tether.min',
                 'text': '/bower/text/text',
                 'underscore': '/bower/underscore/underscore-min'
             }

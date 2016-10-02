@@ -1,7 +1,7 @@
+/* global define */
 'use strict';
 
 define(
-    'views/plugins/accounts/view',
     [
         'jquery',
         'views/base',

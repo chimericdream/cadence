@@ -1,9 +1,9 @@
+/* global define */
 'use strict';
 
 // TODO: I think this might be able to be generalized to a universal modal view. If nothing else, I can probably make a
 // generic modal view that extends BaseView and which other modal views extend further.
 define(
-    'views/shards/delete-modal',
     [
         'jquery',
         'views/base',

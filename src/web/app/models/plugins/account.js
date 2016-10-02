@@ -1,6 +1,7 @@
+/* global define */
 'use strict';
 
-define('models/plugins/account', ['jquery', 'backbone'], ($, Backbone) => {
+define(['jquery', 'backbone'], ($, Backbone) => {
     const Model = Backbone.Model.extend({
         'urlRoot': '/api/plugins',
         'defaults': {

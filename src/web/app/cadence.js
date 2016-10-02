@@ -1,12 +1,12 @@
+/* global define */
 'use strict';
 
 define(
-    'cadence',
     [
         'jquery',
         'backbone',
         'notifyjs',
-        'routers/home',
+        'routers/dashboard',
         'routers/plugins',
         'routers/shards',
         'util/cadence-init'
@@ -15,7 +15,7 @@ define(
         $,
         Backbone,
         notifyjs,
-        HomeRouter,
+        DashboardRouter,
         PluginRouter,
         ShardRouter
     ) => {
@@ -23,7 +23,7 @@ define(
 
         Cadence.prototype.initialize = function() {
             this._subRouters = {
-                'home': new HomeRouter(),
+                'dashboard': new DashboardRouter(),
                 'plugins': new PluginRouter(),
                 'shards': new ShardRouter()
             };
