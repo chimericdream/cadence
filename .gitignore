@@ -4,3 +4,4 @@ npm-debug.log
 /data/
 src/web/bower/
 .idea
+/docs/coverage/

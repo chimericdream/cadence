@@ -50,7 +50,10 @@
             }
         });
 
-        require(['cadence']);
+        require(['cadence'], (Cadence) => {
+            const app = new Cadence();
+            app.start();
+        });
     </script>
 </body>
 </html>

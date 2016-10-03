@@ -5,7 +5,6 @@ define(
     [
         'jquery',
         'backbone',
-        'notifyjs',
         'routers/dashboard',
         'routers/plugins',
         'routers/shards',
@@ -14,7 +13,6 @@ define(
     (
         $,
         Backbone,
-        notifyjs,
         DashboardRouter,
         PluginRouter,
         ShardRouter
@@ -46,7 +44,5 @@ define(
             Backbone.history.start();
         };
 
-        const app = new Cadence();
-
-        app.start();
+        return Cadence;
     });
