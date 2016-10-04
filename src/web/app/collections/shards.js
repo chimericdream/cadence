@@ -1,23 +1,11 @@
 /* global define */
 'use strict';
 
-define(['backbone', 'models/shard'], (Backbone, ShardModel) => {
-    const Collection = Backbone.Collection.extend({
+define(['collections/base', 'models/shard'], (BaseCollection, ShardModel) => {
+    const Collection = BaseCollection.extend({
         'url': '/api/shards/',
         'model': ShardModel
     });
-
-    Collection.prototype.parse = function(response) {
-        const models = [];
-
-        Object.keys(response).forEach((key) => {
-            const model = response[key];
-            model.id = key;
-            models.push(model);
-        });
-
-        return models;
-    };
 
     return Collection;
 });

@@ -1,18 +1,12 @@
 /* global define */
 'use strict';
 
-define(['collections/plugins'], (PluginCollection) => {
-    describe('PluginCollection', () => {
+define(['collections/base'], (BaseCollection) => {
+    describe('BaseCollection', () => {
         let collection;
 
         beforeEach(() => {
-            collection = new PluginCollection();
-        });
-
-        describe('constructor', () => {
-            it('sets the correct property values', () => {
-                expect(collection.url).to.equal('/api/plugins/');
-            });
+            collection = new BaseCollection();
         });
 
         describe('parse', () => {
