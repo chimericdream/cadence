@@ -2,7 +2,7 @@
 'use strict';
 
 define(['routers/base'], (BaseRouter) => {
-    const Router = BaseRouter.extend({
+    const ShardRouter = BaseRouter.extend({
         'routes': {
             'shards': 'shardList',
             'shards/add': 'addShard',
@@ -11,13 +11,13 @@ define(['routers/base'], (BaseRouter) => {
         }
     });
 
-    Router.prototype.shardList = function() {
+    ShardRouter.prototype.shardList = function() {
         this.getView('views/shards/index', (ListView) => {
             this.render(ListView);
         });
     };
 
-    Router.prototype.addShard = function() {
+    ShardRouter.prototype.addShard = function() {
         this.getView('views/shards/add', (AddShardView) => {
             if (!AddShardView.isEventListenedTo('shard:saved')) {
                 this.listenTo(AddShardView, 'shard:saved', () => {
@@ -28,7 +28,7 @@ define(['routers/base'], (BaseRouter) => {
         });
     };
 
-    Router.prototype.editShard = function(shard) {
+    ShardRouter.prototype.editShard = function(shard) {
         this.getView('views/shards/edit', (EditShardView) => {
             if (!EditShardView.isEventListenedTo('shard:saved')) {
                 this.listenTo(EditShardView, 'shard:saved', () => {
@@ -39,11 +39,11 @@ define(['routers/base'], (BaseRouter) => {
         });
     };
 
-    Router.prototype.shardHistory = function(shard) {
+    ShardRouter.prototype.shardHistory = function(shard) {
         this.getView('views/shards/history', (ShardHistoryView) => {
             this.render(ShardHistoryView, {'shard': shard});
         });
     };
 
-    return Router;
+    return ShardRouter;
 });

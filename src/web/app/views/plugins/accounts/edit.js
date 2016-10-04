@@ -18,14 +18,14 @@ define(
         AccountModel,
         AddEditAccountTemplate
     ) => {
-        const View = BaseView.extend({
+        const EditPluginAccountView = BaseView.extend({
             'events': {
                 'click #save-account-btn': 'saveAccount'
             }
         });
 
         // TODO: make this use the AccountModel and its `save()` method
-        View.prototype.saveAccount = function(event) {
+        EditPluginAccountView.prototype.saveAccount = function(event) {
             event.preventDefault();
             event.stopPropagation();
             const url = $('#plugin-account-form').attr('action');
@@ -45,7 +45,7 @@ define(
             });
         };
 
-        View.prototype.render = function(data) {
+        EditPluginAccountView.prototype.render = function(data) {
             let fields;
 
             const plugin = new PluginModel({'id': data.plugin});
@@ -73,6 +73,6 @@ define(
                 });
         };
 
-        return View;
+        return EditPluginAccountView;
     }
 );

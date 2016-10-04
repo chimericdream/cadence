@@ -2,7 +2,7 @@
 'use strict';
 
 define(['jquery', 'backbone'], ($, Backbone) => {
-    const Model = Backbone.Model.extend({
+    const ShardModel = Backbone.Model.extend({
         'urlRoot': '/api/shards',
         'defaults': {
             'id': '',
@@ -13,25 +13,25 @@ define(['jquery', 'backbone'], ($, Backbone) => {
         }
     });
 
-    Model.prototype.url = function() {
+    ShardModel.prototype.url = function() {
         return `${ this.urlRoot }/${ this.get('id') }`;
     };
 
-    Model.prototype.historyUrl = function() {
+    ShardModel.prototype.historyUrl = function() {
         return `${ this.urlRoot }/history/${ this.get('id') }`;
     };
 
-    Model.prototype.save = function() {
+    ShardModel.prototype.save = function() {
         this.set('updated', Date.now());
         return Backbone.Model.prototype.save.call(this);
     };
 
-    Model.prototype.getHistory = function() {
+    ShardModel.prototype.getHistory = function() {
         return $.ajax({
             'url': this.historyUrl(),
             'dataType': 'json'
         });
     };
 
-    return Model;
+    return ShardModel;
 });

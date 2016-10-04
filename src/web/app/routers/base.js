@@ -4,17 +4,17 @@
 define(['backbone'], function(Backbone) {
     const views = {};
 
-    const Router = Backbone.Router.extend();
+    const BaseRouter = Backbone.Router.extend();
 
-    Router.prototype.initialize = function() {
+    BaseRouter.prototype.initialize = function() {
         this.$app = $('#cadence-app');
     };
 
-    Router.prototype.isEventListenedTo = function(eventName) {
+    BaseRouter.prototype.isEventListenedTo = function(eventName) {
         return (this._events) ? !!this._events[eventName] : false;
     };
 
-    Router.prototype.getView = function(viewId, done) {
+    BaseRouter.prototype.getView = function(viewId, done) {
         if (typeof views[viewId] !== 'undefined') {
             done(views[viewId]);
             return;
@@ -26,7 +26,7 @@ define(['backbone'], function(Backbone) {
         });
     };
 
-    Router.prototype.render = function(view, data) {
+    BaseRouter.prototype.render = function(view, data) {
         view.render(data);
 
         this.$app.children().detach();
@@ -34,5 +34,5 @@ define(['backbone'], function(Backbone) {
         this.$app.append(view.$el);
     };
 
-    return Router;
+    return BaseRouter;
 });

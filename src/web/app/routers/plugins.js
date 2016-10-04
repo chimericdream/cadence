@@ -2,7 +2,7 @@
 'use strict';
 
 define(['routers/base'], (BaseRouter) => {
-    const Router = BaseRouter.extend({
+    const PluginRouter = BaseRouter.extend({
         'routes': {
             'plugins': 'pluginList',
             'plugins/:plugin/accounts/add': 'addAccount',
@@ -11,13 +11,13 @@ define(['routers/base'], (BaseRouter) => {
         }
     });
 
-    Router.prototype.pluginList = function() {
+    PluginRouter.prototype.pluginList = function() {
         this.getView('views/plugins/index', (ListView) => {
             this.render(ListView);
         });
     };
 
-    Router.prototype.addAccount = function(plugin) {
+    PluginRouter.prototype.addAccount = function(plugin) {
         this.getView('views/plugins/accounts/add', (AddAccountView) => {
             if (!AddAccountView.isEventListenedTo('account:saved')) {
                 this.listenTo(AddAccountView, 'account:saved', () => {
@@ -28,7 +28,7 @@ define(['routers/base'], (BaseRouter) => {
         });
     };
 
-    Router.prototype.editAccount = function(plugin, account) {
+    PluginRouter.prototype.editAccount = function(plugin, account) {
         this.getView('views/plugins/accounts/edit', (EditAccountView) => {
             if (!EditAccountView.isEventListenedTo('account:saved')) {
                 this.listenTo(EditAccountView, 'account:saved', () => {
@@ -39,13 +39,13 @@ define(['routers/base'], (BaseRouter) => {
         });
     };
 
-    Router.prototype.viewAccount = function(plugin, account) {
+    PluginRouter.prototype.viewAccount = function(plugin, account) {
         this.getView('views/plugins/accounts/view', (ViewAccountView) => {
             this.render(ViewAccountView, {'plugin': plugin, 'account': account});
         });
     };
 
-    return Router;
+    return PluginRouter;
 });
 // $('#shard-type').on('change', (event) => {
 //     const $el = $(event.target);

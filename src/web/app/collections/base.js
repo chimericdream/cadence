@@ -2,9 +2,9 @@
 'use strict';
 
 define(['backbone'], (Backbone) => {
-    const Collection = Backbone.Collection.extend();
+    const BaseCollection = Backbone.Collection.extend();
 
-    Collection.prototype.parse = function(response) {
+    BaseCollection.prototype.parse = function(response) {
         const models = [];
 
         Object.keys(response).forEach((key) => {
@@ -16,5 +16,5 @@ define(['backbone'], (Backbone) => {
         return models;
     };
 
-    return Collection;
+    return BaseCollection;
 });

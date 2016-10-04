@@ -2,7 +2,7 @@
 'use strict';
 
 define(['jquery', 'backbone'], ($, Backbone) => {
-    const Model = Backbone.Model.extend({
+    const CharjsLineChartModel = Backbone.Model.extend({
         'urlRoot': '/api/widgets',
         'defaults': {
             'id': '',
@@ -15,7 +15,7 @@ define(['jquery', 'backbone'], ($, Backbone) => {
         }
     });
 
-    Model.prototype.enable = function() {
+    CharjsLineChartModel.prototype.enable = function() {
         const url = `${ this.url() }/enable`;
         return $.ajax({
             'url': url,
@@ -26,7 +26,7 @@ define(['jquery', 'backbone'], ($, Backbone) => {
         });
     };
 
-    Model.prototype.disable = function() {
+    CharjsLineChartModel.prototype.disable = function() {
         const url = `${ this.url() }/disable`;
         return $.ajax({
             'url': url,
@@ -37,5 +37,5 @@ define(['jquery', 'backbone'], ($, Backbone) => {
         });
     };
 
-    return Model;
+    return CharjsLineChartModel;
 });

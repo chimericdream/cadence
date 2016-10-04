@@ -2,10 +2,10 @@
 'use strict';
 
 define(['collections/base', 'models/plugin'], (BaseCollection, PluginModel) => {
-    const Collection = BaseCollection.extend({
+    const PluginCollection = BaseCollection.extend({
         'url': '/api/plugins/',
         'model': PluginModel
     });
 
-    return Collection;
+    return PluginCollection;
 });

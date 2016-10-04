@@ -2,7 +2,7 @@
 'use strict';
 
 define(['jquery', 'backbone'], ($, Backbone) => {
-    const Model = Backbone.Model.extend({
+    const PluginModel = Backbone.Model.extend({
         'urlRoot': '/api/plugins',
         'defaults': {
             'id': '',
@@ -15,11 +15,11 @@ define(['jquery', 'backbone'], ($, Backbone) => {
         }
     });
 
-    Model.prototype.getAccountTemplate = function() {
+    PluginModel.prototype.getAccountTemplate = function() {
         return $.ajax(`${ this.url() }/account-template`);
     };
 
-    Model.prototype.enable = function() {
+    PluginModel.prototype.enable = function() {
         const url = `${ this.url() }/enable`;
         return $.ajax({
             'url': url,
@@ -30,7 +30,7 @@ define(['jquery', 'backbone'], ($, Backbone) => {
         });
     };
 
-    Model.prototype.disable = function() {
+    PluginModel.prototype.disable = function() {
         const url = `${ this.url() }/disable`;
         return $.ajax({
             'url': url,
@@ -41,5 +41,5 @@ define(['jquery', 'backbone'], ($, Backbone) => {
         });
     };
 
-    return Model;
+    return PluginModel;
 });

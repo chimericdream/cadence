@@ -20,17 +20,17 @@ define(
         ShardModel,
         ShardPageTemplate
     ) => {
-        const View = BaseView.extend({
+        const ShardListView = BaseView.extend({
             'events': {
                 'click .js-delete-shard': 'deleteShard'
             }
         });
 
-        View.prototype.initialize = function() {
+        ShardListView.prototype.initialize = function() {
             this.shards = new ShardCollection();
         };
 
-        View.prototype.deleteShard = function(event) {
+        ShardListView.prototype.deleteShard = function(event) {
             event.preventDefault();
             event.stopPropagation();
 
@@ -56,7 +56,7 @@ define(
             modal.render(data);
         };
 
-        View.prototype.render = function(data) {
+        ShardListView.prototype.render = function(data) {
             this.$el.children().detach();
 
             return this.shards
@@ -71,6 +71,6 @@ define(
                 });
         };
 
-        return View;
+        return ShardListView;
     }
 );

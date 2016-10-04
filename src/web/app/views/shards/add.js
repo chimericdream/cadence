@@ -14,14 +14,14 @@ define(
         ShardModel,
         AddShardTemplate
     ) => {
-        const View = BaseView.extend({
+        const AddShardView = BaseView.extend({
             'events': {
                 'click #save-shard-btn': 'saveShard',
                 'change #shard-type': 'updateShardType'
             }
         });
 
-        View.prototype.updateShardType = function(event) {
+        AddShardView.prototype.updateShardType = function(event) {
             const $el = $(event.target);
             $('#shard-value-notype, #shard-value-boolean, #shard-value-json, #shard-value-text').addClass('hidden-xs-up');
             switch ($el.val()) {
@@ -41,7 +41,7 @@ define(
         };
 
         // // TODO: make this use the ShardModel and its `create()` method
-        View.prototype.saveShard = function(event) {
+        AddShardView.prototype.saveShard = function(event) {
             event.preventDefault();
             event.stopPropagation();
             const shard = new ShardModel({
@@ -71,11 +71,11 @@ define(
                 });
         };
 
-        View.prototype.render = function() {
+        AddShardView.prototype.render = function() {
             this.$el.children().detach();
             this.$el.append(this.renderTemplate(AddShardTemplate));
         };
 
-        return View;
+        return AddShardView;
     }
 );

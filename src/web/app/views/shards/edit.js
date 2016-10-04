@@ -14,14 +14,14 @@ define(
         ShardModel,
         EditShardTemplate
     ) => {
-        const View = BaseView.extend({
+        const EditShardView = BaseView.extend({
             'events': {
                 'click #save-shard-btn': 'saveShard'
             }
         });
 
         // TODO: make this use the ShardModel and its `save()` method
-        View.prototype.saveShard = function(event) {
+        EditShardView.prototype.saveShard = function(event) {
             event.preventDefault();
             event.stopPropagation();
             const shard = new ShardModel({
@@ -51,7 +51,7 @@ define(
                 });
         };
 
-        View.prototype.render = function(data) {
+        EditShardView.prototype.render = function(data) {
             const shard = new ShardModel({'id': data.shard});
 
             this.$el.children().detach();
@@ -65,6 +65,6 @@ define(
                 });
         };
 
-        return View;
+        return EditShardView;
     }
 );

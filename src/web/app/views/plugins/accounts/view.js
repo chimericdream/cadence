@@ -18,9 +18,9 @@ define(
         AccountModel,
         ViewAccountTemplate
     ) => {
-        const View = BaseView.extend({});
+        const PluginAccountView = BaseView.extend({});
 
-        View.prototype.render = function(data) {
+        PluginAccountView.prototype.render = function(data) {
             const plugin = new PluginModel({'id': data.plugin});
             const account = new AccountModel({
                 'id': data.account,
@@ -57,6 +57,6 @@ define(
                 });
         };
 
-        return View;
+        return PluginAccountView;
     }
 );

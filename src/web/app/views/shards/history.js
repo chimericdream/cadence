@@ -14,9 +14,9 @@ define(
         ShardModel,
         ShardHistoryTemplate
     ) => {
-        const View = BaseView.extend({});
+        const ShardHistoryView = BaseView.extend({});
 
-        View.prototype.render = function(data) {
+        ShardHistoryView.prototype.render = function(data) {
             const shard = new ShardModel({'id': data.shard});
 
             this.$el.children().detach();
@@ -37,6 +37,6 @@ define(
                 });
         };
 
-        return View;
+        return ShardHistoryView;
     }
 );

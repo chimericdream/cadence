@@ -18,13 +18,13 @@ define(
         AccountModel,
         ModalTemplate
     ) => {
-        const View = BaseView.extend({
+        const DeletePluginAccountModalView = BaseView.extend({
             'events': {
                 'click .js-modal-action-button': 'confirmAction'
             }
         });
 
-        View.prototype.confirmAction = function(event) {
+        DeletePluginAccountModalView.prototype.confirmAction = function(event) {
             event.preventDefault();
             event.stopPropagation();
 
@@ -34,7 +34,7 @@ define(
             this.trigger('confirm:action');
         };
 
-        View.prototype.render = function(data) {
+        DeletePluginAccountModalView.prototype.render = function(data) {
             const plugin = new PluginModel({'id': data.plugin.id, 'name': data.plugin.name});
             const account = new AccountModel({
                 'id': data.account.id,
@@ -68,6 +68,6 @@ define(
             });
         };
 
-        return View;
+        return DeletePluginAccountModalView;
     }
 );

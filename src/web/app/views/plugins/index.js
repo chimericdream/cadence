@@ -4,7 +4,7 @@
 define(
     ['jquery', 'lodash', 'views/base', 'views/plugins/accounts/delete-modal', 'collections/plugins', 'models/plugin', 'models/plugins/account', 'text!templates/plugins/index.hbs'],
     ($, _, BaseView, DeleteAccountModalView, PluginCollection, PluginModel, AccountModel, PluginPageTemplate) => {
-        const View = BaseView.extend({
+        const PluginListView = BaseView.extend({
             'events': {
                 'click .js-enable-plugin': 'enablePlugin',
                 'click .js-disable-plugin': 'disablePlugin',
@@ -12,11 +12,11 @@ define(
             }
         });
 
-        View.prototype.initialize = function() {
+        PluginListView.prototype.initialize = function() {
             this.plugins = new PluginCollection();
         };
 
-        View.prototype.deleteAccount = function(event) {
+        PluginListView.prototype.deleteAccount = function(event) {
             event.preventDefault();
             event.stopPropagation();
 
@@ -47,7 +47,7 @@ define(
             modal.render(data);
         };
 
-        View.prototype.enablePlugin = function(event) {
+        PluginListView.prototype.enablePlugin = function(event) {
             event.preventDefault();
             event.stopPropagation();
             const id = event.currentTarget.dataset.plugin;
@@ -59,7 +59,7 @@ define(
                 });
         };
 
-        View.prototype.disablePlugin = function(event) {
+        PluginListView.prototype.disablePlugin = function(event) {
             event.preventDefault();
             event.stopPropagation();
             const id = event.currentTarget.dataset.plugin;
@@ -71,7 +71,7 @@ define(
                 });
         };
 
-        View.prototype.render = function(data) {
+        PluginListView.prototype.render = function(data) {
             this.$el.children().detach();
 
             return this.plugins
@@ -86,6 +86,6 @@ define(
                 });
         };
 
-        return View;
+        return PluginListView;
     }
 );

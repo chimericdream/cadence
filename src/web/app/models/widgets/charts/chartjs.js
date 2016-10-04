@@ -2,7 +2,7 @@
 'use strict';
 
 define(['jquery', 'backbone'], ($, Backbone) => {
-    const Model = Backbone.Model.extend({
+    const ChartjsWidgetModel = Backbone.Model.extend({
         'urlRoot': '/api/widgets',
         'defaults': {
             'id': '',
@@ -11,5 +11,5 @@ define(['jquery', 'backbone'], ($, Backbone) => {
         }
     });
 
-    return Model;
+    return ChartjsWidgetModel;
 });

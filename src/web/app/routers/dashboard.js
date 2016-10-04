@@ -2,17 +2,17 @@
 'use strict';
 
 define(['routers/base'], function(BaseRouter) {
-    const Router = BaseRouter.extend({
+    const DashboardRouter = BaseRouter.extend({
         'routes': {
             '': 'dashboard'
         }
     });
 
-    Router.prototype.dashboard = function() {
+    DashboardRouter.prototype.dashboard = function() {
         this.getView('views/dashboard', (DashboardView) => {
             this.render(DashboardView);
         });
     };
 
-    return Router;
+    return DashboardRouter;
 });

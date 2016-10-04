@@ -16,13 +16,13 @@ define(
         ShardModel,
         ModalTemplate
     ) => {
-        const View = BaseView.extend({
+        const DeleteShardModalView = BaseView.extend({
             'events': {
                 'click .js-modal-action-button': 'confirmAction'
             }
         });
 
-        View.prototype.confirmAction = function(event) {
+        DeleteShardModalView.prototype.confirmAction = function(event) {
             event.preventDefault();
             event.stopPropagation();
 
@@ -32,7 +32,7 @@ define(
             this.trigger('confirm:action');
         };
 
-        View.prototype.render = function(data) {
+        DeleteShardModalView.prototype.render = function(data) {
             const shard = new ShardModel({'id': data.shard.id});
 
             const timestamp = Date.now();
@@ -62,6 +62,6 @@ define(
             });
         };
 
-        return View;
+        return DeleteShardModalView;
     }
 );

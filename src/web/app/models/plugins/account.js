@@ -2,7 +2,7 @@
 'use strict';
 
 define(['jquery', 'backbone'], ($, Backbone) => {
-    const Model = Backbone.Model.extend({
+    const PluginAccountModel = Backbone.Model.extend({
         'urlRoot': '/api/plugins',
         'defaults': {
             'id': '',
@@ -12,19 +12,19 @@ define(['jquery', 'backbone'], ($, Backbone) => {
         }
     });
 
-    Model.prototype.url = function() {
+    PluginAccountModel.prototype.url = function() {
         return `${ this.urlRoot }/${ this.get('plugin').get('id') }/accounts/${ this.get('id') }`;
     };
 
-    Model.prototype.createUrl = function() {
+    PluginAccountModel.prototype.createUrl = function() {
         return `${ this.urlRoot }/${ this.get('plugin').get('id') }/add-account`;
     };
 
-    Model.prototype.dataUrl = function() {
+    PluginAccountModel.prototype.dataUrl = function() {
         return `${ this.urlRoot }/${ this.get('plugin').get('id') }/data/${ this.get('id') }`;
     };
 
-    Model.prototype.create = function() {
+    PluginAccountModel.prototype.create = function() {
         return $.ajax({
             'url': this.createUrl(),
             'method': 'POST',
@@ -34,12 +34,12 @@ define(['jquery', 'backbone'], ($, Backbone) => {
         });
     };
 
-    Model.prototype.getData = function() {
+    PluginAccountModel.prototype.getData = function() {
         return $.ajax({
             'url': this.dataUrl(),
             'dataType': 'json'
         });
     };
 
-    return Model;
+    return PluginAccountModel;
 });

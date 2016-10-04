@@ -2,13 +2,13 @@
 'use strict';
 
 define(['lodash', 'backbone', 'handlebars', 'json!data/sidebar-links.json'], (_, Backbone, Handlebars, SidebarLinks) => {
-    const View = Backbone.View.extend();
+    const BaseView = Backbone.View.extend();
 
-    View.prototype.isEventListenedTo = function(eventName) {
+    BaseView.prototype.isEventListenedTo = function(eventName) {
         return (this._events) ? !!this._events[eventName] : false;
     };
 
-    View.prototype.renderTemplate = function(template, data) {
+    BaseView.prototype.renderTemplate = function(template, data) {
         const fragment = Backbone.history.getFragment();
         const hbs = Handlebars.compile(template);
 
@@ -22,5 +22,5 @@ define(['lodash', 'backbone', 'handlebars', 'json!data/sidebar-links.json'], (_,
         return hbs(data);
     };
 
-    return View;
+    return BaseView;
 });
