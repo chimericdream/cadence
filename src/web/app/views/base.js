@@ -1,8 +1,8 @@
 /* global define */
 'use strict';
 
-define(['lodash', 'backbone', 'handlebars', 'json!data/sidebar-links.json'], (_, Backbone, Handlebars, SidebarLinks) => {
-    const BaseView = Backbone.View.extend();
+define(['lodash', 'marionette', 'handlebars', 'json!data/sidebar-links.json'], (_, Marionette, Handlebars, SidebarLinks) => {
+    const BaseView = Marionette.View.extend();
 
     BaseView.prototype.isEventListenedTo = function(eventName) {
         return (this._events) ? !!this._events[eventName] : false;

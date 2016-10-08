@@ -2,5 +2,5 @@
 'use strict';
 
 define([
-    './hbs-helpers', './load-partials', './load-jq-plugins'
+    './hbs-helpers', './load-partials', './load-jq-plugins', './renderer'
 ], () => {});

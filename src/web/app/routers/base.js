@@ -1,18 +1,10 @@
 /* global define */
 'use strict';
 
-define(['backbone'], function(Backbone) {
+define(['marionette', 'backbone.radio'], function(Marionette, Radio) {
     const views = {};
 
-    const BaseRouter = Backbone.Router.extend();
-
-    BaseRouter.prototype.initialize = function() {
-        this.$app = $('#cadence-app');
-    };
-
-    BaseRouter.prototype.isEventListenedTo = function(eventName) {
-        return (this._events) ? !!this._events[eventName] : false;
-    };
+    const BaseRouter = Marionette.AppRouter.extend();
 
     BaseRouter.prototype.getView = function(viewId, done) {
         if (typeof views[viewId] !== 'undefined') {
@@ -21,17 +13,29 @@ define(['backbone'], function(Backbone) {
         }
 
         require([viewId], (View) => {
-            views[viewId] = new View();
+            views[viewId] = View;
             done(views[viewId]);
         });
     };
 
-    BaseRouter.prototype.render = function(view, data) {
-        view.render(data);
+    BaseRouter.prototype.renderView = function(viewId, data) {
+        this.getView(viewId, (View) => {
+            const context = data || {};
+            const channel = Radio.channel('rendering');
+            channel.trigger('render:view:request', {
+                'view': View,
+                'context': context
+            });
+        });
+    };
 
-        this.$app.children().detach();
-        $('body').removeClass('js-cadence-pre-init');
-        this.$app.append(view.$el);
+    BaseRouter.prototype.onRoute = function(name, path, args) {
+        const channel = Radio.channel('routing');
+        channel.trigger('route:changed', {
+            'name': name,
+            'path': path,
+            'args': args
+        });
     };
 
     return BaseRouter;

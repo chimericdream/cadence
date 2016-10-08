@@ -4,12 +4,16 @@
 define(
     [
         'jquery',
+        'marionette',
+        'backbone.radio',
         'views/base',
         'models/shard',
         'text!templates/shards/add.hbs'
     ],
     (
         $,
+        Marionette,
+        Radio,
         BaseView,
         ShardModel,
         AddShardTemplate
@@ -18,7 +22,8 @@ define(
             'events': {
                 'click #save-shard-btn': 'saveShard',
                 'change #shard-type': 'updateShardType'
-            }
+            },
+            'template': AddShardTemplate
         });
 
         AddShardView.prototype.updateShardType = function(event) {
@@ -40,7 +45,7 @@ define(
             }
         };
 
-        // // TODO: make this use the ShardModel and its `create()` method
+        // TODO: make this use the ShardModel and its `create()` method
         AddShardView.prototype.saveShard = function(event) {
             event.preventDefault();
             event.stopPropagation();
@@ -67,13 +72,9 @@ define(
             shard.save()
                 .done(() => {
                     $.notify(`Shard <kbd>${ shard.get('id') }</kbd> created.`);
-                    this.trigger('shard:saved');
+                    const channel = Radio.channel('shards');
+                    channel.trigger('shard:saved', shard);
                 });
-        };
-
-        AddShardView.prototype.render = function() {
-            this.$el.children().detach();
-            this.$el.append(this.renderTemplate(AddShardTemplate));
         };
 
         return AddShardView;

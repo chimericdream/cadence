@@ -1,0 +1,32 @@
+<table class="table table-striped table-bordered table-hover">
+    <thead>
+    <tr>
+        <th>&nbsp;</th>
+        <th>ID</th>
+        <th>Description</th>
+        <th>Type</th>
+        <th>Value</th>
+        <th>Last Updated</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each shards}}
+        <tr>
+            <td>
+                <a href="/shards/edit/{{ id }}" title="Edit shard"><i class="fa fa-edit" aria-hidden="true"></i></a>
+                <a href="/shards/history/{{ id }}" title="View history"><i class="fa fa-history" aria-hidden="true"></i></a>
+                <a href="#" class="js-delete-shard" title="Delete shard" data-shard="{{ id }}"><i class="fa fa-remove text-danger" aria-hidden="true"></i></a>
+            </td>
+            <td>{{ id }}</td>
+            <td>{{ description }}</td>
+            <td>{{ type }}</td>
+            <td>{{#equal type "json"}}<pre><code>{{ json value }}</code></pre>{{ else }}{{ value }}{{/equal}}</td>
+            <td>{{ dateFormat updated }}</td>
+        </tr>
+    {{ else }}
+        <tr>
+            <td colspan="6">No shards found.</td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>

@@ -1,7 +1,7 @@
 /* global define */
 'use strict';
 
-define(['jquery', 'notifyjs'], ($) => {
+define(['jquery', 'notifyjs', 'bootstrap'], ($) => {
     'use strict';
 
     $.notify.addStyle('twbs', {

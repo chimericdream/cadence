@@ -9,9 +9,7 @@ define(['routers/base'], function(BaseRouter) {
     });
 
     DashboardRouter.prototype.dashboard = function() {
-        this.getView('views/dashboard', (DashboardView) => {
-            this.render(DashboardView);
-        });
+        this.renderView('views/dashboard');
     };
 
     return DashboardRouter;

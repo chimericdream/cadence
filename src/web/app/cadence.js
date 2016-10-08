@@ -5,24 +5,32 @@ define(
     [
         'jquery',
         'backbone',
+        'marionette',
+        'backbone.radio',
+        'views/site',
         'routers/dashboard',
-        'routers/plugins',
+        // 'routers/plugins',
         'routers/shards',
         'util/cadence-init'
     ],
     (
         $,
         Backbone,
+        Marionette,
+        Radio,
+        SiteView,
         DashboardRouter,
-        PluginRouter,
+        // PluginRouter,
         ShardRouter
     ) => {
-        const Cadence = Backbone.Router.extend();
+        const Cadence = Marionette.Application.extend({
+            'region': '#cadence-app'
+        });
 
         Cadence.prototype.initialize = function() {
-            this._subRouters = {
+            this.routers = {
                 'dashboard': new DashboardRouter(),
-                'plugins': new PluginRouter(),
+                // 'plugins': new PluginRouter(),
                 'shards': new ShardRouter()
             };
 
@@ -35,13 +43,17 @@ define(
                 if (href.search(/^(?:\w+:)?\/\/.*$/) === -1) {
                     event.preventDefault();
                     event.stopPropagation();
-                    this.navigate(href, {'trigger': true});
+                    Backbone.history.navigate(href, {'trigger': true});
                 }
             });
+
+            this.mainView = new SiteView();
         };
 
-        Cadence.prototype.start = function() {
+        Cadence.prototype.onStart = function() {
             Backbone.history.start();
+            $('body').removeClass('js-cadence-pre-init');
+            this.showView(this.mainView);
         };
 
         return Cadence;

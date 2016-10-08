@@ -55,9 +55,10 @@ define(
             }));
 
             $('body').append(this.$el);
-            $(`#modal-${ timestamp }`).modal();
-            $(`#modal-${ timestamp }`).on('hidden.bs.modal', () => {
-                this.trigger('cancel:modal')
+            const $el = $(`#modal-${ timestamp }`);
+            $el.modal();
+            $el.on('hidden.bs.modal', () => {
+                this.trigger('cancel:modal');
                 this.$el.detach();
             });
         };

@@ -5,32 +5,38 @@ define(
     [
         'jquery',
         'lodash',
-        'views/base',
+        'marionette',
+        'views/shards/list',
         'views/shards/delete-modal',
         'collections/shards',
         'models/shard',
-        'text!templates/shards/index.hbs'
+        'text!templates/shards.hbs'
     ],
     (
         $,
         _,
-        BaseView,
+        Marionette,
+        ShardListView,
         DeleteModalView,
         ShardCollection,
         ShardModel,
         ShardPageTemplate
     ) => {
-        const ShardListView = BaseView.extend({
+        const ShardPageView = Marionette.View.extend({
             'events': {
                 'click .js-delete-shard': 'deleteShard'
+            },
+            'template': ShardPageTemplate,
+            'regions': {
+                'shard-list': '#shard-list'
             }
         });
 
-        ShardListView.prototype.initialize = function() {
+        ShardPageView.prototype.initialize = function() {
             this.shards = new ShardCollection();
         };
 
-        ShardListView.prototype.deleteShard = function(event) {
+        ShardPageView.prototype.deleteShard = function(event) {
             event.preventDefault();
             event.stopPropagation();
 
@@ -56,21 +62,14 @@ define(
             modal.render(data);
         };
 
-        ShardListView.prototype.render = function(data) {
-            this.$el.children().detach();
-
-            return this.shards
+        ShardPageView.prototype.onRender = function() {
+            this.shards
                 .fetch()
                 .done((shards) => {
-                    this.$el.append(
-                        this.renderTemplate(
-                            ShardPageTemplate,
-                            _.merge(data, {'shards': shards})
-                        )
-                    );
+                    this.showChildView('shard-list', new ShardListView(shards));
                 });
         };
 
-        return ShardListView;
+        return ShardPageView;
     }
 );
