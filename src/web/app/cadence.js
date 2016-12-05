@@ -9,7 +9,7 @@ define(
         'backbone.radio',
         'views/site',
         'routers/dashboard',
-        // 'routers/plugins',
+        'routers/plugins',
         'routers/shards',
         'util/cadence-init'
     ],
@@ -20,7 +20,7 @@ define(
         Radio,
         SiteView,
         DashboardRouter,
-        // PluginRouter,
+        PluginRouter,
         ShardRouter
     ) => {
         const Cadence = Marionette.Application.extend({
@@ -30,7 +30,7 @@ define(
         Cadence.prototype.initialize = function() {
             this.routers = {
                 'dashboard': new DashboardRouter(),
-                // 'plugins': new PluginRouter(),
+                'plugins': new PluginRouter(),
                 'shards': new ShardRouter()
             };
 

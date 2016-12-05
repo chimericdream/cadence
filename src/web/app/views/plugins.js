@@ -2,8 +2,26 @@
 'use strict';
 
 define(
-    ['jquery', 'lodash', 'views/base', 'views/plugins/accounts/delete-modal', 'collections/plugins', 'models/plugin', 'models/plugins/account', 'text!templates/plugins/index.hbs'],
-    ($, _, BaseView, DeleteAccountModalView, PluginCollection, PluginModel, AccountModel, PluginPageTemplate) => {
+    [
+        'jquery',
+        'lodash',
+        'views/base',
+        'views/plugins/accounts/delete-modal',
+        'collections/plugins',
+        'models/plugin',
+        'models/plugins/account',
+        'text!templates/plugins.hbs'
+    ],
+    (
+        $,
+        _,
+        BaseView,
+        DeleteAccountModalView,
+        PluginCollection,
+        PluginModel,
+        AccountModel,
+        PluginPageTemplate
+    ) => {
         const PluginListView = BaseView.extend({
             'events': {
                 'click .js-enable-plugin': 'enablePlugin',

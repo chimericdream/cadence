@@ -28,13 +28,14 @@ define(
         AddPluginAccountView.prototype.saveAccount = function(event) {
             event.preventDefault();
             event.stopPropagation();
-            const url = $('#plugin-account-form').attr('action');
+            const $form = $('#plugin-account-form');
+            const url = $form.attr('action');
             $.ajax({
                 'url': url,
                 'method': 'POST',
                 'processData': false,
                 'dataType': 'text',
-                'data': $('#plugin-account-form').serialize()
+                'data': $form.serialize()
             }).done((data, status, xhr) => {
                 const accountData = {
                     'account': xhr.getResponseHeader('X-Cadence-Account-ID'),
