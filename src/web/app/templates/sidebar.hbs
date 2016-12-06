@@ -2,7 +2,7 @@
     <nav class="nav nav-pills nav-stacked">
         {{#if links}}
             <a class="nav-header" href="#collapse-{{ slugify @key }}" data-toggle="collapse" data-parent="#main-sidebar" aria-expanded="true" aria-controls="collapse-{{ slugify @key }}">{{#if icon }}<i class="fa fa-{{ icon }}"></i> {{/if}}{{ text }}</a>
-            <nav id="collapse-{{ slugify @key }}" class="nav nav-pills nav-stacked collapse in">
+            <nav id="collapse-{{ slugify @key }}" class="nav nav-pills nav-stacked collapse active">
                 {{#each links}}
                     <a class="nav-link{{#equal ../../current-page path}} active{{ else }}{{#nequal path "/"}}{{#startswith ../../current-page path}} active{{/startswith}}{{/nequal}}{{/equal}}" href="{{ path }}">{{#if icon }}<i class="fa fa-{{ icon }}"></i> {{/if}}{{ text }}</a>
                 {{/each}}
