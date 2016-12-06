@@ -46,10 +46,10 @@ define(
             });
         };
 
-        AddPluginAccountView.prototype.render = function(data) {
+        AddPluginAccountView.prototype.render = function() {
             this.$el.children().detach();
 
-            const plugin = new PluginModel({'id': data.plugin});
+            const plugin = new PluginModel({'id': this.templateData.plugin});
 
             return plugin
                 .getAccountTemplate()

@@ -3,16 +3,16 @@
 
 define([
     'backbone.radio',
-    'marionette',
+    'views/base',
     'views/sidebar',
     'text!templates/site.hbs'
 ], (
     Radio,
-    Marionette,
+    BaseView,
     SidebarView,
     SiteTemplate
 ) => {
-    const SiteView = Marionette.View.extend({
+    const SiteView = BaseView.extend({
         'template': SiteTemplate,
         'regions': {
             'content': '#main-content',
@@ -23,7 +23,11 @@ define([
     SiteView.prototype.initialize = function() {
         const channel = Radio.channel('rendering');
         channel.on('render:view:request', function(data) {
-            this.showChildView('content', new data.view());
+            let view = new data.view();
+            view.setTemplateData(data.context);
+
+            this.showChildView('content', view);
+            this.showChildView('sidebar', new SidebarView());
         }.bind(this));
     };
 

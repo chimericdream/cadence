@@ -51,8 +51,8 @@ define(
                 });
         };
 
-        EditShardView.prototype.render = function(data) {
-            const shard = new ShardModel({'id': data.shard});
+        EditShardView.prototype.render = function() {
+            const shard = new ShardModel({'id': this.templateData.shard});
 
             this.$el.children().detach();
 

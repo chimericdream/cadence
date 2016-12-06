@@ -5,7 +5,7 @@ define(
     [
         'jquery',
         'lodash',
-        'marionette',
+        'views/base',
         'views/shards/list',
         'views/shards/delete-modal',
         'collections/shards',
@@ -15,14 +15,14 @@ define(
     (
         $,
         _,
-        Marionette,
+        BaseView,
         ShardListView,
         DeleteModalView,
         ShardCollection,
         ShardModel,
         ShardPageTemplate
     ) => {
-        const ShardPageView = Marionette.View.extend({
+        const ShardPageView = BaseView.extend({
             'events': {
                 'click .js-delete-shard': 'deleteShard'
             },

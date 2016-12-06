@@ -1,5 +1,3 @@
-{{> layout/header }}
-
 <h1 class="page-header">{{ plugin.name }}</h1>
 
 <h2>Account Data: <code>{{ account.id }}</code></h2>
@@ -7,8 +5,8 @@
 <h3>Configuration</h3>
 <dl class="row account-data--config-fields">
 {{#each fields}}
-    <dt class="col-sm-3">{{ name }}</dt>
-    <dd class="col-sm-9">
+    <dt class="col-xs-12 col-sm-3">{{ name }}</dt>
+    <dd class="col-xs-12 col-sm-9">
         {{#equal type "select"}}
             {{#each options~}}
                 {{~#contains (getFrom ../../account.fields @../key) value}}<span class="account-config-option">{{ name }}</span>{{/contains~}}
@@ -22,5 +20,3 @@
 <h3>Stored Data</h3>
 
 <pre><code>{{{ json accountData }}}</code></pre>
-
-{{> layout/footer }}

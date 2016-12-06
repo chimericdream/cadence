@@ -34,10 +34,10 @@ define(
             this.trigger('confirm:action');
         };
 
-        DeletePluginAccountModalView.prototype.render = function(data) {
-            const plugin = new PluginModel({'id': data.plugin.id, 'name': data.plugin.name});
+        DeletePluginAccountModalView.prototype.render = function() {
+            const plugin = new PluginModel({'id': this.templateData.plugin.id, 'name': this.templateData.plugin.name});
             const account = new AccountModel({
-                'id': data.account.id,
+                'id': this.templateData.account.id,
                 'plugin': plugin
             });
 

@@ -45,12 +45,12 @@ define(
             });
         };
 
-        EditPluginAccountView.prototype.render = function(data) {
+        EditPluginAccountView.prototype.render = function() {
             let fields;
 
-            const plugin = new PluginModel({'id': data.plugin});
+            const plugin = new PluginModel({'id': this.templateData.plugin});
             const account = new AccountModel({
-                'id': data.account,
+                'id': this.templateData.account,
                 'plugin': plugin
             });
 

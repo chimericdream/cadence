@@ -89,7 +89,7 @@ define(
                 });
         };
 
-        PluginListView.prototype.render = function(data) {
+        PluginListView.prototype.render = function() {
             this.$el.children().detach();
 
             return this.plugins
@@ -98,7 +98,7 @@ define(
                     this.$el.append(
                         this.renderTemplate(
                             PluginPageTemplate,
-                            _.merge(data, {'plugins': plugins})
+                            _.merge(this.templateData, {'plugins': plugins})
                         )
                     );
                 });

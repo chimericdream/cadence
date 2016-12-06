@@ -1,8 +1,8 @@
 /* global define */
 'use strict';
 
-define(['chartjs', 'marionette', 'text!templates/dashboard.hbs'], (Chart, Marionette, DashboardTemplate) => {
-    const DashboardView = Marionette.View.extend({
+define(['chartjs', 'views/base', 'text!templates/dashboard.hbs'], (Chart, BaseView, DashboardTemplate) => {
+    const DashboardView = BaseView.extend({
         'events': {
             'click #db-add-widget': 'addWidget'
         },

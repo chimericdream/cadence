@@ -1,13 +1,11 @@
-{{> layout/header }}
-
 <h1 class="page-header">{{ plugin.name }}</h1>
 
 <h2>Account Configuration</h2>
 
 <form id="plugin-account-form" action="/api/plugins/{{ plugin.id }}/{{#if account.id }}accounts/{{ account.id }}{{ else }}add-account{{/if}}/" method="post">
     <div class="form-group row">
-        <label for="account-id" class="col-sm-2 col-form-label">Account ID</label>
-        <div class="col-sm-10">
+        <label for="account-id" class="col-xs-12 col-sm-2 col-form-label">Account ID</label>
+        <div class="col-xs-12 col-sm-10">
             {{#if account.id~}}
                 <p class="form-control-static">{{ account.id }}</p>
             {{~ else ~}}
@@ -18,8 +16,8 @@
     </div>
 {{#each fields}}
     <div class="form-group row">
-        <label for="config--{{ @key }}" class="col-sm-2 col-form-label">{{ name }}</label>
-        <div class="col-sm-10">
+        <label for="config--{{ @key }}" class="col-xs-12 col-sm-2 col-form-label">{{ name }}</label>
+        <div class="col-xs-12 col-sm-10">
             {{#equal type "select"}}
                 <select name="{{ @key }}" id="config--{{ @key }}" class="form-control"{{#equal selection "multiple"}} multiple{{/equal}}>
                     {{#each options}}
@@ -34,7 +32,7 @@
     </div>
 {{/each}}
     <div class="row">
-        <div class="col-sm-10 offset-sm-2">
+        <div class="col-xs-12 col-sm-10 offset-sm-2">
             <button id="save-account-btn" type="submit" class="btn btn-primary pull-left">Save</button>
 
             <button id="cancel-new-account-btn" class="btn btn-link pull-right text-danger">Cancel</button>
@@ -42,5 +40,3 @@
         </div>
     </div>
 </form>
-
-{{> layout/footer }}

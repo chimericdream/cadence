@@ -32,8 +32,8 @@ define(
             this.trigger('confirm:action');
         };
 
-        DeleteShardModalView.prototype.render = function(data) {
-            const shard = new ShardModel({'id': data.shard.id});
+        DeleteShardModalView.prototype.render = function() {
+            const shard = new ShardModel({'id': this.templateData.shard.id});
 
             const timestamp = Date.now();
 

@@ -20,10 +20,10 @@ define(
     ) => {
         const PluginAccountView = BaseView.extend({});
 
-        PluginAccountView.prototype.render = function(data) {
-            const plugin = new PluginModel({'id': data.plugin});
+        PluginAccountView.prototype.render = function() {
+            const plugin = new PluginModel({'id': this.templateData.plugin});
             const account = new AccountModel({
-                'id': data.account,
+                'id': this.templateData.account,
                 'plugin': plugin
             });
 
